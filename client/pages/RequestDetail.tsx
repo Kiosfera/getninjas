@@ -118,7 +118,7 @@ export default function RequestDetail() {
 
   const showNotification = (
     message: string,
-    type: "success" | "error" | "info"
+    type: "success" | "error" | "info",
   ) => {
     setNotification({ message, type, visible: true });
   };
@@ -145,12 +145,13 @@ export default function RequestDetail() {
           userId: "user_1",
           category: "eletricista",
           title: "Instalação de chuveiro elétrico",
-          description: "Preciso instalar um chuveiro elétrico novo no banheiro. O ponto já existe, só precisa conectar. O chuveiro é de 7500W e precisa de um disjuntor específico. Também gostaria de uma orientação sobre a melhor posição para instalação.",
+          description:
+            "Preciso instalar um chuveiro elétrico novo no banheiro. O ponto já existe, só precisa conectar. O chuveiro é de 7500W e precisa de um disjuntor específico. Também gostaria de uma orientação sobre a melhor posição para instalação.",
           location: {
             address: "Rua das Flores, 123, Apartamento 45",
             city: "São Paulo",
             state: "SP",
-            coordinates: [-23.550520, -46.633308],
+            coordinates: [-23.55052, -46.633308],
           },
           urgency: "medium",
           budget: {
@@ -176,7 +177,8 @@ export default function RequestDetail() {
               professionalRating: 4.8,
               professionalReviews: 127,
               professionalVerified: true,
-              message: "Olá! Sou eletricista especializado em instalações residenciais há 10 anos. Posso fazer a instalação do seu chuveiro com total segurança e dentro das normas técnicas. Tenho disponibilidade para amanhã pela manhã.",
+              message:
+                "Olá! Sou eletricista especializado em instalações residenciais há 10 anos. Posso fazer a instalação do seu chuveiro com total segurança e dentro das normas técnicas. Tenho disponibilidade para amanhã pela manhã.",
               price: 180,
               estimatedDuration: "2-3 horas",
               status: "pending",
@@ -186,7 +188,7 @@ export default function RequestDetail() {
                 "Instalação completa do chuveiro",
                 "Verificação da rede elétrica",
                 "Orientação de uso",
-                "Garantia de 6 meses"
+                "Garantia de 6 meses",
               ],
             },
             {
@@ -197,7 +199,8 @@ export default function RequestDetail() {
               professionalRating: 4.9,
               professionalReviews: 89,
               professionalVerified: true,
-              message: "Oi! Sou eletricista certificada e posso te ajudar com a instalação. Trabalho sempre com material de qualidade e ofereço garantia. Posso fazer hoje mesmo se precisar urgente.",
+              message:
+                "Oi! Sou eletricista certificada e posso te ajudar com a instalação. Trabalho sempre com material de qualidade e ofereço garantia. Posso fazer hoje mesmo se precisar urgente.",
               price: 220,
               estimatedDuration: "1-2 horas",
               status: "pending",
@@ -207,7 +210,7 @@ export default function RequestDetail() {
                 "Instalação profissional",
                 "Material incluso (se necessário)",
                 "Teste completo",
-                "Garantia de 1 ano"
+                "Garantia de 1 ano",
               ],
             },
           ],
@@ -222,7 +225,11 @@ export default function RequestDetail() {
   };
 
   const handleSubmitProposal = async () => {
-    if (!proposalData.message || !proposalData.price || !proposalData.estimatedDuration) {
+    if (
+      !proposalData.message ||
+      !proposalData.price ||
+      !proposalData.estimatedDuration
+    ) {
       showNotification("Preencha todos os campos obrigatórios", "error");
       return;
     }
@@ -244,7 +251,7 @@ export default function RequestDetail() {
           professionalVerified: true,
           ...proposalData,
           price: Number(proposalData.price),
-          includes: proposalData.includes.filter(item => item.trim()),
+          includes: proposalData.includes.filter((item) => item.trim()),
         }),
       });
 
@@ -272,14 +279,17 @@ export default function RequestDetail() {
 
   const handleAcceptProposal = async (proposalId: string) => {
     try {
-      const response = await fetch(`/api/requests/${id}/proposals/${proposalId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user?.id}`,
+      const response = await fetch(
+        `/api/requests/${id}/proposals/${proposalId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.id}`,
+          },
+          body: JSON.stringify({ status: "accepted" }),
         },
-        body: JSON.stringify({ status: "accepted" }),
-      });
+      );
 
       if (response.ok) {
         showNotification("Proposta aceita com sucesso!", "success");
@@ -295,14 +305,17 @@ export default function RequestDetail() {
 
   const handleRejectProposal = async (proposalId: string) => {
     try {
-      const response = await fetch(`/api/requests/${id}/proposals/${proposalId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user?.id}`,
+      const response = await fetch(
+        `/api/requests/${id}/proposals/${proposalId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.id}`,
+          },
+          body: JSON.stringify({ status: "rejected" }),
         },
-        body: JSON.stringify({ status: "rejected" }),
-      });
+      );
 
       if (response.ok) {
         showNotification("Proposta rejeitada", "info");
@@ -317,23 +330,23 @@ export default function RequestDetail() {
   };
 
   const addIncludeItem = () => {
-    setProposalData(prev => ({
+    setProposalData((prev) => ({
       ...prev,
-      includes: [...prev.includes, ""]
+      includes: [...prev.includes, ""],
     }));
   };
 
   const updateIncludeItem = (index: number, value: string) => {
-    setProposalData(prev => ({
+    setProposalData((prev) => ({
       ...prev,
-      includes: prev.includes.map((item, i) => i === index ? value : item)
+      includes: prev.includes.map((item, i) => (i === index ? value : item)),
     }));
   };
 
   const removeIncludeItem = (index: number) => {
-    setProposalData(prev => ({
+    setProposalData((prev) => ({
       ...prev,
-      includes: prev.includes.filter((_, i) => i !== index)
+      includes: prev.includes.filter((_, i) => i !== index),
     }));
   };
 
@@ -362,7 +375,10 @@ export default function RequestDetail() {
         </header>
         <div className="px-4 py-6 space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-white rounded-xl p-4 shadow-soft animate-pulse">
+            <div
+              key={i}
+              className="bg-white rounded-xl p-4 shadow-soft animate-pulse"
+            >
               <div className="h-4 bg-secondary rounded w-3/4 mb-2"></div>
               <div className="h-3 bg-secondary rounded w-1/2 mb-4"></div>
               <div className="h-20 bg-secondary rounded"></div>
@@ -384,7 +400,9 @@ export default function RequestDetail() {
 
   const isOwner = request.userId === user.id;
   const isProfessional = user.type === "professional";
-  const hasProposal = request.proposals.some(p => p.professionalId === user.id);
+  const hasProposal = request.proposals.some(
+    (p) => p.professionalId === user.id,
+  );
 
   const formatBudget = (budget: ServiceRequest["budget"]) => {
     if (budget.type === "fixed") {
@@ -429,7 +447,8 @@ export default function RequestDetail() {
                   {request.title}
                 </h1>
                 <p className="body-text text-xs text-muted-foreground">
-                  {request.proposals.length} proposta(s) • {request.viewsCount} visualizações
+                  {request.proposals.length} proposta(s) • {request.viewsCount}{" "}
+                  visualizações
                 </p>
               </div>
             </div>
@@ -500,7 +519,9 @@ export default function RequestDetail() {
               <div className="flex items-start space-x-3">
                 <MapPin className="w-5 h-5 text-muted-foreground mt-0.5" />
                 <div>
-                  <p className="subtitle text-sm text-foreground">Localização</p>
+                  <p className="subtitle text-sm text-foreground">
+                    Localização
+                  </p>
                   <p className="body-text text-sm text-muted-foreground">
                     {request.location.address}
                   </p>
@@ -526,7 +547,9 @@ export default function RequestDetail() {
                 <div className="flex items-start space-x-3">
                   <Calendar className="w-5 h-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="subtitle text-sm text-foreground">Data Preferida</p>
+                    <p className="subtitle text-sm text-foreground">
+                      Data Preferida
+                    </p>
                     <p className="body-text text-sm text-muted-foreground">
                       {formatDate(request.preferredDate)}
                     </p>
@@ -566,26 +589,29 @@ export default function RequestDetail() {
         </div>
 
         {/* Professional Action */}
-        {isProfessional && !isOwner && !hasProposal && request.status === "open" && (
-          <div className="bg-white rounded-xl p-6 shadow-soft mb-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="title-semibold text-foreground mb-1">
-                  Interessado neste projeto?
-                </h3>
-                <p className="body-text text-sm text-muted-foreground">
-                  Envie uma proposta personalizada para o cliente
-                </p>
+        {isProfessional &&
+          !isOwner &&
+          !hasProposal &&
+          request.status === "open" && (
+            <div className="bg-white rounded-xl p-6 shadow-soft mb-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="title-semibold text-foreground mb-1">
+                    Interessado neste projeto?
+                  </h3>
+                  <p className="body-text text-sm text-muted-foreground">
+                    Envie uma proposta personalizada para o cliente
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowProposalForm(true)}
+                  className="gradient-primary text-white px-6 py-3 rounded-xl button-text hover:shadow-soft-hover transition-smooth"
+                >
+                  Enviar Proposta
+                </button>
               </div>
-              <button
-                onClick={() => setShowProposalForm(true)}
-                className="gradient-primary text-white px-6 py-3 rounded-xl button-text hover:shadow-soft-hover transition-smooth"
-              >
-                Enviar Proposta
-              </button>
             </div>
-          </div>
-        )}
+          )}
 
         {/* Proposal Form */}
         {showProposalForm && (
@@ -610,7 +636,10 @@ export default function RequestDetail() {
                 <textarea
                   value={proposalData.message}
                   onChange={(e) =>
-                    setProposalData({ ...proposalData, message: e.target.value })
+                    setProposalData({
+                      ...proposalData,
+                      message: e.target.value,
+                    })
                   }
                   placeholder="Descreva sua experiência, como pretende executar o serviço..."
                   rows={4}
@@ -627,7 +656,10 @@ export default function RequestDetail() {
                     type="number"
                     value={proposalData.price}
                     onChange={(e) =>
-                      setProposalData({ ...proposalData, price: e.target.value })
+                      setProposalData({
+                        ...proposalData,
+                        price: e.target.value,
+                      })
                     }
                     placeholder="250"
                     className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
@@ -680,7 +712,9 @@ export default function RequestDetail() {
                       <input
                         type="text"
                         value={item}
-                        onChange={(e) => updateIncludeItem(index, e.target.value)}
+                        onChange={(e) =>
+                          updateIncludeItem(index, e.target.value)
+                        }
                         placeholder="Ex: Material incluído, Garantia de 6 meses..."
                         className="flex-1 px-4 py-2 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                       />
@@ -746,8 +780,8 @@ export default function RequestDetail() {
                     proposal.status === "accepted"
                       ? "border-green-200 bg-green-50"
                       : proposal.status === "rejected"
-                      ? "border-red-200 bg-red-50"
-                      : "border-border hover:border-primary/50"
+                        ? "border-red-200 bg-red-50"
+                        : "border-border hover:border-primary/50"
                   }`}
                 >
                   {/* Professional Info */}
@@ -844,19 +878,25 @@ export default function RequestDetail() {
                       {proposal.status === "accepted" && (
                         <div className="flex items-center space-x-1 text-green-600">
                           <CheckCircle className="w-4 h-4" />
-                          <span className="body-text text-sm">Proposta Aceita</span>
+                          <span className="body-text text-sm">
+                            Proposta Aceita
+                          </span>
                         </div>
                       )}
                       {proposal.status === "rejected" && (
                         <div className="flex items-center space-x-1 text-red-600">
                           <XCircle className="w-4 h-4" />
-                          <span className="body-text text-sm">Proposta Rejeitada</span>
+                          <span className="body-text text-sm">
+                            Proposta Rejeitada
+                          </span>
                         </div>
                       )}
                       {proposal.status === "pending" && (
                         <div className="flex items-center space-x-1 text-yellow-600">
                           <AlertCircle className="w-4 h-4" />
-                          <span className="body-text text-sm">Aguardando Resposta</span>
+                          <span className="body-text text-sm">
+                            Aguardando Resposta
+                          </span>
                         </div>
                       )}
                     </div>
