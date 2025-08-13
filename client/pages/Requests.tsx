@@ -92,7 +92,7 @@ export default function Requests() {
       setLoading(true);
       const response = await fetch("/api/requests", {
         headers: {
-          Authorization: `Bearer ${user?.id}`,
+          Authorization: `Bearer ${user?.id || 'guest'}`,
         },
       });
 
@@ -149,7 +149,7 @@ export default function Requests() {
             category: "encanador",
             title: "Vazamento emergencial",
             description:
-              "Vazamento na tubulação da cozinha. Preciso de atendimento imediato.",
+              "Vazamento na tubula��ão da cozinha. Preciso de atendimento imediato.",
             location: {
               address: "Rua Augusta, 500",
               city: "São Paulo",
