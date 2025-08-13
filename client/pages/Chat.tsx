@@ -274,12 +274,41 @@ export default function Chat() {
     ? messages[selectedConversation] || []
     : [];
 
-  const handleSendMessage = () => {
-    if (!newMessage.trim() || !selectedConversation) return;
+  const handleSendMessage = async () => {
+    if (!newMessage.trim() || !selectedConversation || sendingMessage) return;
 
-    // In production, send message via API
-    console.log("Sending message:", newMessage);
+    setSendingMessage(true);
+    const tempMessage = newMessage;
     setNewMessage("");
+
+    try {
+      const response = await fetch(`/api/conversations/${selectedConversation}/messages`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.id}`,
+        },
+        body: JSON.stringify({
+          content: tempMessage,
+          type: "text",
+        }),
+      });
+
+      if (response.ok) {
+        // Refresh messages immediately
+        await fetchMessages(selectedConversation);
+        await fetchConversations(); // Update conversation list
+      } else {
+        setNewMessage(tempMessage); // Restore message on error
+        showNotification("Erro ao enviar mensagem", "error");
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setNewMessage(tempMessage); // Restore message on error
+      showNotification("Erro ao enviar mensagem", "error");
+    } finally {
+      setSendingMessage(false);
+    }
   };
 
   const handleAttachment = (type: "image" | "file") => {
