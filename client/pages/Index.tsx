@@ -1,5 +1,7 @@
 import { Search, Star, MapPin, Clock, Wrench, Home, Palette, Car, Heart, Laptop, Scissors, TreePine, Bell, Filter, ArrowRight, Zap, Shield, Award, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import NotificationToast from "@/components/NotificationToast";
 
 const serviceCategories = [
   { icon: Wrench, name: "Manutenção", color: "from-blue-500 to-cyan-500", bgColor: "bg-blue-50", textColor: "text-blue-600" },
@@ -62,6 +64,20 @@ const quickStats = [
 ];
 
 export default function Index() {
+  const [notification, setNotification] = useState<{message: string, type: "success" | "error" | "info", visible: boolean}>({ message: "", type: "info", visible: false });
+
+  const showNotification = (message: string, type: "success" | "error" | "info") => {
+    setNotification({ message, type, visible: true });
+  };
+
+  const handleQuickAction = (action: string) => {
+    showNotification(`${action} selecionado! Redirecionando...`, "success");
+  };
+
+  const handleHireProfessional = (name: string) => {
+    showNotification(`Solicitação enviada para ${name}!`, "success");
+  };
+
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Clean Header */}
@@ -116,15 +132,24 @@ export default function Index() {
         </div>
 
         <div className="flex gap-3 overflow-x-auto pb-2">
-          <button className="flex items-center px-4 py-2.5 bg-primary/10 text-primary rounded-xl button-text text-sm hover:bg-primary/20 transition-smooth whitespace-nowrap">
+          <button
+            onClick={() => handleQuickAction("Serviço urgente")}
+            className="flex items-center px-4 py-2.5 bg-primary/10 text-primary rounded-xl button-text text-sm hover:bg-primary/20 transition-smooth whitespace-nowrap ripple"
+          >
             <Clock className="w-4 h-4 mr-2" />
             Urgente
           </button>
-          <button className="flex items-center px-4 py-2.5 bg-secondary text-foreground rounded-xl button-text text-sm hover:bg-muted transition-smooth whitespace-nowrap">
+          <button
+            onClick={() => handleQuickAction("Filtro: Mais avaliados")}
+            className="flex items-center px-4 py-2.5 bg-secondary text-foreground rounded-xl button-text text-sm hover:bg-muted transition-smooth whitespace-nowrap ripple"
+          >
             <Star className="w-4 h-4 mr-2" />
             Mais Avaliados
           </button>
-          <button className="flex items-center px-4 py-2.5 bg-secondary text-foreground rounded-xl button-text text-sm hover:bg-muted transition-smooth whitespace-nowrap">
+          <button
+            onClick={() => handleQuickAction("Filtro: Próximos")}
+            className="flex items-center px-4 py-2.5 bg-secondary text-foreground rounded-xl button-text text-sm hover:bg-muted transition-smooth whitespace-nowrap ripple"
+          >
             <MapPin className="w-4 h-4 mr-2" />
             Próximos
           </button>
@@ -263,7 +288,10 @@ export default function Index() {
                         {professional.price}
                         <span className="body-text text-sm text-muted-foreground font-normal">/hora</span>
                       </div>
-                      <button className="gradient-primary text-white px-5 py-2.5 rounded-xl button-text text-sm hover:shadow-soft-hover transition-smooth group-hover:scale-105 transition-bounce">
+                      <button
+                        onClick={() => handleHireProfessional(professional.name)}
+                        className="gradient-primary text-white px-5 py-2.5 rounded-xl button-text text-sm hover:shadow-soft-hover transition-smooth group-hover:scale-105 transition-bounce ripple"
+                      >
                         Contratar
                       </button>
                     </div>
@@ -286,7 +314,10 @@ export default function Index() {
               <p className="body-text text-blue-100 text-sm mb-4 opacity-90">
                 Receba orçamentos em minutos dos melhores profissionais
               </p>
-              <button className="bg-white text-primary px-6 py-3 rounded-xl button-text hover:bg-gray-50 transition-smooth shadow-soft">
+              <button
+                onClick={() => showNotification("Formulário de orçamento aberto!", "info")}
+                className="bg-white text-primary px-6 py-3 rounded-xl button-text hover:bg-gray-50 transition-smooth shadow-soft ripple"
+              >
                 Solicitar Orçamento
               </button>
             </div>
@@ -298,6 +329,14 @@ export default function Index() {
           </div>
         </div>
       </section>
+
+      {/* Notification Toast */}
+      <NotificationToast
+        message={notification.message}
+        type={notification.type}
+        isVisible={notification.visible}
+        onClose={() => setNotification({ ...notification, visible: false })}
+      />
     </div>
   );
 }
