@@ -1,5 +1,17 @@
 import { useState, useEffect } from "react";
-import { Search as SearchIcon, Filter, MapPin, Star, ArrowLeft, SlidersHorizontal, Grid, List, Clock, Shield, ChevronDown } from "lucide-react";
+import {
+  Search as SearchIcon,
+  Filter,
+  MapPin,
+  Star,
+  ArrowLeft,
+  SlidersHorizontal,
+  Grid,
+  List,
+  Clock,
+  Shield,
+  ChevronDown,
+} from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import NotificationToast from "@/components/NotificationToast";
@@ -41,7 +53,8 @@ const professionals = [
     verified: true,
     available: true,
     tags: ["Emergência 24h", "Residencial", "Comercial"],
-    description: "Eletricista com mais de 10 anos de experiência em instalações prediais, industriais e residenciais.",
+    description:
+      "Eletricista com mais de 10 anos de experiência em instalações prediais, industriais e residenciais.",
     portfolio: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
   },
   {
@@ -59,7 +72,8 @@ const professionals = [
     verified: true,
     available: true,
     tags: ["Identidade Visual", "Web Design", "Print"],
-    description: "Designer especializada em identidade visual e branding para pequenas e médias empresas.",
+    description:
+      "Designer especializada em identidade visual e branding para pequenas e médias empresas.",
     portfolio: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
   },
   {
@@ -77,7 +91,8 @@ const professionals = [
     verified: true,
     available: false,
     tags: ["Eco-friendly", "Jardim Vertical", "Orgânico"],
-    description: "Paisagista com foco em soluções sustentáveis e jardins ecológicos para espaços urbanos.",
+    description:
+      "Paisagista com foco em soluções sustentáveis e jardins ecológicos para espaços urbanos.",
     portfolio: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
   },
   {
@@ -95,7 +110,8 @@ const professionals = [
     verified: true,
     available: true,
     tags: ["Limpeza Pesada", "Organização", "Confiável"],
-    description: "Profissional de limpeza especializada em limpeza residencial e organização de ambientes.",
+    description:
+      "Profissional de limpeza especializada em limpeza residencial e organização de ambientes.",
     portfolio: ["/placeholder.svg", "/placeholder.svg"],
   },
 ];
@@ -104,11 +120,17 @@ export default function Search() {
   const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "all");
+  const [selectedCategory, setSelectedCategory] = useState(
+    searchParams.get("category") || "all",
+  );
   const [sortBy, setSortBy] = useState("relevance");
   const [viewMode, setViewMode] = useState<"grid" | "list">("list");
   const [showFilters, setShowFilters] = useState(false);
-  const [notification, setNotification] = useState<{message: string, type: "success" | "error" | "info", visible: boolean}>({ message: "", type: "info", visible: false });
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error" | "info";
+    visible: boolean;
+  }>({ message: "", type: "info", visible: false });
 
   const [filters, setFilters] = useState({
     minRating: 0,
@@ -118,7 +140,10 @@ export default function Search() {
     verified: false,
   });
 
-  const showNotification = (message: string, type: "success" | "error" | "info") => {
+  const showNotification = (
+    message: string,
+    type: "success" | "error" | "info",
+  ) => {
     setNotification({ message, type, visible: true });
   };
 
@@ -127,7 +152,7 @@ export default function Search() {
     if (searchQuery) params.set("q", searchQuery);
     if (selectedCategory !== "all") params.set("category", selectedCategory);
     setSearchParams(params);
-    
+
     showNotification("Busca atualizada!", "info");
   };
 
@@ -139,34 +164,44 @@ export default function Search() {
     showNotification(`Abrindo chat com ${professionalName}`, "success");
   };
 
-  const filteredProfessionals = professionals.filter(prof => {
+  const filteredProfessionals = professionals.filter((prof) => {
     // Category filter
-    if (selectedCategory !== "all" && !prof.profession.toLowerCase().includes(selectedCategory)) {
+    if (
+      selectedCategory !== "all" &&
+      !prof.profession.toLowerCase().includes(selectedCategory)
+    ) {
       return false;
     }
-    
+
     // Search query filter
-    if (searchQuery && !prof.name.toLowerCase().includes(searchQuery.toLowerCase()) && 
-        !prof.profession.toLowerCase().includes(searchQuery.toLowerCase())) {
+    if (
+      searchQuery &&
+      !prof.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      !prof.profession.toLowerCase().includes(searchQuery.toLowerCase())
+    ) {
       return false;
     }
-    
+
     // Rating filter
     if (prof.rating < filters.minRating) return false;
-    
+
     // Distance filter
     if (prof.distance > filters.maxDistance) return false;
-    
+
     // Price filter
-    if (prof.hourlyRate < filters.priceRange.min || prof.hourlyRate > filters.priceRange.max) return false;
-    
+    if (
+      prof.hourlyRate < filters.priceRange.min ||
+      prof.hourlyRate > filters.priceRange.max
+    )
+      return false;
+
     // Availability filter
     if (filters.availability === "available" && !prof.available) return false;
     if (filters.availability === "busy" && prof.available) return false;
-    
+
     // Verified filter
     if (filters.verified && !prof.verified) return false;
-    
+
     return true;
   });
 
@@ -176,12 +211,19 @@ export default function Search() {
       <header className="bg-white/95 backdrop-blur-sm shadow-soft sticky top-0 z-40">
         <div className="px-4 py-4">
           <div className="flex items-center space-x-3 mb-4">
-            <Link to="/" className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth">
+            <Link
+              to="/"
+              className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth"
+            >
               <ArrowLeft className="w-5 h-5 text-foreground" />
             </Link>
             <div>
-              <h1 className="text-xl title-bold text-foreground">Buscar Profissionais</h1>
-              <p className="text-xs text-muted-foreground">PANASERVICE - todos os serviços em um só lugar</p>
+              <h1 className="text-xl title-bold text-foreground">
+                Buscar Profissionais
+              </h1>
+              <p className="text-xs text-muted-foreground">
+                PANASERVICE - todos os serviços em um só lugar
+              </p>
             </div>
           </div>
 
@@ -222,7 +264,9 @@ export default function Search() {
               }`}
             >
               {category.name}
-              <span className="ml-2 text-xs opacity-75">({category.count})</span>
+              <span className="ml-2 text-xs opacity-75">
+                ({category.count})
+              </span>
             </button>
           ))}
         </div>
@@ -264,7 +308,9 @@ export default function Search() {
               <button
                 onClick={() => setViewMode("list")}
                 className={`p-1 rounded transition-smooth ${
-                  viewMode === "list" ? "bg-white shadow-soft" : "hover:bg-muted"
+                  viewMode === "list"
+                    ? "bg-white shadow-soft"
+                    : "hover:bg-muted"
                 }`}
               >
                 <List className="w-4 h-4" />
@@ -272,7 +318,9 @@ export default function Search() {
               <button
                 onClick={() => setViewMode("grid")}
                 className={`p-1 rounded transition-smooth ${
-                  viewMode === "grid" ? "bg-white shadow-soft" : "hover:bg-muted"
+                  viewMode === "grid"
+                    ? "bg-white shadow-soft"
+                    : "hover:bg-muted"
                 }`}
               >
                 <Grid className="w-4 h-4" />
@@ -286,7 +334,8 @@ export default function Search() {
           <div className="mt-4 p-4 bg-secondary rounded-xl space-y-4">
             <div>
               <label className="block subtitle text-sm text-foreground mb-2">
-                Avaliação Mínima: {filters.minRating > 0 ? `${filters.minRating}★` : "Qualquer"}
+                Avaliação Mínima:{" "}
+                {filters.minRating > 0 ? `${filters.minRating}★` : "Qualquer"}
               </label>
               <input
                 type="range"
@@ -294,7 +343,12 @@ export default function Search() {
                 max="5"
                 step="0.5"
                 value={filters.minRating}
-                onChange={(e) => setFilters({ ...filters, minRating: parseFloat(e.target.value) })}
+                onChange={(e) =>
+                  setFilters({
+                    ...filters,
+                    minRating: parseFloat(e.target.value),
+                  })
+                }
                 className="w-full"
               />
             </div>
@@ -308,33 +362,49 @@ export default function Search() {
                 min="1"
                 max="50"
                 value={filters.maxDistance}
-                onChange={(e) => setFilters({ ...filters, maxDistance: parseInt(e.target.value) })}
+                onChange={(e) =>
+                  setFilters({
+                    ...filters,
+                    maxDistance: parseInt(e.target.value),
+                  })
+                }
                 className="w-full"
               />
             </div>
 
             <div>
               <label className="block subtitle text-sm text-foreground mb-2">
-                Faixa de Preço: R$ {filters.priceRange.min} - R$ {filters.priceRange.max}/hora
+                Faixa de Preço: R$ {filters.priceRange.min} - R${" "}
+                {filters.priceRange.max}/hora
               </label>
               <div className="grid grid-cols-2 gap-3">
                 <input
                   type="number"
                   value={filters.priceRange.min}
-                  onChange={(e) => setFilters({ 
-                    ...filters, 
-                    priceRange: { ...filters.priceRange, min: parseInt(e.target.value) || 0 }
-                  })}
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      priceRange: {
+                        ...filters.priceRange,
+                        min: parseInt(e.target.value) || 0,
+                      },
+                    })
+                  }
                   className="px-3 py-2 border border-border rounded-lg body-text"
                   placeholder="Mínimo"
                 />
                 <input
                   type="number"
                   value={filters.priceRange.max}
-                  onChange={(e) => setFilters({ 
-                    ...filters, 
-                    priceRange: { ...filters.priceRange, max: parseInt(e.target.value) || 500 }
-                  })}
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      priceRange: {
+                        ...filters.priceRange,
+                        max: parseInt(e.target.value) || 500,
+                      },
+                    })
+                  }
                   className="px-3 py-2 border border-border rounded-lg body-text"
                   placeholder="Máximo"
                 />
@@ -346,15 +416,24 @@ export default function Search() {
                 <input
                   type="checkbox"
                   checked={filters.verified}
-                  onChange={(e) => setFilters({ ...filters, verified: e.target.checked })}
+                  onChange={(e) =>
+                    setFilters({ ...filters, verified: e.target.checked })
+                  }
                   className="w-4 h-4 text-primary border-border rounded focus:ring-primary/20"
                 />
-                <span className="ml-2 body-text text-sm">Apenas verificados</span>
+                <span className="ml-2 body-text text-sm">
+                  Apenas verificados
+                </span>
               </label>
 
               <select
                 value={filters.availability}
-                onChange={(e) => setFilters({ ...filters, availability: e.target.value as any })}
+                onChange={(e) =>
+                  setFilters({
+                    ...filters,
+                    availability: e.target.value as any,
+                  })
+                }
                 className="px-3 py-2 border border-border rounded-lg body-text text-sm"
               >
                 <option value="all">Qualquer disponibilidade</option>
@@ -395,9 +474,11 @@ export default function Search() {
             </button>
           </div>
         ) : (
-          <div className={`grid gap-4 ${
-            viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1"
-          }`}>
+          <div
+            className={`grid gap-4 ${
+              viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1"
+            }`}
+          >
             {filteredProfessionals.map((professional) => (
               <div
                 key={professional.id}
@@ -436,7 +517,9 @@ export default function Search() {
                       <div className="text-right ml-4">
                         <div className="title-bold text-lg text-primary">
                           R$ {professional.hourlyRate}
-                          <span className="body-text text-sm text-muted-foreground font-normal">/hora</span>
+                          <span className="body-text text-sm text-muted-foreground font-normal">
+                            /hora
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -456,7 +539,9 @@ export default function Search() {
                       </div>
                       <div className="flex items-center text-success">
                         <Clock className="w-3 h-3 mr-1" />
-                        <span className="body-text text-xs">{professional.responseTime}</span>
+                        <span className="body-text text-xs">
+                          {professional.responseTime}
+                        </span>
                       </div>
                     </div>
 
@@ -490,7 +575,9 @@ export default function Search() {
                         Ver Perfil
                       </Link>
                       <button
-                        onClick={() => handleContactProfessional(professional.name)}
+                        onClick={() =>
+                          handleContactProfessional(professional.name)
+                        }
                         className="flex-1 gradient-primary text-white px-4 py-2 rounded-xl button-text text-sm hover:shadow-soft-hover transition-smooth"
                       >
                         Contatar
