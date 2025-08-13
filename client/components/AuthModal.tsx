@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { X, Mail, Phone, Eye, EyeOff, MapPin, User, Briefcase } from "lucide-react";
+import {
+  X,
+  Mail,
+  Phone,
+  Eye,
+  EyeOff,
+  MapPin,
+  User,
+  Briefcase,
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import NotificationToast from "./NotificationToast";
 
@@ -9,12 +18,22 @@ interface AuthModalProps {
   defaultMode?: "login" | "signup";
 }
 
-export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: AuthModalProps) {
-  const [mode, setMode] = useState<"login" | "signup" | "phone-login">(defaultMode);
+export default function AuthModal({
+  isOpen,
+  onClose,
+  defaultMode = "login",
+}: AuthModalProps) {
+  const [mode, setMode] = useState<"login" | "signup" | "phone-login">(
+    defaultMode,
+  );
   const [userType, setUserType] = useState<"client" | "professional">("client");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [notification, setNotification] = useState<{message: string, type: "success" | "error" | "info", visible: boolean}>({ message: "", type: "info", visible: false });
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error" | "info";
+    visible: boolean;
+  }>({ message: "", type: "info", visible: false });
 
   const { login, loginWithPhone, signup } = useAuth();
 
@@ -29,7 +48,10 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
     code: "",
   });
 
-  const showNotification = (message: string, type: "success" | "error" | "info") => {
+  const showNotification = (
+    message: string,
+    type: "success" | "error" | "info",
+  ) => {
     setNotification({ message, type, visible: true });
   };
 
@@ -58,17 +80,25 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
           password: formData.password,
           name: formData.name,
           type: userType,
-          location: formData.city && formData.state ? {
-            city: formData.city,
-            state: formData.state,
-          } : undefined,
+          location:
+            formData.city && formData.state
+              ? {
+                  city: formData.city,
+                  state: formData.state,
+                }
+              : undefined,
         });
-        
+
         showNotification("Conta criada com sucesso!", "success");
         setTimeout(() => onClose(), 1000);
       }
     } catch (error) {
-      showNotification(error instanceof Error ? error.message : "Erro ao processar solicitação", "error");
+      showNotification(
+        error instanceof Error
+          ? error.message
+          : "Erro ao processar solicitação",
+        "error",
+      );
     } finally {
       setLoading(false);
     }
@@ -83,7 +113,11 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-border">
             <h2 className="text-xl title-bold text-foreground">
-              {mode === "login" ? "Entrar" : mode === "phone-login" ? "Login por Telefone" : "Criar Conta"}
+              {mode === "login"
+                ? "Entrar"
+                : mode === "phone-login"
+                  ? "Login por Telefone"
+                  : "Criar Conta"}
             </h2>
             <button
               onClick={onClose}
@@ -97,7 +131,9 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
           <div className="p-6">
             {mode === "signup" && (
               <div className="mb-6">
-                <p className="body-text text-muted-foreground mb-4">Escolha o tipo de conta:</p>
+                <p className="body-text text-muted-foreground mb-4">
+                  Escolha o tipo de conta:
+                </p>
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
@@ -110,7 +146,9 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
                   >
                     <User className="w-6 h-6 mx-auto mb-2" />
                     <div className="title-semibold text-sm">Cliente</div>
-                    <div className="body-text text-xs text-muted-foreground">Contrato serviços</div>
+                    <div className="body-text text-xs text-muted-foreground">
+                      Contrato serviços
+                    </div>
                   </button>
                   <button
                     type="button"
@@ -123,7 +161,9 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
                   >
                     <Briefcase className="w-6 h-6 mx-auto mb-2" />
                     <div className="title-semibold text-sm">Profissional</div>
-                    <div className="body-text text-xs text-muted-foreground">Ofereço serviços</div>
+                    <div className="body-text text-xs text-muted-foreground">
+                      Ofereço serviços
+                    </div>
                   </button>
                 </div>
               </div>
@@ -140,7 +180,9 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
                     <input
                       type="email"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
                       className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                       placeholder="seu@email.com"
                       required
@@ -159,7 +201,9 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
                     <input
                       type="tel"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, phone: e.target.value })
+                      }
                       className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                       placeholder="(11) 99999-9999"
                       required={mode === "phone-login"}
@@ -176,7 +220,9 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
                   <input
                     type="text"
                     value={formData.code}
-                    onChange={(e) => setFormData({ ...formData, code: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, code: e.target.value })
+                    }
                     className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text text-center text-lg tracking-widest"
                     placeholder="123456"
                     maxLength={6}
@@ -196,7 +242,9 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
                   <input
                     type="text"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                     placeholder="Seu nome completo"
                     required
@@ -213,7 +261,9 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
                     <input
                       type="text"
                       value={formData.city}
-                      onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, city: e.target.value })
+                      }
                       className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                       placeholder="São Paulo"
                     />
@@ -225,7 +275,9 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
                     <input
                       type="text"
                       value={formData.state}
-                      onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, state: e.target.value })
+                      }
                       className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                       placeholder="SP"
                       maxLength={2}
@@ -243,7 +295,9 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
                     <input
                       type={showPassword ? "text" : "password"}
                       value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, password: e.target.value })
+                      }
                       className="w-full pl-4 pr-12 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                       placeholder="Sua senha"
                       required
@@ -272,7 +326,12 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
                   <input
                     type={showPassword ? "text" : "password"}
                     value={formData.confirmPassword}
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        confirmPassword: e.target.value,
+                      })
+                    }
                     className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                     placeholder="Confirme sua senha"
                     required
@@ -286,7 +345,13 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
                 disabled={loading}
                 className="w-full gradient-primary text-white py-3 rounded-xl button-text hover:shadow-soft-hover transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? "Processando..." : mode === "login" ? "Entrar" : mode === "phone-login" ? "Verificar" : "Criar Conta"}
+                {loading
+                  ? "Processando..."
+                  : mode === "login"
+                    ? "Entrar"
+                    : mode === "phone-login"
+                      ? "Verificar"
+                      : "Criar Conta"}
               </button>
             </form>
 
