@@ -192,9 +192,9 @@ export default function Chat() {
 
       if (response.ok) {
         const data = await response.json();
-        setMessages(prev => ({
+        setMessages((prev) => ({
           ...prev,
-          [convId]: data.messages || []
+          [convId]: data.messages || [],
         }));
 
         // Mark conversation as read
@@ -258,14 +258,18 @@ export default function Chat() {
     );
   }
 
-  const filteredConversations = conversations.filter(
-    (conv) => {
-      const otherParticipant = conv.participants.find(p => p.userId !== user?.id);
-      return otherParticipant?.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (conv.projectTitle &&
-          conv.projectTitle.toLowerCase().includes(searchQuery.toLowerCase()));
-    }
-  );
+  const filteredConversations = conversations.filter((conv) => {
+    const otherParticipant = conv.participants.find(
+      (p) => p.userId !== user?.id,
+    );
+    return (
+      otherParticipant?.userName
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      (conv.projectTitle &&
+        conv.projectTitle.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+  });
 
   const currentConversation = conversations.find(
     (conv) => conv.id === selectedConversation,
@@ -282,17 +286,20 @@ export default function Chat() {
     setNewMessage("");
 
     try {
-      const response = await fetch(`/api/conversations/${selectedConversation}/messages`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user?.id}`,
+      const response = await fetch(
+        `/api/conversations/${selectedConversation}/messages`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.id}`,
+          },
+          body: JSON.stringify({
+            content: tempMessage,
+            type: "text",
+          }),
         },
-        body: JSON.stringify({
-          content: tempMessage,
-          type: "text",
-        }),
-      });
+      );
 
       if (response.ok) {
         // Refresh messages immediately
