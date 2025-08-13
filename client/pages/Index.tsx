@@ -1,13 +1,62 @@
-import { Search, Star, MapPin, Clock, Wrench, Home, Palette, Car, Heart, Laptop, Scissors, TreePine, Bell, Filter, ArrowRight, Zap, Shield, Award } from "lucide-react";
+import {
+  Search,
+  Star,
+  MapPin,
+  Clock,
+  Wrench,
+  Home,
+  Palette,
+  Car,
+  Heart,
+  Laptop,
+  Scissors,
+  TreePine,
+  Bell,
+  Filter,
+  ArrowRight,
+  Zap,
+  Shield,
+  Award,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 const serviceCategories = [
-  { icon: Wrench, name: "Manutenção", color: "from-blue-500 to-blue-600", bgColor: "bg-blue-50" },
-  { icon: Home, name: "Casa & Jardim", color: "from-green-500 to-green-600", bgColor: "bg-green-50" },
-  { icon: Palette, name: "Design", color: "from-purple-500 to-purple-600", bgColor: "bg-purple-50" },
-  { icon: Car, name: "Automotivo", color: "from-red-500 to-red-600", bgColor: "bg-red-50" },
-  { icon: Heart, name: "Saúde & Bem-estar", color: "from-pink-500 to-pink-600", bgColor: "bg-pink-50" },
-  { icon: Laptop, name: "Tecnologia", color: "from-indigo-500 to-indigo-600", bgColor: "bg-indigo-50" },
+  {
+    icon: Wrench,
+    name: "Manutenção",
+    color: "from-blue-500 to-blue-600",
+    bgColor: "bg-blue-50",
+  },
+  {
+    icon: Home,
+    name: "Casa & Jardim",
+    color: "from-green-500 to-green-600",
+    bgColor: "bg-green-50",
+  },
+  {
+    icon: Palette,
+    name: "Design",
+    color: "from-purple-500 to-purple-600",
+    bgColor: "bg-purple-50",
+  },
+  {
+    icon: Car,
+    name: "Automotivo",
+    color: "from-red-500 to-red-600",
+    bgColor: "bg-red-50",
+  },
+  {
+    icon: Heart,
+    name: "Saúde & Bem-estar",
+    color: "from-pink-500 to-pink-600",
+    bgColor: "bg-pink-50",
+  },
+  {
+    icon: Laptop,
+    name: "Tecnologia",
+    color: "from-indigo-500 to-indigo-600",
+    bgColor: "bg-indigo-50",
+  },
 ];
 
 const featuredProfessionals = [
@@ -22,7 +71,7 @@ const featuredProfessionals = [
     price: "R$ 80",
     verified: true,
     responseTime: "~15 min",
-    tags: ["Urgente", "Residencial"]
+    tags: ["Urgente", "Residencial"],
   },
   {
     id: 2,
@@ -35,7 +84,7 @@ const featuredProfessionals = [
     price: "R$ 120",
     verified: true,
     responseTime: "~30 min",
-    tags: ["Digital", "Branding"]
+    tags: ["Digital", "Branding"],
   },
   {
     id: 3,
@@ -48,7 +97,7 @@ const featuredProfessionals = [
     price: "R$ 60",
     verified: true,
     responseTime: "~45 min",
-    tags: ["Eco-friendly", "Sustentável"]
+    tags: ["Eco-friendly", "Sustentável"],
   },
 ];
 
@@ -99,7 +148,7 @@ export default function Index() {
             Milhares de especialistas prontos para te atender
           </p>
         </div>
-        
+
         <div className="relative mb-4">
           <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
             <Search className="w-5 h-5" />
@@ -134,8 +183,12 @@ export default function Index() {
               <div className="inline-flex items-center justify-center w-10 h-10 bg-primary-50 rounded-full mb-2">
                 <stat.icon className="w-5 h-5 text-primary" />
               </div>
-              <div className="title-bold text-lg text-gray-900">{stat.value}</div>
-              <div className="body-text text-xs text-gray-600">{stat.label}</div>
+              <div className="title-bold text-lg text-gray-900">
+                {stat.value}
+              </div>
+              <div className="body-text text-xs text-gray-600">
+                {stat.label}
+              </div>
             </div>
           ))}
         </div>
@@ -147,21 +200,22 @@ export default function Index() {
           <h3 className="text-lg title-semibold text-gray-900">
             Categorias Populares
           </h3>
-          <Link to="/search" className="flex items-center text-primary button-text text-sm hover:text-primary-600 transition-colors">
+          <Link
+            to="/search"
+            className="flex items-center text-primary button-text text-sm hover:text-primary-600 transition-colors"
+          >
             Ver todas
             <ArrowRight className="w-4 h-4 ml-1" />
           </Link>
         </div>
-        
+
         <div className="grid grid-cols-3 gap-4">
           {serviceCategories.map((category, index) => (
-            <Link
-              key={index}
-              to="/search"
-              className="group"
-            >
+            <Link key={index} to="/search" className="group">
               <div className="bg-white rounded-2xl p-4 shadow-tech hover:shadow-tech-hover transition-all duration-200 group-hover:-translate-y-1">
-                <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center mb-3`}>
+                <div
+                  className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center mb-3`}
+                >
                   <category.icon className="w-6 h-6 text-white" />
                 </div>
                 <h4 className="subtitle text-sm text-gray-900 leading-tight">
@@ -179,12 +233,15 @@ export default function Index() {
           <h3 className="text-lg title-semibold text-gray-900">
             Profissionais Destacados
           </h3>
-          <Link to="/search" className="flex items-center text-primary button-text text-sm hover:text-primary-600 transition-colors">
+          <Link
+            to="/search"
+            className="flex items-center text-primary button-text text-sm hover:text-primary-600 transition-colors"
+          >
             Ver todos
             <ArrowRight className="w-4 h-4 ml-1" />
           </Link>
         </div>
-        
+
         <div className="space-y-4">
           {featuredProfessionals.map((professional) => (
             <div
@@ -204,7 +261,7 @@ export default function Index() {
                     </div>
                   )}
                 </div>
-                
+
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
@@ -248,11 +305,13 @@ export default function Index() {
                         ))}
                       </div>
                     </div>
-                    
+
                     <div className="text-right ml-4">
                       <div className="title-bold text-lg text-primary mb-1">
                         {professional.price}
-                        <span className="body-text text-sm text-gray-500">/hora</span>
+                        <span className="body-text text-sm text-gray-500">
+                          /hora
+                        </span>
                       </div>
                       <button className="gradient-primary text-white px-4 py-2 rounded-xl button-text text-sm hover:shadow-lg transition-all duration-200 group-hover:scale-105">
                         Contratar
