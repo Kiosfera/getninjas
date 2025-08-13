@@ -215,7 +215,7 @@ export default function Chat() {
         await fetch(`/api/conversations/${convId}/read`, {
           method: "PUT",
           headers: {
-            Authorization: `Bearer ${user?.id}`,
+            Authorization: `Bearer ${user?.id || 'guest'}`,
           },
         });
       }
