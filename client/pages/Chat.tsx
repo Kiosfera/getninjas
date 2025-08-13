@@ -54,14 +54,16 @@ interface Conversation {
 export default function Chat() {
   const { conversationId } = useParams();
   const { user } = useAuth();
-  const [selectedConversation, setSelectedConversation] = useState<string | null>(
-    conversationId || null
-  );
+  const [selectedConversation, setSelectedConversation] = useState<
+    string | null
+  >(conversationId || null);
   const [searchQuery, setSearchQuery] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const [showAttachments, setShowAttachments] = useState(false);
   const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [messages, setMessages] = useState<{ [key: string]: ChatMessage[] }>({});
+  const [messages, setMessages] = useState<{ [key: string]: ChatMessage[] }>(
+    {},
+  );
   const [loading, setLoading] = useState(true);
   const [sendingMessage, setSendingMessage] = useState(false);
   const [notification, setNotification] = useState<{
@@ -74,7 +76,7 @@ export default function Chat() {
 
   const showNotification = (
     message: string,
-    type: "success" | "error" | "info"
+    type: "success" | "error" | "info",
   ) => {
     setNotification({ message, type, visible: true });
   };
@@ -271,7 +273,9 @@ export default function Chat() {
   }
 
   const filteredConversations = conversations.filter((conv) => {
-    const otherParticipant = conv.participants.find((p) => p.userId !== user?.id);
+    const otherParticipant = conv.participants.find(
+      (p) => p.userId !== user?.id,
+    );
     return (
       otherParticipant?.userName
         .toLowerCase()
@@ -282,7 +286,7 @@ export default function Chat() {
   });
 
   const currentConversation = conversations.find(
-    (conv) => conv.id === selectedConversation
+    (conv) => conv.id === selectedConversation,
   );
   const currentMessages = selectedConversation
     ? messages[selectedConversation] || []
@@ -308,7 +312,7 @@ export default function Chat() {
             content: tempMessage,
             type: "text",
           }),
-        }
+        },
       );
 
       if (response.ok) {
@@ -326,7 +330,10 @@ export default function Chat() {
 
         setMessages((prev) => ({
           ...prev,
-          [selectedConversation]: [...(prev[selectedConversation] || []), newMsg],
+          [selectedConversation]: [
+            ...(prev[selectedConversation] || []),
+            newMsg,
+          ],
         }));
 
         // Refresh messages after a short delay
@@ -434,7 +441,7 @@ export default function Chat() {
           ) : (
             filteredConversations.map((conversation) => {
               const otherParticipant = conversation.participants.find(
-                (p) => p.userId !== user?.id
+                (p) => p.userId !== user?.id,
               );
               const unreadCount = conversation.unreadCount[user?.id || ""] || 0;
 
@@ -521,12 +528,12 @@ export default function Chat() {
                     <img
                       src={
                         currentConversation?.participants.find(
-                          (p) => p.userId !== user?.id
+                          (p) => p.userId !== user?.id,
                         )?.userAvatar || "/placeholder.svg"
                       }
                       alt={
                         currentConversation?.participants.find(
-                          (p) => p.userId !== user?.id
+                          (p) => p.userId !== user?.id,
                         )?.userName || "Unknown"
                       }
                       className="w-10 h-10 rounded-xl object-cover bg-secondary"
@@ -537,7 +544,7 @@ export default function Chat() {
                   <div>
                     <h2 className="subtitle text-sm text-foreground">
                       {currentConversation?.participants.find(
-                        (p) => p.userId !== user?.id
+                        (p) => p.userId !== user?.id,
                       )?.userName || "Unknown"}
                     </h2>
                     <p className="body-text text-xs text-muted-foreground">
