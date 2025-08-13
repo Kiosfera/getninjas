@@ -258,18 +258,20 @@ export default function Chat() {
     );
   }
 
-  const filteredConversations = mockConversations.filter(
-    (conv) =>
-      conv.participantName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (conv.project &&
-        conv.project.toLowerCase().includes(searchQuery.toLowerCase())),
+  const filteredConversations = conversations.filter(
+    (conv) => {
+      const otherParticipant = conv.participants.find(p => p.userId !== user?.id);
+      return otherParticipant?.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (conv.projectTitle &&
+          conv.projectTitle.toLowerCase().includes(searchQuery.toLowerCase()));
+    }
   );
 
-  const currentConversation = mockConversations.find(
+  const currentConversation = conversations.find(
     (conv) => conv.id === selectedConversation,
   );
   const currentMessages = selectedConversation
-    ? mockMessages[selectedConversation] || []
+    ? messages[selectedConversation] || []
     : [];
 
   const handleSendMessage = () => {
