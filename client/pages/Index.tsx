@@ -217,7 +217,7 @@ export default function Index() {
             Encontre o profissional ideal
           </h2>
           <p className="body-text text-muted-foreground">
-            Conecte-se com especialistas qualificados perto de você
+            PANASERVICE - Todos os serviços em um só lugar
           </p>
         </div>
 
