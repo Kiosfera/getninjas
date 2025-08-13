@@ -131,7 +131,7 @@ export default function Chat() {
     try {
       const response = await fetch(`/api/conversations/${convId}/messages`, {
         headers: {
-          Authorization: `Bearer ${user?.id}`,
+          Authorization: `Bearer ${user?.id || 'guest'}`,
         },
       });
 
