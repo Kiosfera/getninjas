@@ -59,10 +59,14 @@ export default function RequestStatusTracker({
         id: "proposals",
         title: "Recebendo Propostas",
         description: "Profissionais estão enviando propostas",
-        status: acceptedProposal ? "completed" : requestStatus === "cancelled" ? "cancelled" : "current",
+        status: acceptedProposal
+          ? "completed"
+          : requestStatus === "cancelled"
+            ? "cancelled"
+            : "current",
         timestamp: acceptedProposal?.acceptedAt,
         icon: <User className="w-5 h-5" />,
-        details: acceptedProposal 
+        details: acceptedProposal
           ? `Proposta de ${acceptedProposal.professionalName} aceita por R$ ${acceptedProposal.price}`
           : "Aguardando você escolher uma proposta",
       },
@@ -70,13 +74,17 @@ export default function RequestStatusTracker({
         id: "in_progress",
         title: "Serviço em Andamento",
         description: "Profissional está executando o serviço",
-        status: 
-          requestStatus === "completed" ? "completed" :
-          requestStatus === "in_progress" ? "current" :
-          requestStatus === "cancelled" ? "cancelled" : "pending",
+        status:
+          requestStatus === "completed"
+            ? "completed"
+            : requestStatus === "in_progress"
+              ? "current"
+              : requestStatus === "cancelled"
+                ? "cancelled"
+                : "pending",
         timestamp: acceptedProposal?.acceptedAt,
         icon: <Clock className="w-5 h-5" />,
-        details: acceptedProposal 
+        details: acceptedProposal
           ? `${acceptedProposal.professionalName} está trabalhando no seu projeto`
           : "Aguardando início do serviço",
       },
@@ -84,12 +92,18 @@ export default function RequestStatusTracker({
         id: "completed",
         title: "Serviço Concluído",
         description: "Trabalho finalizado com sucesso",
-        status: requestStatus === "completed" ? "completed" : requestStatus === "cancelled" ? "cancelled" : "pending",
+        status:
+          requestStatus === "completed"
+            ? "completed"
+            : requestStatus === "cancelled"
+              ? "cancelled"
+              : "pending",
         timestamp: completedAt,
         icon: <CheckCircle className="w-5 h-5" />,
-        details: requestStatus === "completed" 
-          ? "Serviço foi finalizado conforme solicitado"
-          : "Aguardando conclusão do serviço",
+        details:
+          requestStatus === "completed"
+            ? "Serviço foi finalizado conforme solicitado"
+            : "Aguardando conclusão do serviço",
       },
     ];
 
@@ -97,10 +111,12 @@ export default function RequestStatusTracker({
       baseSteps.push({
         id: "review",
         title: "Avaliação",
-        description: reviewSubmitted ? "Avaliação enviada" : "Avalie o profissional",
+        description: reviewSubmitted
+          ? "Avaliação enviada"
+          : "Avalie o profissional",
         status: reviewSubmitted ? "completed" : "current",
         icon: <Star className="w-5 h-5" />,
-        details: reviewSubmitted 
+        details: reviewSubmitted
           ? "Obrigado pelo seu feedback!"
           : "Compartilhe sua experiência com outros usuários",
       });
@@ -199,12 +215,15 @@ export default function RequestStatusTracker({
 
       <div className="relative">
         {steps.map((step, index) => (
-          <div key={step.id} className="relative flex items-start space-x-4 pb-8 last:pb-0">
+          <div
+            key={step.id}
+            className="relative flex items-start space-x-4 pb-8 last:pb-0"
+          >
             {/* Connector Line */}
             {index < steps.length - 1 && (
               <div
                 className={`absolute left-6 top-12 w-0.5 h-8 ${getConnectorColor(
-                  step.status
+                  step.status,
                 )}`}
               />
             )}
@@ -212,7 +231,7 @@ export default function RequestStatusTracker({
             {/* Step Icon */}
             <div
               className={`flex-shrink-0 w-12 h-12 rounded-xl border-2 flex items-center justify-center ${getStatusColor(
-                step.status
+                step.status,
               )}`}
             >
               {step.icon}
@@ -266,7 +285,7 @@ export default function RequestStatusTracker({
                       Ver Propostas
                     </button>
                   )}
-                  
+
                   {step.id === "in_progress" && (
                     <>
                       <button className="px-4 py-2 bg-secondary text-foreground rounded-lg button-text text-sm hover:bg-muted transition-smooth">
@@ -301,7 +320,9 @@ export default function RequestStatusTracker({
       {/* Quick Actions */}
       {requestStatus !== "cancelled" && requestStatus !== "completed" && (
         <div className="mt-6 pt-6 border-t border-border">
-          <h4 className="subtitle text-sm text-foreground mb-3">Ações Rápidas</h4>
+          <h4 className="subtitle text-sm text-foreground mb-3">
+            Ações Rápidas
+          </h4>
           <div className="flex flex-wrap gap-2">
             <button className="px-3 py-2 bg-secondary text-foreground rounded-lg button-text text-sm hover:bg-muted transition-smooth">
               <MessageCircle className="w-4 h-4 inline mr-1" />
