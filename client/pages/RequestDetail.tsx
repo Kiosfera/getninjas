@@ -723,6 +723,26 @@ export default function RequestDetail() {
           </div>
         )}
 
+        {/* Status Tracker */}
+        <RequestStatusTracker
+          requestStatus={request.status}
+          acceptedProposal={
+            request.proposals.find(p => p.status === "accepted")
+              ? {
+                  professionalName: request.proposals.find(p => p.status === "accepted")!.professionalName,
+                  professionalAvatar: request.proposals.find(p => p.status === "accepted")!.professionalAvatar,
+                  price: request.proposals.find(p => p.status === "accepted")!.price,
+                  acceptedAt: new Date().toISOString(),
+                }
+              : undefined
+          }
+          completedAt={request.status === "completed" ? new Date().toISOString() : undefined}
+          cancelledAt={request.status === "cancelled" ? new Date().toISOString() : undefined}
+          reviewSubmitted={false}
+          paymentStatus="pending"
+          className="mb-6"
+        />
+
         {/* Proposals */}
         <div className="bg-white rounded-xl p-6 shadow-soft">
           <h3 className="text-lg title-semibold text-foreground mb-6">
