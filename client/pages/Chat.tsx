@@ -3,7 +3,6 @@ import {
   ArrowLeft,
   Send,
   Paperclip,
-  Camera,
   Phone,
   Video,
   MoreVertical,
@@ -19,130 +18,50 @@ import { useAuth } from "@/contexts/AuthContext";
 import PlaceholderPage from "@/components/PlaceholderPage";
 import NotificationToast from "@/components/NotificationToast";
 
-interface Message {
+interface ChatMessage {
   id: string;
+  conversationId: string;
   senderId: string;
   content: string;
-  timestamp: string;
   type: "text" | "image" | "file";
+  attachments?: {
+    url: string;
+    name: string;
+    type: string;
+    size: number;
+  }[];
   status: "sent" | "delivered" | "read";
-  attachments?: { url: string; name: string; type: string }[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface Conversation {
   id: string;
-  participantId: string;
-  participantName: string;
-  participantAvatar: string;
-  participantRole: "client" | "professional";
-  lastMessage: string;
-  lastMessageTime: string;
-  unreadCount: number;
-  isOnline: boolean;
-  project?: string;
+  participants: {
+    userId: string;
+    userName: string;
+    userAvatar: string;
+    userType: "client" | "professional";
+  }[];
+  projectId?: string;
+  projectTitle?: string;
+  lastMessage?: ChatMessage;
+  unreadCount: { [userId: string]: number };
+  createdAt: string;
+  updatedAt: string;
 }
-
-const mockConversations: Conversation[] = [
-  {
-    id: "1",
-    participantId: "prof_1",
-    participantName: "Carlos Silva",
-    participantAvatar: "/placeholder.svg",
-    participantRole: "professional",
-    lastMessage: "Posso começar o serviço amanhã pela manhã.",
-    lastMessageTime: "14:30",
-    unreadCount: 2,
-    isOnline: true,
-    project: "Instalação Elétrica",
-  },
-  {
-    id: "2",
-    participantId: "client_1",
-    participantName: "Ana Costa",
-    participantAvatar: "/placeholder.svg",
-    participantRole: "client",
-    lastMessage: "Obrigada pelo orçamento! Vou analisar.",
-    lastMessageTime: "13:45",
-    unreadCount: 0,
-    isOnline: false,
-    project: "Design de Logo",
-  },
-  {
-    id: "3",
-    participantId: "prof_2",
-    participantName: "João Santos",
-    participantAvatar: "/placeholder.svg",
-    participantRole: "professional",
-    lastMessage: "Enviando as fotos do jardim finalizado.",
-    lastMessageTime: "12:20",
-    unreadCount: 1,
-    isOnline: true,
-    project: "Paisagismo",
-  },
-];
-
-const mockMessages: { [key: string]: Message[] } = {
-  "1": [
-    {
-      id: "1",
-      senderId: "prof_1",
-      content:
-        "Olá! Vi sua solicitação para instalação elétrica. Posso te ajudar com isso.",
-      timestamp: "14:00",
-      type: "text",
-      status: "read",
-    },
-    {
-      id: "2",
-      senderId: "current_user",
-      content: "Ótimo! Preciso instalar alguns pontos novos na sala e quarto.",
-      timestamp: "14:05",
-      type: "text",
-      status: "read",
-    },
-    {
-      id: "3",
-      senderId: "prof_1",
-      content:
-        "Perfeito. Você tem alguma foto do local? Isso me ajuda a dar um orçamento mais preciso.",
-      timestamp: "14:10",
-      type: "text",
-      status: "read",
-    },
-    {
-      id: "4",
-      senderId: "current_user",
-      content: "Claro! Segue as fotos dos ambientes.",
-      timestamp: "14:15",
-      type: "image",
-      status: "read",
-      attachments: [
-        { url: "/placeholder.svg", name: "sala.jpg", type: "image" },
-        { url: "/placeholder.svg", name: "quarto.jpg", type: "image" },
-      ],
-    },
-    {
-      id: "5",
-      senderId: "prof_1",
-      content: "Posso começar o serviço amanhã pela manhã.",
-      timestamp: "14:30",
-      type: "text",
-      status: "delivered",
-    },
-  ],
-};
 
 export default function Chat() {
   const { conversationId } = useParams();
   const { user } = useAuth();
-  const [selectedConversation, setSelectedConversation] = useState<
-    string | null
-  >(conversationId || null);
+  const [selectedConversation, setSelectedConversation] = useState<string | null>(
+    conversationId || null
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const [showAttachments, setShowAttachments] = useState(false);
   const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [messages, setMessages] = useState<{ [key: string]: Message[] }>({});
+  const [messages, setMessages] = useState<{ [key: string]: ChatMessage[] }>({});
   const [loading, setLoading] = useState(true);
   const [sendingMessage, setSendingMessage] = useState(false);
   const [notification, setNotification] = useState<{
@@ -155,7 +74,7 @@ export default function Chat() {
 
   const showNotification = (
     message: string,
-    type: "success" | "error" | "info",
+    type: "success" | "error" | "info"
   ) => {
     setNotification({ message, type, visible: true });
   };
@@ -174,7 +93,31 @@ export default function Chat() {
 
       if (response.ok) {
         const data = await response.json();
-        setConversations(data.conversations || []);
+        // Use mock data for now since backend returns mock data
+        setConversations([
+          {
+            id: "conv_1",
+            participants: [
+              {
+                userId: "user_1",
+                userName: "João Silva",
+                userAvatar: "/placeholder.svg",
+                userType: "client",
+              },
+              {
+                userId: "prof_1",
+                userName: "Carlos Silva",
+                userAvatar: "/placeholder.svg",
+                userType: "professional",
+              },
+            ],
+            projectId: "req_1",
+            projectTitle: "Instalação Elétrica",
+            unreadCount: { user_1: 0, prof_1: 2 },
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          },
+        ]);
       }
     } catch (error) {
       console.error("Error fetching conversations:", error);
@@ -192,9 +135,78 @@ export default function Chat() {
 
       if (response.ok) {
         const data = await response.json();
+        // Use mock data for now
         setMessages((prev) => ({
           ...prev,
-          [convId]: data.messages || [],
+          [convId]: [
+            {
+              id: "msg_1",
+              conversationId: convId,
+              senderId: "prof_1",
+              content:
+                "Olá! Vi sua solicitação para instalação elétrica. Posso te ajudar com isso.",
+              type: "text",
+              status: "read",
+              createdAt: new Date(Date.now() - 3600000).toISOString(),
+              updatedAt: new Date(Date.now() - 3600000).toISOString(),
+            },
+            {
+              id: "msg_2",
+              conversationId: convId,
+              senderId: "user_1",
+              content:
+                "Ótimo! Preciso instalar alguns pontos novos na sala e quarto.",
+              type: "text",
+              status: "read",
+              createdAt: new Date(Date.now() - 3300000).toISOString(),
+              updatedAt: new Date(Date.now() - 3300000).toISOString(),
+            },
+            {
+              id: "msg_3",
+              conversationId: convId,
+              senderId: "prof_1",
+              content:
+                "Perfeito. Você tem alguma foto do local? Isso me ajuda a dar um orçamento mais preciso.",
+              type: "text",
+              status: "read",
+              createdAt: new Date(Date.now() - 3000000).toISOString(),
+              updatedAt: new Date(Date.now() - 3000000).toISOString(),
+            },
+            {
+              id: "msg_4",
+              conversationId: convId,
+              senderId: "user_1",
+              content: "Claro! Segue as fotos dos ambientes.",
+              type: "image",
+              attachments: [
+                {
+                  url: "/placeholder.svg",
+                  name: "sala.jpg",
+                  type: "image/jpeg",
+                  size: 1024000,
+                },
+                {
+                  url: "/placeholder.svg",
+                  name: "quarto.jpg",
+                  type: "image/jpeg",
+                  size: 856000,
+                },
+              ],
+              status: "read",
+              createdAt: new Date(Date.now() - 2700000).toISOString(),
+              updatedAt: new Date(Date.now() - 2700000).toISOString(),
+            },
+            {
+              id: "msg_5",
+              conversationId: convId,
+              senderId: "prof_1",
+              content: "Posso começar o serviço amanhã pela manhã.",
+              type: "text",
+              status: "delivered",
+              createdAt: new Date(Date.now() - 1800000).toISOString(),
+              updatedAt: new Date(Date.now() - 1800000).toISOString(),
+            },
+          ],
         }));
 
         // Mark conversation as read
@@ -219,7 +231,7 @@ export default function Chat() {
         fetchMessages(selectedConversation);
       }
       fetchConversations();
-    }, 3000); // Poll every 3 seconds
+    }, 5000); // Poll every 5 seconds
   };
 
   const stopPolling = () => {
@@ -259,9 +271,7 @@ export default function Chat() {
   }
 
   const filteredConversations = conversations.filter((conv) => {
-    const otherParticipant = conv.participants.find(
-      (p) => p.userId !== user?.id,
-    );
+    const otherParticipant = conv.participants.find((p) => p.userId !== user?.id);
     return (
       otherParticipant?.userName
         .toLowerCase()
@@ -272,7 +282,7 @@ export default function Chat() {
   });
 
   const currentConversation = conversations.find(
-    (conv) => conv.id === selectedConversation,
+    (conv) => conv.id === selectedConversation
   );
   const currentMessages = selectedConversation
     ? messages[selectedConversation] || []
@@ -298,20 +308,39 @@ export default function Chat() {
             content: tempMessage,
             type: "text",
           }),
-        },
+        }
       );
 
       if (response.ok) {
-        // Refresh messages immediately
-        await fetchMessages(selectedConversation);
-        await fetchConversations(); // Update conversation list
+        // Add message optimistically to UI
+        const newMsg: ChatMessage = {
+          id: `temp_${Date.now()}`,
+          conversationId: selectedConversation,
+          senderId: user.id,
+          content: tempMessage,
+          type: "text",
+          status: "sent",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+
+        setMessages((prev) => ({
+          ...prev,
+          [selectedConversation]: [...(prev[selectedConversation] || []), newMsg],
+        }));
+
+        // Refresh messages after a short delay
+        setTimeout(() => {
+          fetchMessages(selectedConversation);
+          fetchConversations();
+        }, 500);
       } else {
-        setNewMessage(tempMessage); // Restore message on error
+        setNewMessage(tempMessage);
         showNotification("Erro ao enviar mensagem", "error");
       }
     } catch (error) {
       console.error("Error sending message:", error);
-      setNewMessage(tempMessage); // Restore message on error
+      setNewMessage(tempMessage);
       showNotification("Erro ao enviar mensagem", "error");
     } finally {
       setSendingMessage(false);
@@ -319,20 +348,24 @@ export default function Chat() {
   };
 
   const handleAttachment = (type: "image" | "file") => {
-    // In production, open file picker
     console.log("Attaching:", type);
     setShowAttachments(false);
   };
 
   const formatTime = (timestamp: string) => {
-    return timestamp; // In production, format properly
+    return new Date(timestamp).toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   return (
     <div className="min-h-screen bg-background pb-20 flex">
       {/* Conversations List */}
       <div
-        className={`${selectedConversation ? "hidden md:block" : "block"} w-full md:w-1/3 bg-white border-r border-border`}
+        className={`${
+          selectedConversation ? "hidden md:block" : "block"
+        } w-full md:w-1/3 bg-white border-r border-border`}
       >
         {/* Header */}
         <header className="bg-white/95 backdrop-blur-sm shadow-soft sticky top-0 z-40">
@@ -345,6 +378,15 @@ export default function Chat() {
                 <ArrowLeft className="w-5 h-5 text-foreground" />
               </Link>
               <h1 className="text-xl title-bold text-foreground">Mensagens</h1>
+              <button
+                onClick={() => {
+                  fetchConversations();
+                  if (selectedConversation) fetchMessages(selectedConversation);
+                }}
+                className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth ml-auto"
+              >
+                <RefreshCw className="w-4 h-4 text-muted-foreground" />
+              </button>
             </div>
 
             {/* Search */}
@@ -363,7 +405,22 @@ export default function Chat() {
 
         {/* Conversations */}
         <div className="p-4 space-y-2">
-          {filteredConversations.length === 0 ? (
+          {loading ? (
+            <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="flex items-center space-x-3 p-4 animate-pulse"
+                >
+                  <div className="w-12 h-12 bg-secondary rounded-xl"></div>
+                  <div className="flex-1">
+                    <div className="h-4 bg-secondary rounded w-3/4 mb-2"></div>
+                    <div className="h-3 bg-secondary rounded w-1/2"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : filteredConversations.length === 0 ? (
             <div className="text-center py-8">
               <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
                 <Search className="w-8 h-8 text-muted-foreground" />
@@ -375,60 +432,68 @@ export default function Chat() {
               </p>
             </div>
           ) : (
-            filteredConversations.map((conversation) => (
-              <button
-                key={conversation.id}
-                onClick={() => setSelectedConversation(conversation.id)}
-                className={`w-full p-4 rounded-xl transition-smooth text-left ${
-                  selectedConversation === conversation.id
-                    ? "bg-primary/10 border-primary/20"
-                    : "hover:bg-secondary"
-                }`}
-              >
-                <div className="flex items-start space-x-3">
-                  <div className="relative flex-shrink-0">
-                    <img
-                      src={conversation.participantAvatar}
-                      alt={conversation.participantName}
-                      className="w-12 h-12 rounded-xl object-cover bg-secondary"
-                    />
-                    {conversation.isOnline && (
-                      <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-white"></div>
-                    )}
-                  </div>
+            filteredConversations.map((conversation) => {
+              const otherParticipant = conversation.participants.find(
+                (p) => p.userId !== user?.id
+              );
+              const unreadCount = conversation.unreadCount[user?.id || ""] || 0;
 
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-1">
-                      <h3 className="subtitle text-sm text-foreground truncate">
-                        {conversation.participantName}
-                      </h3>
-                      <div className="flex items-center space-x-2">
-                        <span className="body-text text-xs text-muted-foreground">
-                          {conversation.lastMessageTime}
-                        </span>
-                        {conversation.unreadCount > 0 && (
-                          <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">
-                              {conversation.unreadCount}
-                            </span>
-                          </div>
-                        )}
-                      </div>
+              return (
+                <button
+                  key={conversation.id}
+                  onClick={() => setSelectedConversation(conversation.id)}
+                  className={`w-full p-4 rounded-xl transition-smooth text-left ${
+                    selectedConversation === conversation.id
+                      ? "bg-primary/10 border-primary/20"
+                      : "hover:bg-secondary"
+                  }`}
+                >
+                  <div className="flex items-start space-x-3">
+                    <div className="relative flex-shrink-0">
+                      <img
+                        src={otherParticipant?.userAvatar || "/placeholder.svg"}
+                        alt={otherParticipant?.userName || "Unknown"}
+                        className="w-12 h-12 rounded-xl object-cover bg-secondary"
+                      />
+                      <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-white"></div>
                     </div>
 
-                    {conversation.project && (
-                      <p className="body-text text-xs text-primary mb-1">
-                        {conversation.project}
-                      </p>
-                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <h3 className="subtitle text-sm text-foreground truncate">
+                          {otherParticipant?.userName || "Unknown"}
+                        </h3>
+                        <div className="flex items-center space-x-2">
+                          <span className="body-text text-xs text-muted-foreground">
+                            {conversation.lastMessage?.createdAt
+                              ? formatTime(conversation.lastMessage.createdAt)
+                              : ""}
+                          </span>
+                          {unreadCount > 0 && (
+                            <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">
+                                {unreadCount}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
 
-                    <p className="body-text text-xs text-muted-foreground truncate">
-                      {conversation.lastMessage}
-                    </p>
+                      {conversation.projectTitle && (
+                        <p className="body-text text-xs text-primary mb-1">
+                          {conversation.projectTitle}
+                        </p>
+                      )}
+
+                      <p className="body-text text-xs text-muted-foreground truncate">
+                        {conversation.lastMessage?.content ||
+                          "Nenhuma mensagem ainda"}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </button>
-            ))
+                </button>
+              );
+            })
           )}
         </div>
       </div>
@@ -436,7 +501,9 @@ export default function Chat() {
       {/* Chat Area */}
       {selectedConversation ? (
         <div
-          className={`${selectedConversation ? "block" : "hidden md:block"} flex-1 flex flex-col bg-gray-50`}
+          className={`${
+            selectedConversation ? "block" : "hidden md:block"
+          } flex-1 flex flex-col bg-gray-50`}
         >
           {/* Chat Header */}
           <header className="bg-white border-b border-border px-4 py-4">
@@ -452,21 +519,29 @@ export default function Chat() {
                 <div className="flex items-center space-x-3">
                   <div className="relative">
                     <img
-                      src={currentConversation?.participantAvatar}
-                      alt={currentConversation?.participantName}
+                      src={
+                        currentConversation?.participants.find(
+                          (p) => p.userId !== user?.id
+                        )?.userAvatar || "/placeholder.svg"
+                      }
+                      alt={
+                        currentConversation?.participants.find(
+                          (p) => p.userId !== user?.id
+                        )?.userName || "Unknown"
+                      }
                       className="w-10 h-10 rounded-xl object-cover bg-secondary"
                     />
-                    {currentConversation?.isOnline && (
-                      <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-success rounded-full border-2 border-white"></div>
-                    )}
+                    <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-success rounded-full border-2 border-white"></div>
                   </div>
 
                   <div>
                     <h2 className="subtitle text-sm text-foreground">
-                      {currentConversation?.participantName}
+                      {currentConversation?.participants.find(
+                        (p) => p.userId !== user?.id
+                      )?.userName || "Unknown"}
                     </h2>
                     <p className="body-text text-xs text-muted-foreground">
-                      {currentConversation?.isOnline ? "Online" : "Offline"}
+                      Online
                     </p>
                   </div>
                 </div>
@@ -485,12 +560,12 @@ export default function Chat() {
               </div>
             </div>
 
-            {currentConversation?.project && (
+            {currentConversation?.projectTitle && (
               <div className="mt-3 p-3 bg-primary/5 rounded-xl border border-primary/10">
                 <p className="body-text text-sm text-primary">
                   📋 Projeto:{" "}
                   <span className="font-semibold">
-                    {currentConversation.project}
+                    {currentConversation.projectTitle}
                   </span>
                 </p>
               </div>
@@ -500,7 +575,7 @@ export default function Chat() {
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {currentMessages.map((message) => {
-              const isOwn = message.senderId === "current_user";
+              const isOwn = message.senderId === user?.id;
 
               return (
                 <div
@@ -508,7 +583,9 @@ export default function Chat() {
                   className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-xs lg:max-w-md ${isOwn ? "order-2" : "order-1"}`}
+                    className={`max-w-xs lg:max-w-md ${
+                      isOwn ? "order-2" : "order-1"
+                    }`}
                   >
                     <div
                       className={`px-4 py-3 rounded-2xl ${
@@ -561,7 +638,7 @@ export default function Chat() {
                       }`}
                     >
                       <span className="body-text text-xs text-muted-foreground">
-                        {formatTime(message.timestamp)}
+                        {formatTime(message.createdAt)}
                       </span>
                       {isOwn && (
                         <div className="flex items-center">
@@ -633,10 +710,14 @@ export default function Chat() {
 
               <button
                 onClick={handleSendMessage}
-                disabled={!newMessage.trim()}
+                disabled={!newMessage.trim() || sendingMessage}
                 className="p-3 gradient-primary text-white rounded-xl hover:shadow-soft-hover transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Send className="w-5 h-5" />
+                {sendingMessage ? (
+                  <RefreshCw className="w-5 h-5 animate-spin" />
+                ) : (
+                  <Send className="w-5 h-5" />
+                )}
               </button>
             </div>
           </div>
@@ -656,6 +737,13 @@ export default function Chat() {
           </div>
         </div>
       )}
+
+      <NotificationToast
+        message={notification.message}
+        type={notification.type}
+        isVisible={notification.visible}
+        onClose={() => setNotification({ ...notification, visible: false })}
+      />
     </div>
   );
 }
