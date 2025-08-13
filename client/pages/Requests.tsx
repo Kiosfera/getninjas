@@ -83,10 +83,9 @@ export default function Requests() {
   const [urgencyFilter, setUrgencyFilter] = useState<string>("all");
 
   useEffect(() => {
-    if (user) {
-      fetchRequests();
-    }
-  }, [user]);
+    // Always fetch requests, even for guest users
+    fetchRequests();
+  }, []);
 
   const fetchRequests = async () => {
     try {
