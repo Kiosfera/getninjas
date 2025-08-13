@@ -433,9 +433,9 @@ export default function Chat() {
           ) : (
             filteredConversations.map((conversation) => {
               const otherParticipant = conversation.participants.find(
-                (p) => p.userId !== user?.id,
+                (p) => p.userId !== (user?.id || 'guest'),
               );
-              const unreadCount = conversation.unreadCount[user?.id || ""] || 0;
+              const unreadCount = conversation.unreadCount[user?.id || 'guest'] || 0;
 
               return (
                 <button
