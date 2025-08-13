@@ -1,6 +1,22 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Star, MapPin, Clock, Shield, MessageCircle, Phone, Calendar, Heart, Share2, Flag, Camera, ExternalLink, Award, CheckCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  Star,
+  MapPin,
+  Clock,
+  Shield,
+  MessageCircle,
+  Phone,
+  Calendar,
+  Heart,
+  Share2,
+  Flag,
+  Camera,
+  ExternalLink,
+  Award,
+  CheckCircle,
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import NotificationToast from "@/components/NotificationToast";
 
@@ -22,7 +38,8 @@ const professionalData = {
   verified: true,
   available: true,
   badge: "Profissional Premium",
-  description: "Eletricista com mais de 15 anos de experiência em instalações prediais, industriais e residenciais. Especializado em sistemas de automação, painéis elétricos e manutenção preventiva. Atendo emergências 24h e ofereço garantia em todos os serviços.",
+  description:
+    "Eletricista com mais de 15 anos de experiência em instalações prediais, industriais e residenciais. Especializado em sistemas de automação, painéis elétricos e manutenção preventiva. Atendo emergências 24h e ofereço garantia em todos os serviços.",
   skills: [
     "Instalações Elétricas",
     "Automação Residencial",
@@ -31,18 +48,38 @@ const professionalData = {
     "Emergências 24h",
     "Sistemas Industriais",
     "Certificação NR-10",
-    "Projeto Elétrico"
+    "Projeto Elétrico",
   ],
   certifications: [
     { name: "NR-10 - Segurança em Instalações", year: "2023" },
     { name: "Técnico em Eletrotécnica", year: "2019" },
-    { name: "Automação Residencial", year: "2021" }
+    { name: "Automação Residencial", year: "2021" },
   ],
   portfolio: [
-    { id: 1, image: "/placeholder.svg", title: "Instalação Residencial", description: "Sistema completo para casa de 200m²" },
-    { id: 2, image: "/placeholder.svg", title: "Painel Industrial", description: "Modernização de painel para fábrica" },
-    { id: 3, image: "/placeholder.svg", title: "Automação Casa", description: "Sistema inteligente com app móvel" },
-    { id: 4, image: "/placeholder.svg", title: "Manutenção Preventiva", description: "Empresa com 50 colaboradores" },
+    {
+      id: 1,
+      image: "/placeholder.svg",
+      title: "Instalação Residencial",
+      description: "Sistema completo para casa de 200m²",
+    },
+    {
+      id: 2,
+      image: "/placeholder.svg",
+      title: "Painel Industrial",
+      description: "Modernização de painel para fábrica",
+    },
+    {
+      id: 3,
+      image: "/placeholder.svg",
+      title: "Automação Casa",
+      description: "Sistema inteligente com app móvel",
+    },
+    {
+      id: 4,
+      image: "/placeholder.svg",
+      title: "Manutenção Preventiva",
+      description: "Empresa com 50 colaboradores",
+    },
   ],
   services: [
     { name: "Instalação Elétrica Completa", price: "R$ 150", unit: "ponto" },
@@ -56,41 +93,53 @@ const professionalData = {
       author: "Maria Santos",
       rating: 5,
       date: "Há 3 dias",
-      comment: "Excelente profissional! Muito pontual, trabalho limpo e explicou tudo detalhadamente. Recomendo!",
-      service: "Instalação de chuveiro elétrico"
+      comment:
+        "Excelente profissional! Muito pontual, trabalho limpo e explicou tudo detalhadamente. Recomendo!",
+      service: "Instalação de chuveiro elétrico",
     },
     {
       id: 2,
-      author: "João Pereira", 
+      author: "João Pereira",
       rating: 5,
       date: "Há 1 semana",
-      comment: "Carlos resolveu um problema complexo em nossa empresa. Muito conhecimento técnico e preço justo.",
-      service: "Manutenção de painel elétrico"
+      comment:
+        "Carlos resolveu um problema complexo em nossa empresa. Muito conhecimento técnico e preço justo.",
+      service: "Manutenção de painel elétrico",
     },
     {
       id: 3,
       author: "Ana Costa",
       rating: 4,
-      date: "Há 2 semanas", 
-      comment: "Bom atendimento e serviço de qualidade. Chegou no horário combinado e deixou tudo funcionando perfeitamente.",
-      service: "Troca de disjuntores"
-    }
+      date: "Há 2 semanas",
+      comment:
+        "Bom atendimento e serviço de qualidade. Chegou no horário combinado e deixou tudo funcionando perfeitamente.",
+      service: "Troca de disjuntores",
+    },
   ],
   availability: {
     today: "Disponível",
     thisWeek: "3 horários livres",
-    nextWeek: "Agenda aberta"
-  }
+    nextWeek: "Agenda aberta",
+  },
 };
 
 export default function ProfessionalDetail() {
   const { id } = useParams();
   const { user } = useAuth();
-  const [notification, setNotification] = useState<{message: string, type: "success" | "error" | "info", visible: boolean}>({ message: "", type: "info", visible: false });
-  const [activeTab, setActiveTab] = useState<"overview" | "portfolio" | "reviews">("overview");
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error" | "info";
+    visible: boolean;
+  }>({ message: "", type: "info", visible: false });
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "portfolio" | "reviews"
+  >("overview");
   const [isFavorited, setIsFavorited] = useState(false);
 
-  const showNotification = (message: string, type: "success" | "error" | "info") => {
+  const showNotification = (
+    message: string,
+    type: "success" | "error" | "info",
+  ) => {
     setNotification({ message, type, visible: true });
   };
 
@@ -118,7 +167,7 @@ export default function ProfessionalDetail() {
     setIsFavorited(!isFavorited);
     showNotification(
       isFavorited ? "Removido dos favoritos" : "Adicionado aos favoritos",
-      "success"
+      "success",
     );
   };
 
@@ -127,7 +176,7 @@ export default function ProfessionalDetail() {
       navigator.share({
         title: `${professionalData.name} - ${professionalData.profession}`,
         text: `Confira o perfil de ${professionalData.name} no ServiçosApp`,
-        url: window.location.href
+        url: window.location.href,
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
@@ -142,22 +191,33 @@ export default function ProfessionalDetail() {
         <div className="px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <Link to="/search" className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth">
+              <Link
+                to="/search"
+                className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth"
+              >
                 <ArrowLeft className="w-5 h-5 text-foreground" />
               </Link>
               <div>
-                <h1 className="text-lg title-bold text-foreground">Perfil Profissional</h1>
-                <p className="body-text text-xs text-muted-foreground">{professionalData.profession}</p>
+                <h1 className="text-lg title-bold text-foreground">
+                  Perfil Profissional
+                </h1>
+                <p className="body-text text-xs text-muted-foreground">
+                  {professionalData.profession}
+                </p>
               </div>
             </div>
             <div className="flex items-center space-x-2">
               <button
                 onClick={handleToggleFavorite}
                 className={`p-2 rounded-xl transition-smooth ${
-                  isFavorited ? "bg-red-50 text-red-500" : "bg-secondary text-muted-foreground hover:bg-muted"
+                  isFavorited
+                    ? "bg-red-50 text-red-500"
+                    : "bg-secondary text-muted-foreground hover:bg-muted"
                 }`}
               >
-                <Heart className={`w-5 h-5 ${isFavorited ? "fill-current" : ""}`} />
+                <Heart
+                  className={`w-5 h-5 ${isFavorited ? "fill-current" : ""}`}
+                />
               </button>
               <button
                 onClick={handleShare}
@@ -179,7 +239,7 @@ export default function ProfessionalDetail() {
             className="w-full h-full object-cover opacity-50"
           />
         </div>
-        
+
         <div className="px-4 pb-6">
           <div className="flex items-start space-x-4 -mt-8">
             <div className="relative">
@@ -207,7 +267,7 @@ export default function ProfessionalDetail() {
                   <p className="body-text text-muted-foreground mb-2">
                     {professionalData.profession}
                   </p>
-                  
+
                   <div className="flex items-center space-x-4 mb-2">
                     <div className="flex items-center">
                       <Star className="w-4 h-4 text-yellow-500 fill-current" />
@@ -227,7 +287,8 @@ export default function ProfessionalDetail() {
                     <div className="flex items-center">
                       <MapPin className="w-3 h-3 mr-1" />
                       <span className="body-text text-xs">
-                        {professionalData.location} • {professionalData.distance}km
+                        {professionalData.location} •{" "}
+                        {professionalData.distance}km
                       </span>
                     </div>
                     <div className="flex items-center">
@@ -242,7 +303,9 @@ export default function ProfessionalDetail() {
                 <div className="text-right ml-4">
                   <div className="title-bold text-xl text-primary">
                     R$ {professionalData.hourlyRate}
-                    <span className="body-text text-sm text-muted-foreground font-normal">/hora</span>
+                    <span className="body-text text-sm text-muted-foreground font-normal">
+                      /hora
+                    </span>
                   </div>
                   {professionalData.badge && (
                     <span className="inline-flex items-center px-2 py-1 bg-primary/10 text-primary text-xs button-text rounded-lg mt-1">
@@ -258,16 +321,28 @@ export default function ProfessionalDetail() {
           {/* Quick Stats */}
           <div className="grid grid-cols-3 gap-4 mt-6 p-4 bg-secondary rounded-xl">
             <div className="text-center">
-              <div className="title-bold text-lg text-foreground">{professionalData.availability.today}</div>
-              <div className="body-text text-xs text-muted-foreground">Hoje</div>
+              <div className="title-bold text-lg text-foreground">
+                {professionalData.availability.today}
+              </div>
+              <div className="body-text text-xs text-muted-foreground">
+                Hoje
+              </div>
             </div>
             <div className="text-center">
-              <div className="title-bold text-lg text-foreground">{professionalData.availability.thisWeek}</div>
-              <div className="body-text text-xs text-muted-foreground">Esta semana</div>
+              <div className="title-bold text-lg text-foreground">
+                {professionalData.availability.thisWeek}
+              </div>
+              <div className="body-text text-xs text-muted-foreground">
+                Esta semana
+              </div>
             </div>
             <div className="text-center">
-              <div className="title-bold text-lg text-foreground">{professionalData.availability.nextWeek}</div>
-              <div className="body-text text-xs text-muted-foreground">Próxima semana</div>
+              <div className="title-bold text-lg text-foreground">
+                {professionalData.availability.nextWeek}
+              </div>
+              <div className="body-text text-xs text-muted-foreground">
+                Próxima semana
+              </div>
             </div>
           </div>
         </div>
@@ -299,7 +374,7 @@ export default function ProfessionalDetail() {
           {[
             { id: "overview", name: "Visão Geral" },
             { id: "portfolio", name: "Portfólio" },
-            { id: "reviews", name: "Avaliações" }
+            { id: "reviews", name: "Avaliações" },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -322,7 +397,9 @@ export default function ProfessionalDetail() {
           <div className="space-y-6">
             {/* About */}
             <div className="bg-white rounded-2xl p-6 shadow-soft border border-border">
-              <h3 className="title-semibold text-lg text-foreground mb-4">Sobre</h3>
+              <h3 className="title-semibold text-lg text-foreground mb-4">
+                Sobre
+              </h3>
               <p className="body-text text-muted-foreground leading-relaxed">
                 {professionalData.description}
               </p>
@@ -330,7 +407,9 @@ export default function ProfessionalDetail() {
 
             {/* Skills */}
             <div className="bg-white rounded-2xl p-6 shadow-soft border border-border">
-              <h3 className="title-semibold text-lg text-foreground mb-4">Especialidades</h3>
+              <h3 className="title-semibold text-lg text-foreground mb-4">
+                Especialidades
+              </h3>
               <div className="flex flex-wrap gap-2">
                 {professionalData.skills.map((skill, index) => (
                   <span
@@ -345,7 +424,9 @@ export default function ProfessionalDetail() {
 
             {/* Certifications */}
             <div className="bg-white rounded-2xl p-6 shadow-soft border border-border">
-              <h3 className="title-semibold text-lg text-foreground mb-4">Certificações</h3>
+              <h3 className="title-semibold text-lg text-foreground mb-4">
+                Certificações
+              </h3>
               <div className="space-y-3">
                 {professionalData.certifications.map((cert, index) => (
                   <div key={index} className="flex items-center space-x-3">
@@ -353,8 +434,12 @@ export default function ProfessionalDetail() {
                       <CheckCircle className="w-5 h-5 text-success" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="subtitle text-sm text-foreground">{cert.name}</h4>
-                      <p className="body-text text-xs text-muted-foreground">Obtido em {cert.year}</p>
+                      <h4 className="subtitle text-sm text-foreground">
+                        {cert.name}
+                      </h4>
+                      <p className="body-text text-xs text-muted-foreground">
+                        Obtido em {cert.year}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -363,15 +448,26 @@ export default function ProfessionalDetail() {
 
             {/* Services & Pricing */}
             <div className="bg-white rounded-2xl p-6 shadow-soft border border-border">
-              <h3 className="title-semibold text-lg text-foreground mb-4">Serviços e Preços</h3>
+              <h3 className="title-semibold text-lg text-foreground mb-4">
+                Serviços e Preços
+              </h3>
               <div className="space-y-4">
                 {professionalData.services.map((service, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 bg-secondary rounded-xl">
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-4 bg-secondary rounded-xl"
+                  >
                     <div>
-                      <h4 className="subtitle text-sm text-foreground">{service.name}</h4>
-                      <p className="body-text text-xs text-muted-foreground">Por {service.unit}</p>
+                      <h4 className="subtitle text-sm text-foreground">
+                        {service.name}
+                      </h4>
+                      <p className="body-text text-xs text-muted-foreground">
+                        Por {service.unit}
+                      </p>
                     </div>
-                    <div className="title-semibold text-primary">{service.price}</div>
+                    <div className="title-semibold text-primary">
+                      {service.price}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -382,7 +478,9 @@ export default function ProfessionalDetail() {
         {activeTab === "portfolio" && (
           <div className="space-y-6">
             <div className="bg-white rounded-2xl p-6 shadow-soft border border-border">
-              <h3 className="title-semibold text-lg text-foreground mb-4">Trabalhos Realizados</h3>
+              <h3 className="title-semibold text-lg text-foreground mb-4">
+                Trabalhos Realizados
+              </h3>
               <div className="grid grid-cols-1 gap-4">
                 {professionalData.portfolio.map((item) => (
                   <div key={item.id} className="bg-secondary rounded-xl p-4">
@@ -393,8 +491,12 @@ export default function ProfessionalDetail() {
                         className="w-20 h-20 rounded-xl object-cover bg-muted"
                       />
                       <div className="flex-1">
-                        <h4 className="subtitle text-sm text-foreground mb-1">{item.title}</h4>
-                        <p className="body-text text-xs text-muted-foreground mb-2">{item.description}</p>
+                        <h4 className="subtitle text-sm text-foreground mb-1">
+                          {item.title}
+                        </h4>
+                        <p className="body-text text-xs text-muted-foreground mb-2">
+                          {item.description}
+                        </p>
                         <button className="flex items-center text-primary text-xs button-text hover:text-primary-600 transition-smooth">
                           <ExternalLink className="w-3 h-3 mr-1" />
                           Ver detalhes
@@ -414,7 +516,9 @@ export default function ProfessionalDetail() {
             <div className="bg-white rounded-2xl p-6 shadow-soft border border-border">
               <div className="flex items-center space-x-6 mb-4">
                 <div className="text-center">
-                  <div className="text-3xl title-bold text-foreground">{professionalData.rating}</div>
+                  <div className="text-3xl title-bold text-foreground">
+                    {professionalData.rating}
+                  </div>
                   <div className="flex items-center justify-center mt-1">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <Star
@@ -435,11 +539,15 @@ export default function ProfessionalDetail() {
                   <div className="space-y-1 mt-2">
                     {[5, 4, 3, 2, 1].map((stars) => (
                       <div key={stars} className="flex items-center space-x-2">
-                        <span className="body-text text-xs text-muted-foreground w-2">{stars}</span>
+                        <span className="body-text text-xs text-muted-foreground w-2">
+                          {stars}
+                        </span>
                         <div className="flex-1 h-2 bg-secondary rounded-full">
-                          <div 
-                            className="h-full bg-yellow-500 rounded-full" 
-                            style={{ width: `${(professionalData.reviewCount / 5) * (6 - stars) * 10}%` }}
+                          <div
+                            className="h-full bg-yellow-500 rounded-full"
+                            style={{
+                              width: `${(professionalData.reviewCount / 5) * (6 - stars) * 10}%`,
+                            }}
                           ></div>
                         </div>
                       </div>
@@ -452,10 +560,15 @@ export default function ProfessionalDetail() {
             {/* Individual Reviews */}
             <div className="space-y-4">
               {professionalData.reviews.map((review) => (
-                <div key={review.id} className="bg-white rounded-2xl p-6 shadow-soft border border-border">
+                <div
+                  key={review.id}
+                  className="bg-white rounded-2xl p-6 shadow-soft border border-border"
+                >
                   <div className="flex items-start justify-between mb-3">
                     <div>
-                      <h4 className="subtitle text-sm text-foreground">{review.author}</h4>
+                      <h4 className="subtitle text-sm text-foreground">
+                        {review.author}
+                      </h4>
                       <div className="flex items-center mt-1">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <Star
@@ -469,7 +582,9 @@ export default function ProfessionalDetail() {
                         ))}
                       </div>
                     </div>
-                    <span className="body-text text-xs text-muted-foreground">{review.date}</span>
+                    <span className="body-text text-xs text-muted-foreground">
+                      {review.date}
+                    </span>
                   </div>
                   <p className="body-text text-sm text-muted-foreground mb-2">
                     {review.comment}
