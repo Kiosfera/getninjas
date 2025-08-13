@@ -266,7 +266,7 @@ export default function Chat() {
 
   const filteredConversations = conversations.filter((conv) => {
     const otherParticipant = conv.participants.find(
-      (p) => p.userId !== user?.id,
+      (p) => p.userId !== (user?.id || 'guest'),
     );
     return (
       otherParticipant?.userName
