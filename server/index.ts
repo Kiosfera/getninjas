@@ -57,5 +57,25 @@ export function createServer() {
   app.post("/api/auth/logout", handleLogout);
   app.put("/api/auth/profile", handleUpdateProfile);
 
+  // Request routes
+  app.get("/api/requests", handleGetRequests);
+  app.get("/api/requests/nearby", handleGetNearbyRequests);
+  app.get("/api/requests/:id", handleGetRequest);
+  app.post("/api/requests", handleCreateRequest);
+  app.put("/api/requests/:id", handleUpdateRequest);
+  app.delete("/api/requests/:id", handleDeleteRequest);
+  app.post("/api/requests/:id/proposals", handleCreateProposal);
+  app.put("/api/requests/:requestId/proposals/:proposalId", handleUpdateProposal);
+
+  // Chat routes
+  app.get("/api/conversations", handleGetConversations);
+  app.get("/api/conversations/:id", handleGetConversation);
+  app.post("/api/conversations", handleCreateConversation);
+  app.get("/api/conversations/:id/messages", handleGetMessages);
+  app.post("/api/conversations/:id/messages", handleSendMessage);
+  app.put("/api/conversations/:id/messages/:messageId", handleUpdateMessage);
+  app.put("/api/conversations/:id/read", handleMarkAsRead);
+  app.delete("/api/conversations/:id/messages/:messageId", handleDeleteMessage);
+
   return app;
 }
