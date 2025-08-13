@@ -17,6 +17,8 @@ import Chat from "./pages/Chat";
 import Profile from "./pages/Profile";
 import PostRequest from "./pages/PostRequest";
 import ProfessionalDetail from "./pages/ProfessionalDetail";
+import Dashboard from "./pages/Dashboard";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,14 +36,14 @@ const App = () => (
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/search" element={<Search />} />
-              <Route
-                path="/professional/:id"
-                element={<ProfessionalDetail />}
-              />
+              <Route path="/professional/:id" element={<ProfessionalDetail />} />
               <Route path="/requests" element={<Requests />} />
               <Route path="/chat" element={<Chat />} />
+              <Route path="/chat/:conversationId" element={<Chat />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/post-request" element={<PostRequest />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/settings" element={<Settings />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
