@@ -92,7 +92,7 @@ export default function Requests() {
       setLoading(true);
       const response = await fetch("/api/requests", {
         headers: {
-          Authorization: `Bearer ${user?.id || 'guest'}`,
+          Authorization: `Bearer ${user?.id || "guest"}`,
         },
       });
 
