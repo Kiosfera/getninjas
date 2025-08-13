@@ -1,5 +1,18 @@
 import { useState, useEffect, useRef } from "react";
-import { ArrowLeft, Send, Paperclip, Camera, Phone, Video, MoreVertical, Search, Image, File, Check, CheckCheck } from "lucide-react";
+import {
+  ArrowLeft,
+  Send,
+  Paperclip,
+  Camera,
+  Phone,
+  Video,
+  MoreVertical,
+  Search,
+  Image,
+  File,
+  Check,
+  CheckCheck,
+} from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import PlaceholderPage from "@/components/PlaceholderPage";
@@ -38,10 +51,10 @@ const mockConversations: Conversation[] = [
     lastMessageTime: "14:30",
     unreadCount: 2,
     isOnline: true,
-    project: "Instalação Elétrica"
+    project: "Instalação Elétrica",
   },
   {
-    id: "2", 
+    id: "2",
     participantId: "client_1",
     participantName: "Ana Costa",
     participantAvatar: "/placeholder.svg",
@@ -50,11 +63,11 @@ const mockConversations: Conversation[] = [
     lastMessageTime: "13:45",
     unreadCount: 0,
     isOnline: false,
-    project: "Design de Logo"
+    project: "Design de Logo",
   },
   {
     id: "3",
-    participantId: "prof_2", 
+    participantId: "prof_2",
     participantName: "João Santos",
     participantAvatar: "/placeholder.svg",
     participantRole: "professional",
@@ -62,8 +75,8 @@ const mockConversations: Conversation[] = [
     lastMessageTime: "12:20",
     unreadCount: 1,
     isOnline: true,
-    project: "Paisagismo"
-  }
+    project: "Paisagismo",
+  },
 ];
 
 const mockMessages: { [key: string]: Message[] } = {
@@ -71,54 +84,58 @@ const mockMessages: { [key: string]: Message[] } = {
     {
       id: "1",
       senderId: "prof_1",
-      content: "Olá! Vi sua solicitação para instalação elétrica. Posso te ajudar com isso.",
+      content:
+        "Olá! Vi sua solicitação para instalação elétrica. Posso te ajudar com isso.",
       timestamp: "14:00",
       type: "text",
-      status: "read"
+      status: "read",
     },
     {
-      id: "2", 
+      id: "2",
       senderId: "current_user",
       content: "Ótimo! Preciso instalar alguns pontos novos na sala e quarto.",
       timestamp: "14:05",
-      type: "text", 
-      status: "read"
+      type: "text",
+      status: "read",
     },
     {
       id: "3",
       senderId: "prof_1",
-      content: "Perfeito. Você tem alguma foto do local? Isso me ajuda a dar um orçamento mais preciso.",
+      content:
+        "Perfeito. Você tem alguma foto do local? Isso me ajuda a dar um orçamento mais preciso.",
       timestamp: "14:10",
       type: "text",
-      status: "read"
+      status: "read",
     },
     {
       id: "4",
-      senderId: "current_user", 
+      senderId: "current_user",
       content: "Claro! Segue as fotos dos ambientes.",
       timestamp: "14:15",
       type: "image",
       status: "read",
       attachments: [
         { url: "/placeholder.svg", name: "sala.jpg", type: "image" },
-        { url: "/placeholder.svg", name: "quarto.jpg", type: "image" }
-      ]
+        { url: "/placeholder.svg", name: "quarto.jpg", type: "image" },
+      ],
     },
     {
       id: "5",
       senderId: "prof_1",
       content: "Posso começar o serviço amanhã pela manhã.",
       timestamp: "14:30",
-      type: "text", 
-      status: "delivered"
-    }
-  ]
+      type: "text",
+      status: "delivered",
+    },
+  ],
 };
 
 export default function Chat() {
   const { conversationId } = useParams();
   const { user } = useAuth();
-  const [selectedConversation, setSelectedConversation] = useState<string | null>(conversationId || null);
+  const [selectedConversation, setSelectedConversation] = useState<
+    string | null
+  >(conversationId || null);
   const [searchQuery, setSearchQuery] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const [showAttachments, setShowAttachments] = useState(false);
@@ -141,17 +158,23 @@ export default function Chat() {
     );
   }
 
-  const filteredConversations = mockConversations.filter(conv =>
-    conv.participantName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (conv.project && conv.project.toLowerCase().includes(searchQuery.toLowerCase()))
+  const filteredConversations = mockConversations.filter(
+    (conv) =>
+      conv.participantName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (conv.project &&
+        conv.project.toLowerCase().includes(searchQuery.toLowerCase())),
   );
 
-  const currentConversation = mockConversations.find(conv => conv.id === selectedConversation);
-  const currentMessages = selectedConversation ? mockMessages[selectedConversation] || [] : [];
+  const currentConversation = mockConversations.find(
+    (conv) => conv.id === selectedConversation,
+  );
+  const currentMessages = selectedConversation
+    ? mockMessages[selectedConversation] || []
+    : [];
 
   const handleSendMessage = () => {
     if (!newMessage.trim() || !selectedConversation) return;
-    
+
     // In production, send message via API
     console.log("Sending message:", newMessage);
     setNewMessage("");
@@ -170,12 +193,17 @@ export default function Chat() {
   return (
     <div className="min-h-screen bg-background pb-20 flex">
       {/* Conversations List */}
-      <div className={`${selectedConversation ? "hidden md:block" : "block"} w-full md:w-1/3 bg-white border-r border-border`}>
+      <div
+        className={`${selectedConversation ? "hidden md:block" : "block"} w-full md:w-1/3 bg-white border-r border-border`}
+      >
         {/* Header */}
         <header className="bg-white/95 backdrop-blur-sm shadow-soft sticky top-0 z-40">
           <div className="px-4 py-4">
             <div className="flex items-center space-x-3 mb-4">
-              <Link to="/" className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth md:hidden">
+              <Link
+                to="/"
+                className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth md:hidden"
+              >
                 <ArrowLeft className="w-5 h-5 text-foreground" />
               </Link>
               <h1 className="text-xl title-bold text-foreground">Mensagens</h1>
@@ -203,7 +231,9 @@ export default function Chat() {
                 <Search className="w-8 h-8 text-muted-foreground" />
               </div>
               <p className="body-text text-muted-foreground">
-                {searchQuery ? "Nenhuma conversa encontrada" : "Ainda não há conversas"}
+                {searchQuery
+                  ? "Nenhuma conversa encontrada"
+                  : "Ainda não há conversas"}
               </p>
             </div>
           ) : (
@@ -267,7 +297,9 @@ export default function Chat() {
 
       {/* Chat Area */}
       {selectedConversation ? (
-        <div className={`${selectedConversation ? "block" : "hidden md:block"} flex-1 flex flex-col bg-gray-50`}>
+        <div
+          className={`${selectedConversation ? "block" : "hidden md:block"} flex-1 flex flex-col bg-gray-50`}
+        >
           {/* Chat Header */}
           <header className="bg-white border-b border-border px-4 py-4">
             <div className="flex items-center justify-between">
@@ -318,7 +350,10 @@ export default function Chat() {
             {currentConversation?.project && (
               <div className="mt-3 p-3 bg-primary/5 rounded-xl border border-primary/10">
                 <p className="body-text text-sm text-primary">
-                  📋 Projeto: <span className="font-semibold">{currentConversation.project}</span>
+                  📋 Projeto:{" "}
+                  <span className="font-semibold">
+                    {currentConversation.project}
+                  </span>
                 </p>
               </div>
             )}
@@ -328,13 +363,15 @@ export default function Chat() {
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {currentMessages.map((message) => {
               const isOwn = message.senderId === "current_user";
-              
+
               return (
                 <div
                   key={message.id}
                   className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
                 >
-                  <div className={`max-w-xs lg:max-w-md ${isOwn ? "order-2" : "order-1"}`}>
+                  <div
+                    className={`max-w-xs lg:max-w-md ${isOwn ? "order-2" : "order-1"}`}
+                  >
                     <div
                       className={`px-4 py-3 rounded-2xl ${
                         isOwn
@@ -366,26 +403,39 @@ export default function Chat() {
                         <div className="space-y-2">
                           <p className="body-text text-sm">{message.content}</p>
                           {message.attachments.map((attachment, index) => (
-                            <div key={index} className="flex items-center space-x-2 p-2 bg-black/10 rounded-lg">
+                            <div
+                              key={index}
+                              className="flex items-center space-x-2 p-2 bg-black/10 rounded-lg"
+                            >
                               <File className="w-4 h-4" />
-                              <span className="body-text text-sm">{attachment.name}</span>
+                              <span className="body-text text-sm">
+                                {attachment.name}
+                              </span>
                             </div>
                           ))}
                         </div>
                       )}
                     </div>
 
-                    <div className={`flex items-center space-x-2 mt-1 ${
-                      isOwn ? "justify-end" : "justify-start"
-                    }`}>
+                    <div
+                      className={`flex items-center space-x-2 mt-1 ${
+                        isOwn ? "justify-end" : "justify-start"
+                      }`}
+                    >
                       <span className="body-text text-xs text-muted-foreground">
                         {formatTime(message.timestamp)}
                       </span>
                       {isOwn && (
                         <div className="flex items-center">
-                          {message.status === "sent" && <Check className="w-3 h-3 text-muted-foreground" />}
-                          {message.status === "delivered" && <CheckCheck className="w-3 h-3 text-muted-foreground" />}
-                          {message.status === "read" && <CheckCheck className="w-3 h-3 text-primary" />}
+                          {message.status === "sent" && (
+                            <Check className="w-3 h-3 text-muted-foreground" />
+                          )}
+                          {message.status === "delivered" && (
+                            <CheckCheck className="w-3 h-3 text-muted-foreground" />
+                          )}
+                          {message.status === "read" && (
+                            <CheckCheck className="w-3 h-3 text-primary" />
+                          )}
                         </div>
                       )}
                     </div>
