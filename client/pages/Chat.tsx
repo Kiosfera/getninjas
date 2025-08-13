@@ -520,12 +520,12 @@ export default function Chat() {
                     <img
                       src={
                         currentConversation?.participants.find(
-                          (p) => p.userId !== user?.id,
+                          (p) => p.userId !== (user?.id || 'guest'),
                         )?.userAvatar || "/placeholder.svg"
                       }
                       alt={
                         currentConversation?.participants.find(
-                          (p) => p.userId !== user?.id,
+                          (p) => p.userId !== (user?.id || 'guest'),
                         )?.userName || "Unknown"
                       }
                       className="w-10 h-10 rounded-xl object-cover bg-secondary"
