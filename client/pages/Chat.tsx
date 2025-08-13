@@ -153,13 +153,101 @@ export default function Chat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  const showNotification = (
+    message: string,
+    type: "success" | "error" | "info",
+  ) => {
+    setNotification({ message, type, visible: true });
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const fetchConversations = async () => {
+    try {
+      const response = await fetch("/api/conversations", {
+        headers: {
+          Authorization: `Bearer ${user?.id}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setConversations(data.conversations || []);
+      }
+    } catch (error) {
+      console.error("Error fetching conversations:", error);
+      showNotification("Erro ao carregar conversas", "error");
+    }
+  };
+
+  const fetchMessages = async (convId: string) => {
+    try {
+      const response = await fetch(`/api/conversations/${convId}/messages`, {
+        headers: {
+          Authorization: `Bearer ${user?.id}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setMessages(prev => ({
+          ...prev,
+          [convId]: data.messages || []
+        }));
+
+        // Mark conversation as read
+        await fetch(`/api/conversations/${convId}/read`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${user?.id}`,
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+      showNotification("Erro ao carregar mensagens", "error");
+    }
+  };
+
+  const startPolling = () => {
+    if (pollIntervalRef.current) return;
+
+    pollIntervalRef.current = setInterval(() => {
+      if (selectedConversation) {
+        fetchMessages(selectedConversation);
+      }
+      fetchConversations();
+    }, 3000); // Poll every 3 seconds
+  };
+
+  const stopPolling = () => {
+    if (pollIntervalRef.current) {
+      clearInterval(pollIntervalRef.current);
+      pollIntervalRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchConversations();
+      setLoading(false);
+      startPolling();
+    }
+
+    return () => stopPolling();
+  }, [user]);
+
+  useEffect(() => {
+    if (selectedConversation) {
+      fetchMessages(selectedConversation);
+    }
+  }, [selectedConversation]);
+
   useEffect(() => {
     scrollToBottom();
-  }, [selectedConversation]);
+  }, [messages, selectedConversation]);
 
   if (!user) {
     return (
