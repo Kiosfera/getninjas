@@ -176,14 +176,7 @@ export default function Requests() {
     }
   };
 
-  if (!user) {
-    return (
-      <PlaceholderPage
-        title="Minhas Solicitações"
-        description="Faça login para ver suas solicitações de serviços."
-      />
-    );
-  }
+  // Allow access without authentication - show demo data if no user
 
   const filteredRequests = requests.filter((request) => {
     const matchesSearch =
