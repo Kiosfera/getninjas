@@ -244,14 +244,13 @@ export default function Chat() {
   };
 
   useEffect(() => {
-    if (user) {
-      fetchConversations();
-      setLoading(false);
-      startPolling();
-    }
+    // Always fetch conversations, even for guest users
+    fetchConversations();
+    setLoading(false);
+    startPolling();
 
     return () => stopPolling();
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     if (selectedConversation) {
