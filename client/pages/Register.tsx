@@ -1,35 +1,20 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Mail,
-  Phone,
-  Eye,
-  EyeOff,
-  ArrowLeft,
-  Zap,
-  User,
-  Briefcase,
-  MapPin,
-  Shield,
-  Check,
-} from "lucide-react";
+import { Mail, Phone, Eye, EyeOff, ArrowLeft, Zap, User, Briefcase, MapPin, Shield, Check } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import NotificationToast from "@/components/NotificationToast";
+import Logo from "@/components/Logo";
 
 export default function Register() {
   const navigate = useNavigate();
   const { user, signup, loading } = useAuth();
-
+  
   const [currentStep, setCurrentStep] = useState(1);
   const [userType, setUserType] = useState<"client" | "professional">("client");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [notification, setNotification] = useState<{
-    message: string;
-    type: "success" | "error" | "info";
-    visible: boolean;
-  }>({ message: "", type: "info", visible: false });
+  const [notification, setNotification] = useState<{message: string, type: "success" | "error" | "info", visible: boolean}>({ message: "", type: "info", visible: false });
 
   const [formData, setFormData] = useState({
     email: "",
@@ -50,19 +35,14 @@ export default function Register() {
     }
   }, [user, loading, navigate]);
 
-  const showNotification = (
-    message: string,
-    type: "success" | "error" | "info",
-  ) => {
+  const showNotification = (message: string, type: "success" | "error" | "info") => {
     setNotification({ message, type, visible: true });
   };
 
-  const handleSocialSignup = async (
-    provider: "google" | "apple" | "facebook",
-  ) => {
+  const handleSocialSignup = async (provider: "google" | "apple" | "facebook") => {
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1500));
       showNotification(`Redirecionando para ${provider}...`, "info");
       window.location.href = `/api/auth/${provider}`;
     } catch (error) {
@@ -74,7 +54,7 @@ export default function Register() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     if (formData.password !== formData.confirmPassword) {
       showNotification("As senhas não coincidem", "error");
       return;
@@ -84,7 +64,7 @@ export default function Register() {
       showNotification("Você deve aceitar os termos de serviço", "error");
       return;
     }
-
+    
     setIsLoading(true);
     try {
       await signup({
@@ -93,19 +73,16 @@ export default function Register() {
         password: formData.password,
         name: formData.name,
         type: userType,
-        location:
-          formData.city && formData.state
-            ? {
-                city: formData.city,
-                state: formData.state,
-              }
-            : undefined,
+        location: formData.city && formData.state ? {
+          city: formData.city,
+          state: formData.state,
+        } : undefined,
       });
       showNotification("Conta criada com sucesso!", "success");
     } catch (error) {
       showNotification(
         error instanceof Error ? error.message : "Erro ao criar conta",
-        "error",
+        "error"
       );
     } finally {
       setIsLoading(false);
@@ -117,12 +94,7 @@ export default function Register() {
       case 1:
         return userType !== undefined;
       case 2:
-        return (
-          formData.name &&
-          formData.email &&
-          formData.password &&
-          formData.confirmPassword
-        );
+        return formData.name && formData.email && formData.password && formData.confirmPassword;
       case 3:
         return formData.acceptTerms;
       default:
@@ -141,9 +113,7 @@ export default function Register() {
       <div className="min-h-screen bg-gradient-to-br from-primary/5 to-success/5 flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="body-text text-muted-foreground">
-            Verificando autenticação...
-          </p>
+          <p className="body-text text-muted-foreground">Verificando autenticação...</p>
         </div>
       </div>
     );
@@ -155,20 +125,10 @@ export default function Register() {
       <header className="bg-white/80 backdrop-blur-sm shadow-soft">
         <div className="px-4 py-4">
           <div className="flex items-center space-x-3">
-            <Link
-              to="/"
-              className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth"
-            >
+            <Link to="/" className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth">
               <ArrowLeft className="w-5 h-5 text-foreground" />
             </Link>
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center">
-                <Zap className="w-5 h-5 text-white" />
-              </div>
-              <h1 className="text-lg title-bold text-foreground">
-                ServiçosApp
-              </h1>
-            </div>
+            <Logo size="sm" variant="full" />
           </div>
         </div>
       </header>
@@ -192,11 +152,9 @@ export default function Register() {
               <div className="flex items-center space-x-2">
                 {[1, 2, 3].map((step) => (
                   <div key={step} className="flex-1">
-                    <div
-                      className={`h-2 rounded-full transition-smooth ${
-                        step <= currentStep ? "bg-primary" : "bg-secondary"
-                      }`}
-                    ></div>
+                    <div className={`h-2 rounded-full transition-smooth ${
+                      step <= currentStep ? "bg-primary" : "bg-secondary"
+                    }`}></div>
                   </div>
                 ))}
               </div>
@@ -211,7 +169,7 @@ export default function Register() {
                 <h3 className="title-semibold text-lg text-foreground mb-4 text-center">
                   Como você quer usar o app?
                 </h3>
-
+                
                 <div className="space-y-4 mb-6">
                   <button
                     type="button"
@@ -223,32 +181,19 @@ export default function Register() {
                     }`}
                   >
                     <div className="flex items-start space-x-4">
-                      <div
-                        className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                          userType === "client"
-                            ? "bg-primary text-white"
-                            : "bg-secondary text-muted-foreground"
-                        }`}
-                      >
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                        userType === "client" ? "bg-primary text-white" : "bg-secondary text-muted-foreground"
+                      }`}>
                         <User className="w-6 h-6" />
                       </div>
                       <div className="flex-1">
-                        <h4 className="title-semibold text-foreground mb-1">
-                          Sou Cliente
-                        </h4>
+                        <h4 className="title-semibold text-foreground mb-1">Sou Cliente</h4>
                         <p className="body-text text-sm text-muted-foreground">
                           Quero contratar profissionais para realizar serviços
                         </p>
                         <div className="flex flex-wrap gap-2 mt-3">
-                          {[
-                            "Encontrar profissionais",
-                            "Solicitar orçamentos",
-                            "Agendar serviços",
-                          ].map((feature) => (
-                            <span
-                              key={feature}
-                              className="text-xs bg-secondary px-2 py-1 rounded-lg text-muted-foreground"
-                            >
+                          {["Encontrar profissionais", "Solicitar orçamentos", "Agendar serviços"].map((feature) => (
+                            <span key={feature} className="text-xs bg-secondary px-2 py-1 rounded-lg text-muted-foreground">
                               {feature}
                             </span>
                           ))}
@@ -267,32 +212,19 @@ export default function Register() {
                     }`}
                   >
                     <div className="flex items-start space-x-4">
-                      <div
-                        className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                          userType === "professional"
-                            ? "bg-primary text-white"
-                            : "bg-secondary text-muted-foreground"
-                        }`}
-                      >
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                        userType === "professional" ? "bg-primary text-white" : "bg-secondary text-muted-foreground"
+                      }`}>
                         <Briefcase className="w-6 h-6" />
                       </div>
                       <div className="flex-1">
-                        <h4 className="title-semibold text-foreground mb-1">
-                          Sou Profissional
-                        </h4>
+                        <h4 className="title-semibold text-foreground mb-1">Sou Profissional</h4>
                         <p className="body-text text-sm text-muted-foreground">
                           Quero oferecer meus serviços e encontrar clientes
                         </p>
                         <div className="flex flex-wrap gap-2 mt-3">
-                          {[
-                            "Receber solicitações",
-                            "Gerenciar agenda",
-                            "Crescer negócio",
-                          ].map((feature) => (
-                            <span
-                              key={feature}
-                              className="text-xs bg-secondary px-2 py-1 rounded-lg text-muted-foreground"
-                            >
+                          {["Receber solicitações", "Gerenciar agenda", "Crescer negócio"].map((feature) => (
+                            <span key={feature} className="text-xs bg-secondary px-2 py-1 rounded-lg text-muted-foreground">
                               {feature}
                             </span>
                           ))}
@@ -328,50 +260,30 @@ export default function Register() {
                       className="flex items-center justify-center p-3 border border-border rounded-xl hover:bg-secondary transition-smooth disabled:opacity-50"
                     >
                       <svg className="w-5 h-5" viewBox="0 0 24 24">
-                        <path
-                          fill="#4285F4"
-                          d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                        />
-                        <path
-                          fill="#34A853"
-                          d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                        />
-                        <path
-                          fill="#FBBC05"
-                          d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                        />
-                        <path
-                          fill="#EA4335"
-                          d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                        />
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                       </svg>
                     </button>
-
+                    
                     <button
                       onClick={() => handleSocialSignup("apple")}
                       disabled={isLoading}
                       className="flex items-center justify-center p-3 border border-border rounded-xl hover:bg-secondary transition-smooth disabled:opacity-50"
                     >
-                      <svg
-                        className="w-5 h-5"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 6.73.87 8.01-.22.58-.48 1.14-.93 1.2zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 6.73.87 8.01-.22.58-.48 1.14-.93 1.2zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
                       </svg>
                     </button>
-
+                    
                     <button
                       onClick={() => handleSocialSignup("facebook")}
                       disabled={isLoading}
                       className="flex items-center justify-center p-3 border border-border rounded-xl hover:bg-secondary transition-smooth disabled:opacity-50"
                     >
-                      <svg
-                        className="w-5 h-5"
-                        viewBox="0 0 24 24"
-                        fill="#1877F2"
-                      >
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="#1877F2">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                       </svg>
                     </button>
                   </div>
@@ -381,9 +293,7 @@ export default function Register() {
                       <div className="w-full border-t border-border" />
                     </div>
                     <div className="relative flex justify-center text-sm">
-                      <span className="px-4 bg-white body-text text-muted-foreground">
-                        ou preencha os dados
-                      </span>
+                      <span className="px-4 bg-white body-text text-muted-foreground">ou preencha os dados</span>
                     </div>
                   </div>
                 </div>
@@ -396,9 +306,7 @@ export default function Register() {
                     <input
                       type="text"
                       value={formData.name}
-                      onChange={(e) =>
-                        setFormData({ ...formData, name: e.target.value })
-                      }
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                       placeholder="Seu nome completo"
                       required
@@ -414,9 +322,7 @@ export default function Register() {
                       <input
                         type="email"
                         value={formData.email}
-                        onChange={(e) =>
-                          setFormData({ ...formData, email: e.target.value })
-                        }
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                         placeholder="seu@email.com"
                         required
@@ -433,9 +339,7 @@ export default function Register() {
                       <input
                         type="tel"
                         value={formData.phone}
-                        onChange={(e) =>
-                          setFormData({ ...formData, phone: e.target.value })
-                        }
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                         placeholder="(11) 99999-9999"
                       />
@@ -450,9 +354,7 @@ export default function Register() {
                       <input
                         type="text"
                         value={formData.city}
-                        onChange={(e) =>
-                          setFormData({ ...formData, city: e.target.value })
-                        }
+                        onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                         className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                         placeholder="São Paulo"
                       />
@@ -464,9 +366,7 @@ export default function Register() {
                       <input
                         type="text"
                         value={formData.state}
-                        onChange={(e) =>
-                          setFormData({ ...formData, state: e.target.value })
-                        }
+                        onChange={(e) => setFormData({ ...formData, state: e.target.value })}
                         className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                         placeholder="SP"
                         maxLength={2}
@@ -482,9 +382,7 @@ export default function Register() {
                       <input
                         type={showPassword ? "text" : "password"}
                         value={formData.password}
-                        onChange={(e) =>
-                          setFormData({ ...formData, password: e.target.value })
-                        }
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                         className="w-full pl-4 pr-12 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                         placeholder="Mínimo 6 caracteres"
                         required
@@ -512,12 +410,7 @@ export default function Register() {
                       <input
                         type={showConfirmPassword ? "text" : "password"}
                         value={formData.confirmPassword}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            confirmPassword: e.target.value,
-                          })
-                        }
+                        onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                         className="w-full pl-4 pr-12 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                         placeholder="Confirme sua senha"
                         required
@@ -525,9 +418,7 @@ export default function Register() {
                       />
                       <button
                         type="button"
-                        onClick={() =>
-                          setShowConfirmPassword(!showConfirmPassword)
-                        }
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-secondary rounded-lg transition-smooth"
                       >
                         {showConfirmPassword ? (
@@ -583,19 +474,15 @@ export default function Register() {
                       </p>
                     </div>
                   </div>
-
+                  
                   {userType === "professional" && (
                     <div className="bg-success/10 rounded-xl p-4 border border-success/20">
                       <div className="flex items-center space-x-2 mb-2">
                         <Shield className="w-5 h-5 text-success" />
-                        <span className="subtitle text-sm text-success">
-                          Verificação Profissional
-                        </span>
+                        <span className="subtitle text-sm text-success">Verificação Profissional</span>
                       </div>
                       <p className="body-text text-xs text-muted-foreground">
-                        Após o cadastro, você poderá verificar seu perfil
-                        enviando documentos para aumentar a confiança dos
-                        clientes.
+                        Após o cadastro, você poderá verificar seu perfil enviando documentos para aumentar a confiança dos clientes.
                       </p>
                     </div>
                   )}
@@ -607,28 +494,17 @@ export default function Register() {
                       <input
                         type="checkbox"
                         checked={formData.acceptTerms}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            acceptTerms: e.target.checked,
-                          })
-                        }
+                        onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
                         className="w-5 h-5 text-primary border-border rounded focus:ring-primary/20 mt-0.5"
                         required
                       />
                       <span className="body-text text-sm text-foreground">
                         Aceito os{" "}
-                        <Link
-                          to="/terms"
-                          className="text-primary hover:underline"
-                        >
+                        <Link to="/terms" className="text-primary hover:underline">
                           Termos de Serviço
                         </Link>{" "}
                         e a{" "}
-                        <Link
-                          to="/privacy"
-                          className="text-primary hover:underline"
-                        >
+                        <Link to="/privacy" className="text-primary hover:underline">
                           Política de Privacidade
                         </Link>
                       </span>
@@ -638,17 +514,11 @@ export default function Register() {
                       <input
                         type="checkbox"
                         checked={formData.acceptMarketing}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            acceptMarketing: e.target.checked,
-                          })
-                        }
+                        onChange={(e) => setFormData({ ...formData, acceptMarketing: e.target.checked })}
                         className="w-5 h-5 text-primary border-border rounded focus:ring-primary/20 mt-0.5"
                       />
                       <span className="body-text text-sm text-muted-foreground">
-                        Quero receber novidades e promoções por e-mail
-                        (opcional)
+                        Quero receber novidades e promoções por e-mail (opcional)
                       </span>
                     </label>
                   </div>
