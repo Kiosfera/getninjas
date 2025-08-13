@@ -1,15 +1,71 @@
-import { Search, Star, MapPin, Clock, Wrench, Home, Palette, Car, Heart, Laptop, Scissors, TreePine, Bell, Filter, ArrowRight, Zap, Shield, Award, CheckCircle } from "lucide-react";
+import {
+  Search,
+  Star,
+  MapPin,
+  Clock,
+  Wrench,
+  Home,
+  Palette,
+  Car,
+  Heart,
+  Laptop,
+  Scissors,
+  TreePine,
+  Bell,
+  Filter,
+  ArrowRight,
+  Zap,
+  Shield,
+  Award,
+  CheckCircle,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import NotificationToast from "@/components/NotificationToast";
 
 const serviceCategories = [
-  { icon: Wrench, name: "Manutenção", color: "from-blue-500 to-cyan-500", bgColor: "bg-blue-50", textColor: "text-blue-600" },
-  { icon: Home, name: "Casa & Jardim", color: "from-green-500 to-emerald-500", bgColor: "bg-green-50", textColor: "text-green-600" },
-  { icon: Palette, name: "Design", color: "from-purple-500 to-pink-500", bgColor: "bg-purple-50", textColor: "text-purple-600" },
-  { icon: Car, name: "Automotivo", color: "from-red-500 to-orange-500", bgColor: "bg-red-50", textColor: "text-red-600" },
-  { icon: Heart, name: "Saúde", color: "from-pink-500 to-rose-500", bgColor: "bg-pink-50", textColor: "text-pink-600" },
-  { icon: Laptop, name: "Tecnologia", color: "from-indigo-500 to-blue-500", bgColor: "bg-indigo-50", textColor: "text-indigo-600" },
+  {
+    icon: Wrench,
+    name: "Manutenção",
+    color: "from-blue-500 to-cyan-500",
+    bgColor: "bg-blue-50",
+    textColor: "text-blue-600",
+  },
+  {
+    icon: Home,
+    name: "Casa & Jardim",
+    color: "from-green-500 to-emerald-500",
+    bgColor: "bg-green-50",
+    textColor: "text-green-600",
+  },
+  {
+    icon: Palette,
+    name: "Design",
+    color: "from-purple-500 to-pink-500",
+    bgColor: "bg-purple-50",
+    textColor: "text-purple-600",
+  },
+  {
+    icon: Car,
+    name: "Automotivo",
+    color: "from-red-500 to-orange-500",
+    bgColor: "bg-red-50",
+    textColor: "text-red-600",
+  },
+  {
+    icon: Heart,
+    name: "Saúde",
+    color: "from-pink-500 to-rose-500",
+    bgColor: "bg-pink-50",
+    textColor: "text-pink-600",
+  },
+  {
+    icon: Laptop,
+    name: "Tecnologia",
+    color: "from-indigo-500 to-blue-500",
+    bgColor: "bg-indigo-50",
+    textColor: "text-indigo-600",
+  },
 ];
 
 const featuredProfessionals = [
@@ -25,7 +81,7 @@ const featuredProfessionals = [
     verified: true,
     responseTime: "Responde em ~15 min",
     completedJobs: 234,
-    tags: ["Disponível hoje", "Emergência 24h"]
+    tags: ["Disponível hoje", "Emergência 24h"],
   },
   {
     id: 2,
@@ -39,7 +95,7 @@ const featuredProfessionals = [
     verified: true,
     responseTime: "Responde em ~30 min",
     completedJobs: 156,
-    tags: ["Portfolio premium", "Entrega rápida"]
+    tags: ["Portfolio premium", "Entrega rápida"],
   },
   {
     id: 3,
@@ -53,20 +109,42 @@ const featuredProfessionals = [
     verified: true,
     responseTime: "Responde em ~45 min",
     completedJobs: 312,
-    tags: ["Eco-sustentável", "Orçamento grátis"]
+    tags: ["Eco-sustentável", "Orçamento grátis"],
   },
 ];
 
 const quickStats = [
-  { icon: Shield, value: "50k+", label: "Profissionais Verificados", color: "text-blue-600" },
-  { icon: Award, value: "4.8★", label: "Avaliação Média", color: "text-yellow-600" },
-  { icon: CheckCircle, value: "2M+", label: "Serviços Realizados", color: "text-green-600" },
+  {
+    icon: Shield,
+    value: "50k+",
+    label: "Profissionais Verificados",
+    color: "text-blue-600",
+  },
+  {
+    icon: Award,
+    value: "4.8★",
+    label: "Avaliação Média",
+    color: "text-yellow-600",
+  },
+  {
+    icon: CheckCircle,
+    value: "2M+",
+    label: "Serviços Realizados",
+    color: "text-green-600",
+  },
 ];
 
 export default function Index() {
-  const [notification, setNotification] = useState<{message: string, type: "success" | "error" | "info", visible: boolean}>({ message: "", type: "info", visible: false });
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error" | "info";
+    visible: boolean;
+  }>({ message: "", type: "info", visible: false });
 
-  const showNotification = (message: string, type: "success" | "error" | "info") => {
+  const showNotification = (
+    message: string,
+    type: "success" | "error" | "info",
+  ) => {
     setNotification({ message, type, visible: true });
   };
 
@@ -116,7 +194,7 @@ export default function Index() {
             Conecte-se com especialistas qualificados perto de você
           </p>
         </div>
-        
+
         <div className="relative mb-4">
           <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground">
             <Search className="w-5 h-5" />
@@ -161,11 +239,17 @@ export default function Index() {
         <div className="grid grid-cols-3 gap-4">
           {quickStats.map((stat, index) => (
             <div key={index} className="text-center py-3">
-              <div className={`inline-flex items-center justify-center w-10 h-10 ${stat.color.replace('text-', 'bg-').replace('-600', '-50')} rounded-xl mb-2`}>
+              <div
+                className={`inline-flex items-center justify-center w-10 h-10 ${stat.color.replace("text-", "bg-").replace("-600", "-50")} rounded-xl mb-2`}
+              >
                 <stat.icon className={`w-5 h-5 ${stat.color}`} />
               </div>
-              <div className="title-bold text-lg text-foreground">{stat.value}</div>
-              <div className="body-text text-xs text-muted-foreground">{stat.label}</div>
+              <div className="title-bold text-lg text-foreground">
+                {stat.value}
+              </div>
+              <div className="body-text text-xs text-muted-foreground">
+                {stat.label}
+              </div>
             </div>
           ))}
         </div>
@@ -177,12 +261,15 @@ export default function Index() {
           <h3 className="text-lg title-semibold text-foreground">
             Categorias Populares
           </h3>
-          <Link to="/search" className="flex items-center text-primary button-text text-sm hover:text-primary-600 transition-smooth">
+          <Link
+            to="/search"
+            className="flex items-center text-primary button-text text-sm hover:text-primary-600 transition-smooth"
+          >
             Ver todas
             <ArrowRight className="w-4 h-4 ml-1" />
           </Link>
         </div>
-        
+
         <div className="grid grid-cols-3 gap-4">
           {serviceCategories.map((category, index) => (
             <Link
@@ -191,10 +278,14 @@ export default function Index() {
               className="group transition-bounce hover:scale-105"
             >
               <div className="bg-white rounded-2xl p-4 shadow-soft hover:shadow-soft-hover transition-smooth border border-border group-hover:border-primary/20">
-                <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center mb-3 shadow-soft`}>
+                <div
+                  className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center mb-3 shadow-soft`}
+                >
                   <category.icon className="w-6 h-6 text-white" />
                 </div>
-                <h4 className={`subtitle text-sm text-foreground leading-tight`}>
+                <h4
+                  className={`subtitle text-sm text-foreground leading-tight`}
+                >
                   {category.name}
                 </h4>
               </div>
@@ -209,12 +300,15 @@ export default function Index() {
           <h3 className="text-lg title-semibold text-foreground">
             Profissionais em Destaque
           </h3>
-          <Link to="/search" className="flex items-center text-primary button-text text-sm hover:text-primary-600 transition-smooth">
+          <Link
+            to="/search"
+            className="flex items-center text-primary button-text text-sm hover:text-primary-600 transition-smooth"
+          >
             Ver todos
             <ArrowRight className="w-4 h-4 ml-1" />
           </Link>
         </div>
-        
+
         <div className="space-y-4">
           {featuredProfessionals.map((professional) => (
             <div
@@ -234,7 +328,7 @@ export default function Index() {
                     </div>
                   )}
                 </div>
-                
+
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
@@ -244,7 +338,7 @@ export default function Index() {
                       <p className="body-text text-muted-foreground text-sm mb-2">
                         {professional.profession}
                       </p>
-                      
+
                       <div className="flex items-center gap-4 mb-2">
                         <div className="flex items-center">
                           <Star className="w-4 h-4 text-yellow-500 fill-current" />
@@ -259,18 +353,18 @@ export default function Index() {
                           {professional.completedJobs} trabalhos
                         </div>
                       </div>
-                      
+
                       <div className="flex items-center text-muted-foreground mb-3">
                         <MapPin className="w-3 h-3 mr-1" />
                         <span className="body-text text-xs">
                           {professional.location}
                         </span>
                       </div>
-                      
+
                       <div className="body-text text-xs text-success mb-3">
                         {professional.responseTime}
                       </div>
-                      
+
                       <div className="flex flex-wrap gap-2">
                         {professional.tags.map((tag, tagIndex) => (
                           <span
@@ -282,14 +376,18 @@ export default function Index() {
                         ))}
                       </div>
                     </div>
-                    
+
                     <div className="text-right ml-4 flex-shrink-0">
                       <div className="title-bold text-lg text-foreground mb-1">
                         {professional.price}
-                        <span className="body-text text-sm text-muted-foreground font-normal">/hora</span>
+                        <span className="body-text text-sm text-muted-foreground font-normal">
+                          /hora
+                        </span>
                       </div>
                       <button
-                        onClick={() => handleHireProfessional(professional.name)}
+                        onClick={() =>
+                          handleHireProfessional(professional.name)
+                        }
                         className="gradient-primary text-white px-5 py-2.5 rounded-xl button-text text-sm hover:shadow-soft-hover transition-smooth group-hover:scale-105 transition-bounce ripple"
                       >
                         Contratar
@@ -315,7 +413,9 @@ export default function Index() {
                 Receba orçamentos em minutos dos melhores profissionais
               </p>
               <button
-                onClick={() => showNotification("Formulário de orçamento aberto!", "info")}
+                onClick={() =>
+                  showNotification("Formulário de orçamento aberto!", "info")
+                }
                 className="bg-white text-primary px-6 py-3 rounded-xl button-text hover:bg-gray-50 transition-smooth shadow-soft ripple"
               >
                 Solicitar Orçamento

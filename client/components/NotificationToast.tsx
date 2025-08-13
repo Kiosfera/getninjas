@@ -9,12 +9,12 @@ interface NotificationToastProps {
   duration?: number;
 }
 
-export default function NotificationToast({ 
-  message, 
-  type, 
-  isVisible, 
-  onClose, 
-  duration = 3000 
+export default function NotificationToast({
+  message,
+  type,
+  isVisible,
+  onClose,
+  duration = 3000,
 }: NotificationToastProps) {
   useEffect(() => {
     if (isVisible && duration > 0) {
@@ -51,10 +51,12 @@ export default function NotificationToast({
 
   return (
     <div className="fixed top-4 left-4 right-4 z-50 animate-in slide-in-from-top duration-300">
-      <div className={`${getBgColor()} rounded-2xl p-4 shadow-soft border backdrop-blur-sm flex items-center space-x-3`}>
+      <div
+        className={`${getBgColor()} rounded-2xl p-4 shadow-soft border backdrop-blur-sm flex items-center space-x-3`}
+      >
         {getIcon()}
         <p className="body-text text-foreground flex-1">{message}</p>
-        <button 
+        <button
           onClick={onClose}
           className="p-1 hover:bg-white/20 rounded-lg transition-smooth"
         >

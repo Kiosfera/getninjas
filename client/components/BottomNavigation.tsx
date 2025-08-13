@@ -18,32 +18,34 @@ export default function BottomNavigation() {
       <div className="flex justify-around items-center max-w-md mx-auto">
         {navigationItems.map(({ icon: Icon, label, path, hasNotification }) => {
           const isActive = location.pathname === path;
-          
+
           return (
             <Link
               key={path}
               to={path}
               className={cn(
                 "relative flex flex-col items-center py-2.5 px-3 rounded-2xl transition-smooth min-w-[64px] group",
-                isActive 
-                  ? "text-primary bg-primary/10 scale-105" 
-                  : "text-muted-foreground hover:text-primary hover:bg-secondary hover:scale-105"
+                isActive
+                  ? "text-primary bg-primary/10 scale-105"
+                  : "text-muted-foreground hover:text-primary hover:bg-secondary hover:scale-105",
               )}
             >
               <div className="relative">
-                <Icon 
-                  size={22} 
+                <Icon
+                  size={22}
                   className={cn(
                     "mb-1.5 transition-smooth",
-                    isActive ? "stroke-[2.5]" : "stroke-[2] group-hover:stroke-[2.5]"
-                  )} 
+                    isActive
+                      ? "stroke-[2.5]"
+                      : "stroke-[2] group-hover:stroke-[2.5]",
+                  )}
                 />
                 {hasNotification && (
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full flex items-center justify-center shadow-soft animate-pulse">
                     <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
                   </div>
                 )}
-                
+
                 {/* Active indicator */}
                 {isActive && (
                   <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
@@ -51,18 +53,22 @@ export default function BottomNavigation() {
                   </div>
                 )}
               </div>
-              
-              <span className={cn(
-                "text-xs transition-smooth",
-                isActive ? "font-semibold" : "font-medium"
-              )}>
+
+              <span
+                className={cn(
+                  "text-xs transition-smooth",
+                  isActive ? "font-semibold" : "font-medium",
+                )}
+              >
                 {label}
               </span>
-              
+
               {/* Ripple effect on tap */}
-              <div className={cn(
-                "absolute inset-0 rounded-2xl opacity-0 group-active:opacity-20 bg-primary transition-opacity duration-150"
-              )}></div>
+              <div
+                className={cn(
+                  "absolute inset-0 rounded-2xl opacity-0 group-active:opacity-20 bg-primary transition-opacity duration-150",
+                )}
+              ></div>
             </Link>
           );
         })}
