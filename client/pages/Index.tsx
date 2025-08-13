@@ -194,8 +194,12 @@ export default function Index() {
                       className="w-8 h-8 rounded-full bg-secondary"
                     />
                     <div className="hidden sm:block">
-                      <p className="subtitle text-sm text-foreground truncate max-w-20">{user.name}</p>
-                      <p className="body-text text-xs text-muted-foreground capitalize">{user.type}</p>
+                      <p className="subtitle text-sm text-foreground truncate max-w-20">
+                        {user.name}
+                      </p>
+                      <p className="body-text text-xs text-muted-foreground capitalize">
+                        {user.type}
+                      </p>
                     </div>
                   </div>
                 </>
