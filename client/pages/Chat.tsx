@@ -298,7 +298,7 @@ export default function Chat() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${user?.id}`,
+            Authorization: `Bearer ${user?.id || 'guest'}`,
           },
           body: JSON.stringify({
             content: tempMessage,
