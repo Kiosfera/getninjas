@@ -42,6 +42,7 @@ const App = () => (
                 element={<ProfessionalDetail />}
               />
               <Route path="/requests" element={<Requests />} />
+              <Route path="/requests/:id" element={<RequestDetail />} />
               <Route path="/chat" element={<Chat />} />
               <Route path="/chat/:conversationId" element={<Chat />} />
               <Route path="/profile" element={<Profile />} />
