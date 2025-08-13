@@ -1,5 +1,20 @@
 import { useState } from "react";
-import { ArrowLeft, Plus, Search, Filter, MapPin, Clock, DollarSign, MessageCircle, Star, Eye, MoreVertical, CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  Plus,
+  Search,
+  Filter,
+  MapPin,
+  Clock,
+  DollarSign,
+  MessageCircle,
+  Star,
+  Eye,
+  MoreVertical,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import PlaceholderPage from "@/components/PlaceholderPage";
@@ -31,7 +46,8 @@ const mockRequests: ServiceRequest[] = [
   {
     id: "req_1",
     title: "Instalação de Chuveiro Elétrico",
-    description: "Preciso instalar um chuveiro elétrico novo no banheiro. O ponto já existe, apenas trocar o equipamento.",
+    description:
+      "Preciso instalar um chuveiro elétrico novo no banheiro. O ponto já existe, apenas trocar o equipamento.",
     category: "Eletricista",
     location: "São Paulo, SP",
     budget: { min: 80, max: 150, type: "range" },
@@ -43,9 +59,10 @@ const mockRequests: ServiceRequest[] = [
     images: ["/placeholder.svg"],
   },
   {
-    id: "req_2", 
+    id: "req_2",
     title: "Design de Logo para Empresa",
-    description: "Startup de tecnologia precisa de logo moderno e identidade visual completa.",
+    description:
+      "Startup de tecnologia precisa de logo moderno e identidade visual completa.",
     category: "Design",
     location: "Rio de Janeiro, RJ",
     budget: { min: 500, max: 500, type: "fixed" },
@@ -58,16 +75,17 @@ const mockRequests: ServiceRequest[] = [
       id: "prof_2",
       name: "Ana Costa",
       avatar: "/placeholder.svg",
-      rating: 5.0
+      rating: 5.0,
     },
-    deadline: "2024-01-25"
+    deadline: "2024-01-25",
   },
   {
     id: "req_3",
     title: "Jardinagem e Paisagismo",
-    description: "Reforma completa do jardim da casa, incluindo nova grama, plantas e sistema de irrigação.",
+    description:
+      "Reforma completa do jardim da casa, incluindo nova grama, plantas e sistema de irrigação.",
     category: "Jardineiro",
-    location: "Brasília, DF", 
+    location: "Brasília, DF",
     budget: { min: 800, max: 1200, type: "range" },
     status: "completed",
     createdAt: "2023-12-20",
@@ -76,10 +94,10 @@ const mockRequests: ServiceRequest[] = [
     viewsCount: 12,
     selectedProfessional: {
       id: "prof_3",
-      name: "João Santos", 
+      name: "João Santos",
       avatar: "/placeholder.svg",
-      rating: 4.8
-    }
+      rating: 4.8,
+    },
   },
   {
     id: "req_4",
@@ -93,16 +111,25 @@ const mockRequests: ServiceRequest[] = [
     urgency: "high",
     quotesCount: 2,
     viewsCount: 15,
-  }
+  },
 ];
 
 export default function Requests() {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<"all" | "open" | "in_progress" | "completed">("all");
+  const [activeTab, setActiveTab] = useState<
+    "all" | "open" | "in_progress" | "completed"
+  >("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [notification, setNotification] = useState<{message: string, type: "success" | "error" | "info", visible: boolean}>({ message: "", type: "info", visible: false });
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error" | "info";
+    visible: boolean;
+  }>({ message: "", type: "info", visible: false });
 
-  const showNotification = (message: string, type: "success" | "error" | "info") => {
+  const showNotification = (
+    message: string,
+    type: "success" | "error" | "info",
+  ) => {
     setNotification({ message, type, visible: true });
   };
 
@@ -115,63 +142,86 @@ export default function Requests() {
     );
   }
 
-  const filteredRequests = mockRequests.filter(request => {
-    const matchesSearch = request.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         request.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         request.category.toLowerCase().includes(searchQuery.toLowerCase());
-    
+  const filteredRequests = mockRequests.filter((request) => {
+    const matchesSearch =
+      request.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      request.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      request.category.toLowerCase().includes(searchQuery.toLowerCase());
+
     const matchesTab = activeTab === "all" || request.status === activeTab;
-    
+
     return matchesSearch && matchesTab;
   });
 
   const getStatusColor = (status: ServiceRequest["status"]) => {
     switch (status) {
-      case "open": return "text-blue-600 bg-blue-50";
-      case "quoted": return "text-yellow-600 bg-yellow-50";
-      case "in_progress": return "text-orange-600 bg-orange-50";
-      case "completed": return "text-green-600 bg-green-50";
-      case "cancelled": return "text-red-600 bg-red-50";
-      default: return "text-gray-600 bg-gray-50";
+      case "open":
+        return "text-blue-600 bg-blue-50";
+      case "quoted":
+        return "text-yellow-600 bg-yellow-50";
+      case "in_progress":
+        return "text-orange-600 bg-orange-50";
+      case "completed":
+        return "text-green-600 bg-green-50";
+      case "cancelled":
+        return "text-red-600 bg-red-50";
+      default:
+        return "text-gray-600 bg-gray-50";
     }
   };
 
   const getStatusText = (status: ServiceRequest["status"]) => {
     switch (status) {
-      case "open": return "Aberto";
-      case "quoted": return "Com orçamentos";
-      case "in_progress": return "Em andamento";
-      case "completed": return "Concluído";
-      case "cancelled": return "Cancelado";
-      default: return status;
+      case "open":
+        return "Aberto";
+      case "quoted":
+        return "Com orçamentos";
+      case "in_progress":
+        return "Em andamento";
+      case "completed":
+        return "Concluído";
+      case "cancelled":
+        return "Cancelado";
+      default:
+        return status;
     }
   };
 
   const getUrgencyColor = (urgency: ServiceRequest["urgency"]) => {
     switch (urgency) {
-      case "low": return "text-gray-600";
-      case "medium": return "text-yellow-600";
-      case "high": return "text-red-600";
-      default: return "text-gray-600";
+      case "low":
+        return "text-gray-600";
+      case "medium":
+        return "text-yellow-600";
+      case "high":
+        return "text-red-600";
+      default:
+        return "text-gray-600";
     }
   };
 
   const getStatusIcon = (status: ServiceRequest["status"]) => {
     switch (status) {
-      case "open": return <Clock className="w-4 h-4" />;
-      case "quoted": return <MessageCircle className="w-4 h-4" />;
-      case "in_progress": return <AlertCircle className="w-4 h-4" />;
-      case "completed": return <CheckCircle className="w-4 h-4" />;
-      case "cancelled": return <XCircle className="w-4 h-4" />;
-      default: return <Clock className="w-4 h-4" />;
+      case "open":
+        return <Clock className="w-4 h-4" />;
+      case "quoted":
+        return <MessageCircle className="w-4 h-4" />;
+      case "in_progress":
+        return <AlertCircle className="w-4 h-4" />;
+      case "completed":
+        return <CheckCircle className="w-4 h-4" />;
+      case "cancelled":
+        return <XCircle className="w-4 h-4" />;
+      default:
+        return <Clock className="w-4 h-4" />;
     }
   };
 
   const tabCounts = {
     all: mockRequests.length,
-    open: mockRequests.filter(r => r.status === "open").length,
-    in_progress: mockRequests.filter(r => r.status === "in_progress").length,
-    completed: mockRequests.filter(r => r.status === "completed").length,
+    open: mockRequests.filter((r) => r.status === "open").length,
+    in_progress: mockRequests.filter((r) => r.status === "in_progress").length,
+    completed: mockRequests.filter((r) => r.status === "completed").length,
   };
 
   return (
@@ -181,10 +231,15 @@ export default function Requests() {
         <div className="px-4 py-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-3">
-              <Link to="/" className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth">
+              <Link
+                to="/"
+                className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth"
+              >
                 <ArrowLeft className="w-5 h-5 text-foreground" />
               </Link>
-              <h1 className="text-xl title-bold text-foreground">Suas Solicitações</h1>
+              <h1 className="text-xl title-bold text-foreground">
+                Suas Solicitações
+              </h1>
             </div>
             <Link
               to="/post-request"
@@ -215,7 +270,11 @@ export default function Requests() {
           {[
             { id: "all", name: "Todas", count: tabCounts.all },
             { id: "open", name: "Abertas", count: tabCounts.open },
-            { id: "in_progress", name: "Em Andamento", count: tabCounts.in_progress },
+            {
+              id: "in_progress",
+              name: "Em Andamento",
+              count: tabCounts.in_progress,
+            },
             { id: "completed", name: "Concluídas", count: tabCounts.completed },
           ].map((tab) => (
             <button
@@ -284,9 +343,13 @@ export default function Requests() {
                       <h3 className="title-semibold text-lg text-foreground">
                         {request.title}
                       </h3>
-                      <span className={`inline-flex items-center px-2 py-1 rounded-lg text-xs button-text ${getStatusColor(request.status)}`}>
+                      <span
+                        className={`inline-flex items-center px-2 py-1 rounded-lg text-xs button-text ${getStatusColor(request.status)}`}
+                      >
                         {getStatusIcon(request.status)}
-                        <span className="ml-1">{getStatusText(request.status)}</span>
+                        <span className="ml-1">
+                          {getStatusText(request.status)}
+                        </span>
                       </span>
                     </div>
 
@@ -298,9 +361,15 @@ export default function Requests() {
                       <span className="text-sm text-muted-foreground">
                         {request.category}
                       </span>
-                      <span className={`text-sm ${getUrgencyColor(request.urgency)}`}>
+                      <span
+                        className={`text-sm ${getUrgencyColor(request.urgency)}`}
+                      >
                         <Clock className="w-4 h-4 inline mr-1" />
-                        {request.urgency === "high" ? "Urgente" : request.urgency === "medium" ? "Moderado" : "Não urgente"}
+                        {request.urgency === "high"
+                          ? "Urgente"
+                          : request.urgency === "medium"
+                            ? "Moderado"
+                            : "Não urgente"}
                       </span>
                     </div>
 
@@ -313,19 +382,22 @@ export default function Requests() {
                         <div className="flex items-center text-muted-foreground">
                           <DollarSign className="w-4 h-4 mr-1" />
                           <span className="body-text text-sm">
-                            {request.budget.type === "fixed" 
+                            {request.budget.type === "fixed"
                               ? `R$ ${request.budget.min}`
-                              : `R$ ${request.budget.min} - R$ ${request.budget.max}`
-                            }
+                              : `R$ ${request.budget.min} - R$ ${request.budget.max}`}
                           </span>
                         </div>
                         <div className="flex items-center text-muted-foreground">
                           <MessageCircle className="w-4 h-4 mr-1" />
-                          <span className="body-text text-sm">{request.quotesCount} orçamentos</span>
+                          <span className="body-text text-sm">
+                            {request.quotesCount} orçamentos
+                          </span>
                         </div>
                         <div className="flex items-center text-muted-foreground">
                           <Eye className="w-4 h-4 mr-1" />
-                          <span className="body-text text-sm">{request.viewsCount} visualizações</span>
+                          <span className="body-text text-sm">
+                            {request.viewsCount} visualizações
+                          </span>
                         </div>
                       </div>
 
@@ -345,7 +417,8 @@ export default function Requests() {
                           />
                           <div className="flex-1">
                             <p className="subtitle text-sm text-foreground">
-                              Profissional selecionado: {request.selectedProfessional.name}
+                              Profissional selecionado:{" "}
+                              {request.selectedProfessional.name}
                             </p>
                             <div className="flex items-center">
                               <Star className="w-3 h-3 text-yellow-500 fill-current mr-1" />
@@ -354,9 +427,14 @@ export default function Requests() {
                               </span>
                               {request.deadline && (
                                 <>
-                                  <span className="mx-2 text-muted-foreground">•</span>
+                                  <span className="mx-2 text-muted-foreground">
+                                    •
+                                  </span>
                                   <span className="body-text text-xs text-muted-foreground">
-                                    Prazo: {new Date(request.deadline).toLocaleDateString()}
+                                    Prazo:{" "}
+                                    {new Date(
+                                      request.deadline,
+                                    ).toLocaleDateString()}
                                   </span>
                                 </>
                               )}
@@ -382,13 +460,13 @@ export default function Requests() {
                   >
                     Ver Detalhes
                   </Link>
-                  
+
                   {request.status === "open" && (
                     <button className="flex-1 bg-secondary text-foreground px-4 py-2 rounded-xl button-text text-sm hover:bg-muted transition-smooth">
                       Editar
                     </button>
                   )}
-                  
+
                   {request.status === "quoted" && (
                     <Link
                       to={`/request/${request.id}/quotes`}
@@ -397,10 +475,15 @@ export default function Requests() {
                       Ver Orçamentos ({request.quotesCount})
                     </Link>
                   )}
-                  
+
                   {request.status === "completed" && (
                     <button
-                      onClick={() => showNotification("Sistema de avaliação em desenvolvimento", "info")}
+                      onClick={() =>
+                        showNotification(
+                          "Sistema de avaliação em desenvolvimento",
+                          "info",
+                        )
+                      }
                       className="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-xl button-text text-sm hover:bg-yellow-600 transition-smooth"
                     >
                       Avaliar Serviço
