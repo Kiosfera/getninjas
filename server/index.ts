@@ -11,6 +11,26 @@ import {
   handleLogout,
   handleUpdateProfile,
 } from "./routes/auth";
+import {
+  handleGetRequests,
+  handleGetRequest,
+  handleCreateRequest,
+  handleUpdateRequest,
+  handleDeleteRequest,
+  handleCreateProposal,
+  handleUpdateProposal,
+  handleGetNearbyRequests,
+} from "./routes/requests";
+import {
+  handleGetConversations,
+  handleGetConversation,
+  handleCreateConversation,
+  handleGetMessages,
+  handleSendMessage,
+  handleUpdateMessage,
+  handleMarkAsRead,
+  handleDeleteMessage,
+} from "./routes/chat";
 
 export function createServer() {
   const app = express();
