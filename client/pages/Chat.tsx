@@ -89,7 +89,7 @@ export default function Chat() {
     try {
       const response = await fetch("/api/conversations", {
         headers: {
-          Authorization: `Bearer ${user?.id}`,
+          Authorization: `Bearer ${user?.id || 'guest'}`,
         },
       });
 
