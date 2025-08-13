@@ -263,14 +263,7 @@ export default function Chat() {
     scrollToBottom();
   }, [messages, selectedConversation]);
 
-  if (!user) {
-    return (
-      <PlaceholderPage
-        title="Mensagens"
-        description="Faça login para acessar suas conversas com profissionais e clientes."
-      />
-    );
-  }
+  // Allow access without authentication - show demo data if no user
 
   const filteredConversations = conversations.filter((conv) => {
     const otherParticipant = conv.participants.find(
