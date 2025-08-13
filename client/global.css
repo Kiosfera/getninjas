@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -128,10 +128,49 @@
   }
 
   body {
-    @apply bg-background text-foreground font-montserrat;
+    @apply bg-background text-foreground font-montserrat antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-poppins;
+  }
+
+  /* Typography Classes */
+  .title-bold {
+    @apply font-poppins font-bold;
+  }
+
+  .title-semibold {
+    @apply font-poppins font-semibold;
+  }
+
+  .button-text {
+    @apply font-poppins font-semibold;
+  }
+
+  .body-text {
+    @apply font-montserrat font-normal;
+  }
+
+  .subtitle {
+    @apply font-montserrat font-medium;
+  }
+
+  /* Modern shadows */
+  .shadow-tech {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .shadow-tech-hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Gradient backgrounds */
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-600)) 100%);
+  }
+
+  .gradient-card {
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
   }
 }
