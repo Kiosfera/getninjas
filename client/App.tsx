@@ -19,6 +19,7 @@ import PostRequest from "./pages/PostRequest";
 import ProfessionalDetail from "./pages/ProfessionalDetail";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
+import RequestDetail from "./pages/RequestDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
