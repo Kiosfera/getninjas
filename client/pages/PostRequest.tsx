@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { ArrowLeft, MapPin, Clock, DollarSign, Camera, X, Calendar, AlertCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  MapPin,
+  Clock,
+  DollarSign,
+  Camera,
+  X,
+  Calendar,
+  AlertCircle,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import NotificationToast from "@/components/NotificationToast";
@@ -19,15 +28,34 @@ const serviceCategories = [
 ];
 
 const urgencyLevels = [
-  { id: "low", name: "Não é urgente", description: "Posso aguardar alguns dias", color: "text-green-600" },
-  { id: "medium", name: "Moderado", description: "Gostaria de resolver esta semana", color: "text-yellow-600" },
-  { id: "high", name: "Urgente", description: "Preciso resolver hoje", color: "text-red-600" },
+  {
+    id: "low",
+    name: "Não é urgente",
+    description: "Posso aguardar alguns dias",
+    color: "text-green-600",
+  },
+  {
+    id: "medium",
+    name: "Moderado",
+    description: "Gostaria de resolver esta semana",
+    color: "text-yellow-600",
+  },
+  {
+    id: "high",
+    name: "Urgente",
+    description: "Preciso resolver hoje",
+    color: "text-red-600",
+  },
 ];
 
 export default function PostRequest() {
   const { user } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [notification, setNotification] = useState<{message: string, type: "success" | "error" | "info", visible: boolean}>({ message: "", type: "info", visible: false });
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error" | "info";
+    visible: boolean;
+  }>({ message: "", type: "info", visible: false });
   const [currentStep, setCurrentStep] = useState(1);
   const [images, setImages] = useState<string[]>([]);
 
@@ -52,17 +80,20 @@ export default function PostRequest() {
     contactPreference: "both" as "phone" | "chat" | "both",
   });
 
-  const showNotification = (message: string, type: "success" | "error" | "info") => {
+  const showNotification = (
+    message: string,
+    type: "success" | "error" | "info",
+  ) => {
     setNotification({ message, type, visible: true });
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    files.forEach(file => {
+    files.forEach((file) => {
       const reader = new FileReader();
       reader.onload = (event) => {
         if (event.target?.result) {
-          setImages(prev => [...prev, event.target?.result as string]);
+          setImages((prev) => [...prev, event.target?.result as string]);
         }
       };
       reader.readAsDataURL(file);
@@ -70,7 +101,7 @@ export default function PostRequest() {
   };
 
   const removeImage = (index: number) => {
-    setImages(prev => prev.filter((_, i) => i !== index));
+    setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async () => {
@@ -95,7 +126,7 @@ export default function PostRequest() {
       }
 
       showNotification("Solicitação publicada com sucesso!", "success");
-      
+
       // Reset form
       setRequestData({
         category: "",
@@ -110,20 +141,33 @@ export default function PostRequest() {
       });
       setImages([]);
       setCurrentStep(1);
-      
     } catch (error) {
-      showNotification(error instanceof Error ? error.message : "Erro ao publicar solicitação", "error");
+      showNotification(
+        error instanceof Error ? error.message : "Erro ao publicar solicitação",
+        "error",
+      );
     }
   };
 
   const isStepComplete = (step: number) => {
     switch (step) {
       case 1:
-        return requestData.category && requestData.title && requestData.description;
+        return (
+          requestData.category && requestData.title && requestData.description
+        );
       case 2:
-        return requestData.location.address && requestData.location.city && requestData.location.state;
+        return (
+          requestData.location.address &&
+          requestData.location.city &&
+          requestData.location.state
+        );
       case 3:
-        return requestData.urgency && (requestData.budget.type === "fixed" ? requestData.budget.min : requestData.budget.min && requestData.budget.max);
+        return (
+          requestData.urgency &&
+          (requestData.budget.type === "fixed"
+            ? requestData.budget.min
+            : requestData.budget.min && requestData.budget.max)
+        );
       default:
         return false;
     }
@@ -137,10 +181,15 @@ export default function PostRequest() {
         <header className="bg-white/95 backdrop-blur-sm shadow-soft sticky top-0 z-40">
           <div className="px-4 py-4">
             <div className="flex items-center space-x-3">
-              <Link to="/" className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth">
+              <Link
+                to="/"
+                className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth"
+              >
                 <ArrowLeft className="w-5 h-5 text-foreground" />
               </Link>
-              <h1 className="text-xl title-bold text-foreground">Solicitar Serviço</h1>
+              <h1 className="text-xl title-bold text-foreground">
+                Solicitar Serviço
+              </h1>
             </div>
           </div>
         </header>
@@ -179,12 +228,19 @@ export default function PostRequest() {
       <header className="bg-white/95 backdrop-blur-sm shadow-soft sticky top-0 z-40">
         <div className="px-4 py-4">
           <div className="flex items-center space-x-3">
-            <Link to="/" className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth">
+            <Link
+              to="/"
+              className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth"
+            >
               <ArrowLeft className="w-5 h-5 text-foreground" />
             </Link>
             <div className="flex-1">
-              <h1 className="text-xl title-bold text-foreground">Solicitar Serviço</h1>
-              <p className="body-text text-xs text-muted-foreground">Etapa {currentStep} de 4</p>
+              <h1 className="text-xl title-bold text-foreground">
+                Solicitar Serviço
+              </h1>
+              <p className="body-text text-xs text-muted-foreground">
+                Etapa {currentStep} de 4
+              </p>
             </div>
           </div>
         </div>
@@ -195,9 +251,11 @@ export default function PostRequest() {
         <div className="flex items-center space-x-2">
           {[1, 2, 3, 4].map((step) => (
             <div key={step} className="flex-1">
-              <div className={`h-2 rounded-full transition-smooth ${
-                step <= currentStep ? "bg-primary" : "bg-secondary"
-              }`}></div>
+              <div
+                className={`h-2 rounded-full transition-smooth ${
+                  step <= currentStep ? "bg-primary" : "bg-secondary"
+                }`}
+              ></div>
             </div>
           ))}
         </div>
@@ -208,18 +266,26 @@ export default function PostRequest() {
         {currentStep === 1 && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-xl title-bold text-foreground mb-2">Qual serviço você precisa?</h2>
-              <p className="body-text text-muted-foreground mb-6">Escolha a categoria e descreva o que você precisa</p>
+              <h2 className="text-xl title-bold text-foreground mb-2">
+                Qual serviço você precisa?
+              </h2>
+              <p className="body-text text-muted-foreground mb-6">
+                Escolha a categoria e descreva o que você precisa
+              </p>
             </div>
 
             <div>
-              <label className="block subtitle text-sm text-foreground mb-3">Categoria do Serviço</label>
+              <label className="block subtitle text-sm text-foreground mb-3">
+                Categoria do Serviço
+              </label>
               <div className="grid grid-cols-2 gap-3">
                 {serviceCategories.map((category) => (
                   <button
                     key={category.id}
                     type="button"
-                    onClick={() => setRequestData({ ...requestData, category: category.id })}
+                    onClick={() =>
+                      setRequestData({ ...requestData, category: category.id })
+                    }
                     className={`p-4 rounded-xl border-2 transition-smooth text-left ${
                       requestData.category === category.id
                         ? "border-primary bg-primary/10"
@@ -227,28 +293,41 @@ export default function PostRequest() {
                     }`}
                   >
                     <div className="text-2xl mb-2">{category.icon}</div>
-                    <div className="subtitle text-sm text-foreground">{category.name}</div>
+                    <div className="subtitle text-sm text-foreground">
+                      {category.name}
+                    </div>
                   </button>
                 ))}
               </div>
             </div>
 
             <div>
-              <label className="block subtitle text-sm text-foreground mb-2">Título do Serviço</label>
+              <label className="block subtitle text-sm text-foreground mb-2">
+                Título do Serviço
+              </label>
               <input
                 type="text"
                 value={requestData.title}
-                onChange={(e) => setRequestData({ ...requestData, title: e.target.value })}
+                onChange={(e) =>
+                  setRequestData({ ...requestData, title: e.target.value })
+                }
                 placeholder="Ex: Instalação de chuveiro elétrico"
                 className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
               />
             </div>
 
             <div>
-              <label className="block subtitle text-sm text-foreground mb-2">Descrição Detalhada</label>
+              <label className="block subtitle text-sm text-foreground mb-2">
+                Descrição Detalhada
+              </label>
               <textarea
                 value={requestData.description}
-                onChange={(e) => setRequestData({ ...requestData, description: e.target.value })}
+                onChange={(e) =>
+                  setRequestData({
+                    ...requestData,
+                    description: e.target.value,
+                  })
+                }
                 placeholder="Descreva detalhadamente o que precisa ser feito, materiais necessários, etc."
                 rows={4}
                 className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text resize-none"
@@ -256,13 +335,19 @@ export default function PostRequest() {
             </div>
 
             <div>
-              <label className="block subtitle text-sm text-foreground mb-2">Fotos (Opcional)</label>
+              <label className="block subtitle text-sm text-foreground mb-2">
+                Fotos (Opcional)
+              </label>
               <div className="space-y-3">
                 <label className="flex items-center justify-center w-full h-32 border-2 border-dashed border-border rounded-xl hover:border-primary/50 transition-smooth cursor-pointer">
                   <div className="text-center">
                     <Camera className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-                    <p className="subtitle text-sm text-muted-foreground">Adicionar fotos</p>
-                    <p className="body-text text-xs text-muted-foreground">Ajuda os profissionais a entender melhor</p>
+                    <p className="subtitle text-sm text-muted-foreground">
+                      Adicionar fotos
+                    </p>
+                    <p className="body-text text-xs text-muted-foreground">
+                      Ajuda os profissionais a entender melhor
+                    </p>
                   </div>
                   <input
                     type="file"
@@ -301,21 +386,32 @@ export default function PostRequest() {
         {currentStep === 2 && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-xl title-bold text-foreground mb-2">Onde será realizado o serviço?</h2>
-              <p className="body-text text-muted-foreground mb-6">Informe o endereço para encontrarmos profissionais próximos</p>
+              <h2 className="text-xl title-bold text-foreground mb-2">
+                Onde será realizado o serviço?
+              </h2>
+              <p className="body-text text-muted-foreground mb-6">
+                Informe o endereço para encontrarmos profissionais próximos
+              </p>
             </div>
 
             <div>
-              <label className="block subtitle text-sm text-foreground mb-2">Endereço Completo</label>
+              <label className="block subtitle text-sm text-foreground mb-2">
+                Endereço Completo
+              </label>
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <input
                   type="text"
                   value={requestData.location.address}
-                  onChange={(e) => setRequestData({ 
-                    ...requestData, 
-                    location: { ...requestData.location, address: e.target.value }
-                  })}
+                  onChange={(e) =>
+                    setRequestData({
+                      ...requestData,
+                      location: {
+                        ...requestData.location,
+                        address: e.target.value,
+                      },
+                    })
+                  }
                   placeholder="Rua, número, bairro"
                   className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                 />
@@ -324,27 +420,41 @@ export default function PostRequest() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block subtitle text-sm text-foreground mb-2">Cidade</label>
+                <label className="block subtitle text-sm text-foreground mb-2">
+                  Cidade
+                </label>
                 <input
                   type="text"
                   value={requestData.location.city}
-                  onChange={(e) => setRequestData({ 
-                    ...requestData, 
-                    location: { ...requestData.location, city: e.target.value }
-                  })}
+                  onChange={(e) =>
+                    setRequestData({
+                      ...requestData,
+                      location: {
+                        ...requestData.location,
+                        city: e.target.value,
+                      },
+                    })
+                  }
                   placeholder="São Paulo"
                   className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                 />
               </div>
               <div>
-                <label className="block subtitle text-sm text-foreground mb-2">Estado</label>
+                <label className="block subtitle text-sm text-foreground mb-2">
+                  Estado
+                </label>
                 <input
                   type="text"
                   value={requestData.location.state}
-                  onChange={(e) => setRequestData({ 
-                    ...requestData, 
-                    location: { ...requestData.location, state: e.target.value }
-                  })}
+                  onChange={(e) =>
+                    setRequestData({
+                      ...requestData,
+                      location: {
+                        ...requestData.location,
+                        state: e.target.value,
+                      },
+                    })
+                  }
                   placeholder="SP"
                   maxLength={2}
                   className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
@@ -356,9 +466,12 @@ export default function PostRequest() {
               <div className="flex items-start space-x-3">
                 <MapPin className="w-5 h-5 text-primary mt-0.5" />
                 <div>
-                  <p className="subtitle text-sm text-primary mb-1">Localização Automática</p>
+                  <p className="subtitle text-sm text-primary mb-1">
+                    Localização Automática
+                  </p>
                   <p className="body-text text-xs text-primary/80">
-                    Permita o acesso à localização para encontrar profissionais mais próximos
+                    Permita o acesso à localização para encontrar profissionais
+                    mais próximos
                   </p>
                 </div>
               </div>
@@ -370,18 +483,27 @@ export default function PostRequest() {
         {currentStep === 3 && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-xl title-bold text-foreground mb-2">Orçamento e Urgência</h2>
-              <p className="body-text text-muted-foreground mb-6">Nos ajude a encontrar profissionais que atendam suas necessidades</p>
+              <h2 className="text-xl title-bold text-foreground mb-2">
+                Orçamento e Urgência
+              </h2>
+              <p className="body-text text-muted-foreground mb-6">
+                Nos ajude a encontrar profissionais que atendam suas
+                necessidades
+              </p>
             </div>
 
             <div>
-              <label className="block subtitle text-sm text-foreground mb-3">Nível de Urgência</label>
+              <label className="block subtitle text-sm text-foreground mb-3">
+                Nível de Urgência
+              </label>
               <div className="space-y-3">
                 {urgencyLevels.map((level) => (
                   <button
                     key={level.id}
                     type="button"
-                    onClick={() => setRequestData({ ...requestData, urgency: level.id })}
+                    onClick={() =>
+                      setRequestData({ ...requestData, urgency: level.id })
+                    }
                     className={`w-full p-4 rounded-xl border-2 transition-smooth text-left ${
                       requestData.urgency === level.id
                         ? "border-primary bg-primary/10"
@@ -391,8 +513,12 @@ export default function PostRequest() {
                     <div className="flex items-center space-x-3">
                       <Clock className={`w-5 h-5 ${level.color}`} />
                       <div>
-                        <div className="subtitle text-sm text-foreground">{level.name}</div>
-                        <div className="body-text text-xs text-muted-foreground">{level.description}</div>
+                        <div className="subtitle text-sm text-foreground">
+                          {level.name}
+                        </div>
+                        <div className="body-text text-xs text-muted-foreground">
+                          {level.description}
+                        </div>
                       </div>
                     </div>
                   </button>
@@ -401,15 +527,19 @@ export default function PostRequest() {
             </div>
 
             <div>
-              <label className="block subtitle text-sm text-foreground mb-3">Orçamento Estimado</label>
+              <label className="block subtitle text-sm text-foreground mb-3">
+                Orçamento Estimado
+              </label>
               <div className="space-y-4">
                 <div className="flex space-x-4">
                   <button
                     type="button"
-                    onClick={() => setRequestData({ 
-                      ...requestData, 
-                      budget: { ...requestData.budget, type: "range" }
-                    })}
+                    onClick={() =>
+                      setRequestData({
+                        ...requestData,
+                        budget: { ...requestData.budget, type: "range" },
+                      })
+                    }
                     className={`flex-1 p-3 rounded-xl border-2 transition-smooth ${
                       requestData.budget.type === "range"
                         ? "border-primary bg-primary/10 text-primary"
@@ -421,10 +551,12 @@ export default function PostRequest() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setRequestData({ 
-                      ...requestData, 
-                      budget: { ...requestData.budget, type: "fixed" }
-                    })}
+                    onClick={() =>
+                      setRequestData({
+                        ...requestData,
+                        budget: { ...requestData.budget, type: "fixed" },
+                      })
+                    }
                     className={`flex-1 p-3 rounded-xl border-2 transition-smooth ${
                       requestData.budget.type === "fixed"
                         ? "border-primary bg-primary/10 text-primary"
@@ -439,27 +571,41 @@ export default function PostRequest() {
                 {requestData.budget.type === "range" ? (
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block subtitle text-xs text-muted-foreground mb-1">Valor Mínimo</label>
+                      <label className="block subtitle text-xs text-muted-foreground mb-1">
+                        Valor Mínimo
+                      </label>
                       <input
                         type="number"
                         value={requestData.budget.min}
-                        onChange={(e) => setRequestData({ 
-                          ...requestData, 
-                          budget: { ...requestData.budget, min: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setRequestData({
+                            ...requestData,
+                            budget: {
+                              ...requestData.budget,
+                              min: e.target.value,
+                            },
+                          })
+                        }
                         placeholder="R$ 0"
                         className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                       />
                     </div>
                     <div>
-                      <label className="block subtitle text-xs text-muted-foreground mb-1">Valor Máximo</label>
+                      <label className="block subtitle text-xs text-muted-foreground mb-1">
+                        Valor Máximo
+                      </label>
                       <input
                         type="number"
                         value={requestData.budget.max}
-                        onChange={(e) => setRequestData({ 
-                          ...requestData, 
-                          budget: { ...requestData.budget, max: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setRequestData({
+                            ...requestData,
+                            budget: {
+                              ...requestData.budget,
+                              max: e.target.value,
+                            },
+                          })
+                        }
                         placeholder="R$ 0"
                         className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                       />
@@ -467,14 +613,21 @@ export default function PostRequest() {
                   </div>
                 ) : (
                   <div>
-                    <label className="block subtitle text-xs text-muted-foreground mb-1">Valor Desejado</label>
+                    <label className="block subtitle text-xs text-muted-foreground mb-1">
+                      Valor Desejado
+                    </label>
                     <input
                       type="number"
                       value={requestData.budget.min}
-                      onChange={(e) => setRequestData({ 
-                        ...requestData, 
-                        budget: { ...requestData.budget, min: e.target.value }
-                      })}
+                      onChange={(e) =>
+                        setRequestData({
+                          ...requestData,
+                          budget: {
+                            ...requestData.budget,
+                            min: e.target.value,
+                          },
+                        })
+                      }
                       placeholder="R$ 0"
                       className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                     />
@@ -489,28 +642,46 @@ export default function PostRequest() {
         {currentStep === 4 && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-xl title-bold text-foreground mb-2">Agendamento e Contato</h2>
-              <p className="body-text text-muted-foreground mb-6">Quando você gostaria que o serviço fosse realizado?</p>
+              <h2 className="text-xl title-bold text-foreground mb-2">
+                Agendamento e Contato
+              </h2>
+              <p className="body-text text-muted-foreground mb-6">
+                Quando você gostaria que o serviço fosse realizado?
+              </p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block subtitle text-sm text-foreground mb-2">Data Preferida</label>
+                <label className="block subtitle text-sm text-foreground mb-2">
+                  Data Preferida
+                </label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <input
                     type="date"
                     value={requestData.preferredDate}
-                    onChange={(e) => setRequestData({ ...requestData, preferredDate: e.target.value })}
+                    onChange={(e) =>
+                      setRequestData({
+                        ...requestData,
+                        preferredDate: e.target.value,
+                      })
+                    }
                     className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                   />
                 </div>
               </div>
               <div>
-                <label className="block subtitle text-sm text-foreground mb-2">Horário Preferido</label>
+                <label className="block subtitle text-sm text-foreground mb-2">
+                  Horário Preferido
+                </label>
                 <select
                   value={requestData.preferredTime}
-                  onChange={(e) => setRequestData({ ...requestData, preferredTime: e.target.value })}
+                  onChange={(e) =>
+                    setRequestData({
+                      ...requestData,
+                      preferredTime: e.target.value,
+                    })
+                  }
                   className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text"
                 >
                   <option value="">Selecione</option>
@@ -523,7 +694,9 @@ export default function PostRequest() {
             </div>
 
             <div>
-              <label className="block subtitle text-sm text-foreground mb-3">Como prefere ser contatado?</label>
+              <label className="block subtitle text-sm text-foreground mb-3">
+                Como prefere ser contatado?
+              </label>
               <div className="space-y-2">
                 {[
                   { id: "phone", name: "Apenas por telefone" },
@@ -533,10 +706,15 @@ export default function PostRequest() {
                   <button
                     key={option.id}
                     type="button"
-                    onClick={() => setRequestData({ 
-                      ...requestData, 
-                      contactPreference: option.id as "phone" | "chat" | "both"
-                    })}
+                    onClick={() =>
+                      setRequestData({
+                        ...requestData,
+                        contactPreference: option.id as
+                          | "phone"
+                          | "chat"
+                          | "both",
+                      })
+                    }
                     className={`w-full p-3 rounded-xl border-2 transition-smooth text-left ${
                       requestData.contactPreference === option.id
                         ? "border-primary bg-primary/10 text-primary"
@@ -550,17 +728,24 @@ export default function PostRequest() {
             </div>
 
             <div className="bg-gradient-to-r from-primary/10 to-success/10 rounded-xl p-4 border border-primary/20">
-              <h3 className="title-semibold text-sm text-foreground mb-2">Resumo da Solicitação</h3>
+              <h3 className="title-semibold text-sm text-foreground mb-2">
+                Resumo da Solicitação
+              </h3>
               <div className="space-y-1 text-sm">
                 <p className="body-text text-muted-foreground">
-                  <span className="subtitle text-foreground">Serviço:</span> {requestData.title}
+                  <span className="subtitle text-foreground">Serviço:</span>{" "}
+                  {requestData.title}
                 </p>
                 <p className="body-text text-muted-foreground">
-                  <span className="subtitle text-foreground">Local:</span> {requestData.location.city}, {requestData.location.state}
+                  <span className="subtitle text-foreground">Local:</span>{" "}
+                  {requestData.location.city}, {requestData.location.state}
                 </p>
                 <p className="body-text text-muted-foreground">
-                  <span className="subtitle text-foreground">Orçamento:</span> R$ {requestData.budget.min}
-                  {requestData.budget.type === "range" && requestData.budget.max && ` - R$ ${requestData.budget.max}`}
+                  <span className="subtitle text-foreground">Orçamento:</span>{" "}
+                  R$ {requestData.budget.min}
+                  {requestData.budget.type === "range" &&
+                    requestData.budget.max &&
+                    ` - R$ ${requestData.budget.max}`}
                 </p>
               </div>
             </div>

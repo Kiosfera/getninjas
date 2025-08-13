@@ -12,10 +12,12 @@ const signupSchema = z.object({
   password: z.string().min(6),
   name: z.string().min(2),
   type: z.enum(["client", "professional"]),
-  location: z.object({
-    city: z.string(),
-    state: z.string(),
-  }).optional(),
+  location: z
+    .object({
+      city: z.string(),
+      state: z.string(),
+    })
+    .optional(),
 });
 
 const loginSchema = z.object({
@@ -30,7 +32,10 @@ const phoneLoginSchema = z.object({
 
 // Mock session generation
 function generateSessionId(): string {
-  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  return (
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+  );
 }
 
 // Mock password hashing (in production, use bcrypt)
@@ -45,9 +50,9 @@ function verifyPassword(password: string, hash: string): boolean {
 export const handleSignup: RequestHandler = async (req, res) => {
   try {
     const data = signupSchema.parse(req.body);
-    
+
     // Check if user already exists
-    const existingUser = users.find(u => u.email === data.email);
+    const existingUser = users.find((u) => u.email === data.email);
     if (existingUser) {
       return res.status(400).json({ message: "Usuário já existe" });
     }
@@ -96,7 +101,9 @@ export const handleSignup: RequestHandler = async (req, res) => {
     res.json(userResponse);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ message: "Dados inválidos", errors: error.errors });
+      return res
+        .status(400)
+        .json({ message: "Dados inválidos", errors: error.errors });
     }
     console.error("Signup error:", error);
     res.status(500).json({ message: "Erro interno do servidor" });
@@ -108,7 +115,7 @@ export const handleLogin: RequestHandler = async (req, res) => {
     const { email, password } = loginSchema.parse(req.body);
 
     // Find user
-    const user = users.find(u => u.email === email);
+    const user = users.find((u) => u.email === email);
     if (!user || !verifyPassword(password, user.password)) {
       return res.status(401).json({ message: "Credenciais inválidas" });
     }
@@ -146,8 +153,8 @@ export const handlePhoneLogin: RequestHandler = async (req, res) => {
     }
 
     // Find user by phone
-    let user = users.find(u => u.phone === phone);
-    
+    let user = users.find((u) => u.phone === phone);
+
     if (!user) {
       // Create user if doesn't exist (simplified flow)
       user = {
@@ -199,7 +206,7 @@ export const handleMe: RequestHandler = async (req, res) => {
       return res.status(401).json({ message: "Sessão inválida" });
     }
 
-    const user = users.find(u => u.id === userId);
+    const user = users.find((u) => u.id === userId);
     if (!user) {
       return res.status(401).json({ message: "Usuário não encontrado" });
     }
@@ -240,7 +247,7 @@ export const handleUpdateProfile: RequestHandler = async (req, res) => {
       return res.status(401).json({ message: "Sessão inválida" });
     }
 
-    const userIndex = users.findIndex(u => u.id === userId);
+    const userIndex = users.findIndex((u) => u.id === userId);
     if (userIndex === -1) {
       return res.status(404).json({ message: "Usuário não encontrado" });
     }

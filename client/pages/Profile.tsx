@@ -1,23 +1,56 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, User, Mail, Phone, MapPin, Star, Settings, LogOut, Camera, Briefcase, Shield, Plus, X } from "lucide-react";
+import {
+  ArrowLeft,
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  Star,
+  Settings,
+  LogOut,
+  Camera,
+  Briefcase,
+  Shield,
+  Plus,
+  X,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import NotificationToast from "@/components/NotificationToast";
 import AuthModal from "@/components/AuthModal";
 
 const serviceCategoriesOptions = [
-  "Eletricista", "Encanador", "Pedreiro", "Pintor", "Marceneiro", "Jardineiro",
-  "Diarista", "Montador de Móveis", "Técnico em Ar-Condicionado", "Técnico em Informática",
-  "Designer Gráfico", "Fotógrafo", "Cabeleireiro", "Manicure", "Massagista",
-  "Personal Trainer", "Professor Particular", "Advogado", "Contador"
+  "Eletricista",
+  "Encanador",
+  "Pedreiro",
+  "Pintor",
+  "Marceneiro",
+  "Jardineiro",
+  "Diarista",
+  "Montador de Móveis",
+  "Técnico em Ar-Condicionado",
+  "Técnico em Informática",
+  "Designer Gráfico",
+  "Fotógrafo",
+  "Cabeleireiro",
+  "Manicure",
+  "Massagista",
+  "Personal Trainer",
+  "Professor Particular",
+  "Advogado",
+  "Contador",
 ];
 
 export default function Profile() {
   const { user, logout, updateProfile, loading } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [notification, setNotification] = useState<{message: string, type: "success" | "error" | "info", visible: boolean}>({ message: "", type: "info", visible: false });
-  
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error" | "info";
+    visible: boolean;
+  }>({ message: "", type: "info", visible: false });
+
   const [profileData, setProfileData] = useState({
     name: "",
     email: "",
@@ -48,13 +81,16 @@ export default function Profile() {
     }
   }, [user]);
 
-  const showNotification = (message: string, type: "success" | "error" | "info") => {
+  const showNotification = (
+    message: string,
+    type: "success" | "error" | "info",
+  ) => {
     setNotification({ message, type, visible: true });
   };
 
   const handleSave = async () => {
     if (!user) return;
-    
+
     try {
       await updateProfile(profileData);
       setEditing(false);
@@ -74,11 +110,11 @@ export default function Profile() {
   };
 
   const toggleCategory = (category: string) => {
-    setProfileData(prev => ({
+    setProfileData((prev) => ({
       ...prev,
       categories: prev.categories.includes(category)
-        ? prev.categories.filter(c => c !== category)
-        : [...prev.categories, category]
+        ? prev.categories.filter((c) => c !== category)
+        : [...prev.categories, category],
     }));
   };
 
@@ -100,7 +136,10 @@ export default function Profile() {
         <header className="bg-white/95 backdrop-blur-sm shadow-soft sticky top-0 z-40">
           <div className="px-4 py-4">
             <div className="flex items-center space-x-3">
-              <Link to="/" className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth">
+              <Link
+                to="/"
+                className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth"
+              >
                 <ArrowLeft className="w-5 h-5 text-foreground" />
               </Link>
               <h1 className="text-xl title-bold text-foreground">Perfil</h1>
@@ -118,7 +157,8 @@ export default function Profile() {
               Faça login para continuar
             </h2>
             <p className="body-text text-muted-foreground mb-6">
-              Acesse seu perfil, gerencie suas informações e acompanhe seus serviços.
+              Acesse seu perfil, gerencie suas informações e acompanhe seus
+              serviços.
             </p>
             <button
               onClick={() => setAuthModalOpen(true)}
@@ -144,7 +184,10 @@ export default function Profile() {
         <div className="px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <Link to="/" className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth">
+              <Link
+                to="/"
+                className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth"
+              >
                 <ArrowLeft className="w-5 h-5 text-foreground" />
               </Link>
               <h1 className="text-xl title-bold text-foreground">Perfil</h1>
@@ -190,23 +233,29 @@ export default function Profile() {
                 </div>
               )}
             </div>
-            
+
             <div className="flex-1">
               <div className="flex items-center space-x-2 mb-2">
-                <h2 className="text-xl title-bold text-foreground">{user.name}</h2>
-                <span className={`px-2 py-1 rounded-lg text-xs button-text ${
-                  user.type === "professional" 
-                    ? "bg-primary/10 text-primary" 
-                    : "bg-secondary text-foreground"
-                }`}>
+                <h2 className="text-xl title-bold text-foreground">
+                  {user.name}
+                </h2>
+                <span
+                  className={`px-2 py-1 rounded-lg text-xs button-text ${
+                    user.type === "professional"
+                      ? "bg-primary/10 text-primary"
+                      : "bg-secondary text-foreground"
+                  }`}
+                >
                   {user.type === "professional" ? "Profissional" : "Cliente"}
                 </span>
               </div>
-              
+
               {user.type === "professional" && user.profession && (
-                <p className="body-text text-muted-foreground mb-2">{user.profession}</p>
+                <p className="body-text text-muted-foreground mb-2">
+                  {user.profession}
+                </p>
               )}
-              
+
               {user.type === "professional" && user.rating !== undefined && (
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center">
@@ -228,17 +277,23 @@ export default function Profile() {
         <div className="space-y-6">
           {/* Basic Information */}
           <div className="bg-white rounded-2xl p-6 shadow-soft border border-border">
-            <h3 className="text-lg title-semibold text-foreground mb-4">Informações Básicas</h3>
-            
+            <h3 className="text-lg title-semibold text-foreground mb-4">
+              Informações Básicas
+            </h3>
+
             <div className="space-y-4">
               <div>
-                <label className="block subtitle text-sm text-foreground mb-2">Nome Completo</label>
+                <label className="block subtitle text-sm text-foreground mb-2">
+                  Nome Completo
+                </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <input
                     type="text"
                     value={profileData.name}
-                    onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
+                    onChange={(e) =>
+                      setProfileData({ ...profileData, name: e.target.value })
+                    }
                     disabled={!editing}
                     className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text disabled:bg-secondary disabled:cursor-not-allowed"
                   />
@@ -246,13 +301,17 @@ export default function Profile() {
               </div>
 
               <div>
-                <label className="block subtitle text-sm text-foreground mb-2">E-mail</label>
+                <label className="block subtitle text-sm text-foreground mb-2">
+                  E-mail
+                </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <input
                     type="email"
                     value={profileData.email}
-                    onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
+                    onChange={(e) =>
+                      setProfileData({ ...profileData, email: e.target.value })
+                    }
                     disabled={!editing}
                     className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text disabled:bg-secondary disabled:cursor-not-allowed"
                   />
@@ -260,13 +319,17 @@ export default function Profile() {
               </div>
 
               <div>
-                <label className="block subtitle text-sm text-foreground mb-2">Telefone</label>
+                <label className="block subtitle text-sm text-foreground mb-2">
+                  Telefone
+                </label>
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <input
                     type="tel"
                     value={profileData.phone}
-                    onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
+                    onChange={(e) =>
+                      setProfileData({ ...profileData, phone: e.target.value })
+                    }
                     disabled={!editing}
                     className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text disabled:bg-secondary disabled:cursor-not-allowed"
                   />
@@ -275,27 +338,41 @@ export default function Profile() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block subtitle text-sm text-foreground mb-2">Cidade</label>
+                  <label className="block subtitle text-sm text-foreground mb-2">
+                    Cidade
+                  </label>
                   <input
                     type="text"
                     value={profileData.location.city}
-                    onChange={(e) => setProfileData({ 
-                      ...profileData, 
-                      location: { ...profileData.location, city: e.target.value }
-                    })}
+                    onChange={(e) =>
+                      setProfileData({
+                        ...profileData,
+                        location: {
+                          ...profileData.location,
+                          city: e.target.value,
+                        },
+                      })
+                    }
                     disabled={!editing}
                     className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text disabled:bg-secondary disabled:cursor-not-allowed"
                   />
                 </div>
                 <div>
-                  <label className="block subtitle text-sm text-foreground mb-2">Estado</label>
+                  <label className="block subtitle text-sm text-foreground mb-2">
+                    Estado
+                  </label>
                   <input
                     type="text"
                     value={profileData.location.state}
-                    onChange={(e) => setProfileData({ 
-                      ...profileData, 
-                      location: { ...profileData.location, state: e.target.value }
-                    })}
+                    onChange={(e) =>
+                      setProfileData({
+                        ...profileData,
+                        location: {
+                          ...profileData.location,
+                          state: e.target.value,
+                        },
+                      })
+                    }
                     disabled={!editing}
                     maxLength={2}
                     className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text disabled:bg-secondary disabled:cursor-not-allowed"
@@ -308,17 +385,26 @@ export default function Profile() {
           {/* Professional Information */}
           {user.type === "professional" && (
             <div className="bg-white rounded-2xl p-6 shadow-soft border border-border">
-              <h3 className="text-lg title-semibold text-foreground mb-4">Informações Profissionais</h3>
-              
+              <h3 className="text-lg title-semibold text-foreground mb-4">
+                Informações Profissionais
+              </h3>
+
               <div className="space-y-4">
                 <div>
-                  <label className="block subtitle text-sm text-foreground mb-2">Profissão Principal</label>
+                  <label className="block subtitle text-sm text-foreground mb-2">
+                    Profissão Principal
+                  </label>
                   <div className="relative">
                     <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                     <input
                       type="text"
                       value={profileData.profession}
-                      onChange={(e) => setProfileData({ ...profileData, profession: e.target.value })}
+                      onChange={(e) =>
+                        setProfileData({
+                          ...profileData,
+                          profession: e.target.value,
+                        })
+                      }
                       disabled={!editing}
                       placeholder="Ex: Eletricista Predial"
                       className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-smooth body-text disabled:bg-secondary disabled:cursor-not-allowed"
@@ -327,7 +413,9 @@ export default function Profile() {
                 </div>
 
                 <div>
-                  <label className="block subtitle text-sm text-foreground mb-2">Categorias de Serviços</label>
+                  <label className="block subtitle text-sm text-foreground mb-2">
+                    Categorias de Serviços
+                  </label>
                   {editing ? (
                     <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
                       {serviceCategoriesOptions.map((category) => (
@@ -357,7 +445,9 @@ export default function Profile() {
                           </span>
                         ))
                       ) : (
-                        <p className="body-text text-muted-foreground text-sm">Nenhuma categoria selecionada</p>
+                        <p className="body-text text-muted-foreground text-sm">
+                          Nenhuma categoria selecionada
+                        </p>
                       )}
                     </div>
                   )}
@@ -372,7 +462,12 @@ export default function Profile() {
                     min="1"
                     max="50"
                     value={profileData.serviceRadius}
-                    onChange={(e) => setProfileData({ ...profileData, serviceRadius: parseInt(e.target.value) })}
+                    onChange={(e) =>
+                      setProfileData({
+                        ...profileData,
+                        serviceRadius: parseInt(e.target.value),
+                      })
+                    }
                     disabled={!editing}
                     className="w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer disabled:cursor-not-allowed"
                   />
