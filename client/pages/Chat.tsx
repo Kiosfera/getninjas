@@ -12,10 +12,12 @@ import {
   File,
   Check,
   CheckCheck,
+  RefreshCw,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import PlaceholderPage from "@/components/PlaceholderPage";
+import NotificationToast from "@/components/NotificationToast";
 
 interface Message {
   id: string;
