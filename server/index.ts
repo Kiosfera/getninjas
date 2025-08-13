@@ -65,7 +65,10 @@ export function createServer() {
   app.put("/api/requests/:id", handleUpdateRequest);
   app.delete("/api/requests/:id", handleDeleteRequest);
   app.post("/api/requests/:id/proposals", handleCreateProposal);
-  app.put("/api/requests/:requestId/proposals/:proposalId", handleUpdateProposal);
+  app.put(
+    "/api/requests/:requestId/proposals/:proposalId",
+    handleUpdateProposal,
+  );
 
   // Chat routes
   app.get("/api/conversations", handleGetConversations);
