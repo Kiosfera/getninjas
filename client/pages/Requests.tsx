@@ -105,7 +105,8 @@ export default function Requests() {
             id: "req_1",
             category: "eletricista",
             title: "Instalação de chuveiro elétrico",
-            description: "Preciso instalar um chuveiro elétrico novo no banheiro. O ponto já existe, só precisa conectar.",
+            description:
+              "Preciso instalar um chuveiro elétrico novo no banheiro. O ponto já existe, só precisa conectar.",
             location: {
               address: "Rua das Flores, 123",
               city: "São Paulo",
@@ -126,7 +127,8 @@ export default function Requests() {
             id: "req_2",
             category: "pintor",
             title: "Pintura de sala e quartos",
-            description: "Pintura completa de 2 quartos e sala. Apartamento de 80m². Tinta e material por conta do profissional.",
+            description:
+              "Pintura completa de 2 quartos e sala. Apartamento de 80m². Tinta e material por conta do profissional.",
             location: {
               address: "Av. Paulista, 1000",
               city: "São Paulo",
@@ -147,7 +149,8 @@ export default function Requests() {
             id: "req_3",
             category: "encanador",
             title: "Vazamento emergencial",
-            description: "Vazamento na tubulação da cozinha. Preciso de atendimento imediato.",
+            description:
+              "Vazamento na tubulação da cozinha. Preciso de atendimento imediato.",
             location: {
               address: "Rua Augusta, 500",
               city: "São Paulo",
@@ -183,10 +186,13 @@ export default function Requests() {
   }
 
   const filteredRequests = requests.filter((request) => {
-    const matchesSearch = request.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    const matchesSearch =
+      request.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       request.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === "all" || request.status === statusFilter;
-    const matchesUrgency = urgencyFilter === "all" || request.urgency === urgencyFilter;
+    const matchesStatus =
+      statusFilter === "all" || request.status === statusFilter;
+    const matchesUrgency =
+      urgencyFilter === "all" || request.urgency === urgencyFilter;
 
     return matchesSearch && matchesStatus && matchesUrgency;
   });
@@ -282,7 +288,10 @@ export default function Requests() {
         {loading ? (
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white rounded-xl p-4 shadow-soft animate-pulse">
+              <div
+                key={i}
+                className="bg-white rounded-xl p-4 shadow-soft animate-pulse"
+              >
                 <div className="h-4 bg-secondary rounded w-3/4 mb-2"></div>
                 <div className="h-3 bg-secondary rounded w-1/2 mb-4"></div>
                 <div className="flex space-x-2">
@@ -319,7 +328,7 @@ export default function Requests() {
           <div className="space-y-4">
             {filteredRequests.map((request) => {
               const StatusIcon = statusIcons[request.status];
-              
+
               return (
                 <div
                   key={request.id}
@@ -335,7 +344,7 @@ export default function Requests() {
                         {request.description}
                       </p>
                     </div>
-                    
+
                     <div className="flex flex-col items-end space-y-2 ml-4">
                       <div
                         className={`px-2 py-1 rounded-lg border text-xs font-medium flex items-center space-x-1 ${statusColors[request.status]}`}
@@ -392,7 +401,7 @@ export default function Requests() {
                           {request.proposalsCount} propostas
                         </span>
                       </div>
-                      
+
                       <div className="flex items-center space-x-1">
                         <Eye className="w-4 h-4 text-muted-foreground" />
                         <span className="body-text text-muted-foreground">
@@ -408,7 +417,7 @@ export default function Requests() {
                       >
                         <MessageCircle className="w-4 h-4 text-muted-foreground" />
                       </Link>
-                      
+
                       <Link
                         to={`/requests/${request.id}`}
                         className="px-4 py-2 gradient-primary text-white rounded-lg button-text text-sm hover:shadow-soft-hover transition-smooth"
