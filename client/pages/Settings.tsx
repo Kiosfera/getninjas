@@ -1,32 +1,12 @@
 import { useState } from "react";
-import {
-  ArrowLeft,
-  User,
-  Bell,
-  Shield,
-  CreditCard,
-  HelpCircle,
-  LogOut,
-  ChevronRight,
-  Moon,
-  Sun,
-  Globe,
-  Smartphone,
-  Mail,
-  Eye,
-  EyeOff,
-} from "lucide-react";
+import { ArrowLeft, User, Bell, Shield, CreditCard, HelpCircle, LogOut, ChevronRight, Moon, Sun, Globe, Smartphone, Mail, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import NotificationToast from "@/components/NotificationToast";
 
 export default function Settings() {
   const { user, logout } = useAuth();
-  const [notification, setNotification] = useState<{
-    message: string;
-    type: "success" | "error" | "info";
-    visible: boolean;
-  }>({ message: "", type: "info", visible: false });
+  const [notification, setNotification] = useState<{message: string, type: "success" | "error" | "info", visible: boolean}>({ message: "", type: "info", visible: false });
   const [darkMode, setDarkMode] = useState(false);
   const [notifications, setNotifications] = useState({
     push: true,
@@ -40,10 +20,7 @@ export default function Settings() {
     showEmail: false,
   });
 
-  const showNotification = (
-    message: string,
-    type: "success" | "error" | "info",
-  ) => {
+  const showNotification = (message: string, type: "success" | "error" | "info") => {
     setNotification({ message, type, visible: true });
   };
 
@@ -90,15 +67,10 @@ export default function Settings() {
       <header className="bg-white/95 backdrop-blur-sm shadow-soft sticky top-0 z-40">
         <div className="px-4 py-4">
           <div className="flex items-center space-x-3">
-            <Link
-              to="/"
-              className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth"
-            >
+            <Link to="/" className="p-2 bg-secondary rounded-xl hover:bg-muted transition-smooth">
               <ArrowLeft className="w-5 h-5 text-foreground" />
             </Link>
-            <h1 className="text-xl title-bold text-foreground">
-              Configurações
-            </h1>
+            <h1 className="text-xl title-bold text-foreground">Configurações</h1>
           </div>
         </div>
       </header>
@@ -113,9 +85,7 @@ export default function Settings() {
               className="w-16 h-16 rounded-2xl object-cover bg-secondary"
             />
             <div className="flex-1">
-              <h2 className="title-semibold text-lg text-foreground">
-                {user.name}
-              </h2>
+              <h2 className="title-semibold text-lg text-foreground">{user.name}</h2>
               <p className="body-text text-muted-foreground">{user.email}</p>
               <span className="inline-flex items-center px-2 py-1 bg-primary/10 text-primary text-xs button-text rounded-lg mt-1">
                 {user.type === "professional" ? "Profissional" : "Cliente"}
@@ -132,25 +102,15 @@ export default function Settings() {
 
         {/* Appearance */}
         <div className="bg-white rounded-2xl p-6 shadow-soft border border-border mb-6">
-          <h3 className="title-semibold text-lg text-foreground mb-4">
-            Aparência
-          </h3>
-
+          <h3 className="title-semibold text-lg text-foreground mb-4">Aparência</h3>
+          
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                {darkMode ? (
-                  <Moon className="w-5 h-5 text-muted-foreground" />
-                ) : (
-                  <Sun className="w-5 h-5 text-muted-foreground" />
-                )}
+                {darkMode ? <Moon className="w-5 h-5 text-muted-foreground" /> : <Sun className="w-5 h-5 text-muted-foreground" />}
                 <div>
-                  <p className="subtitle text-sm text-foreground">
-                    Modo Escuro
-                  </p>
-                  <p className="body-text text-xs text-muted-foreground">
-                    Tema escuro para interface
-                  </p>
+                  <p className="subtitle text-sm text-foreground">Modo Escuro</p>
+                  <p className="body-text text-xs text-muted-foreground">Tema escuro para interface</p>
                 </div>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
@@ -169,9 +129,7 @@ export default function Settings() {
                 <Globe className="w-5 h-5 text-muted-foreground" />
                 <div>
                   <p className="subtitle text-sm text-foreground">Idioma</p>
-                  <p className="body-text text-xs text-muted-foreground">
-                    Português (Brasil)
-                  </p>
+                  <p className="body-text text-xs text-muted-foreground">Português (Brasil)</p>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-muted-foreground" />
@@ -181,33 +139,22 @@ export default function Settings() {
 
         {/* Notifications */}
         <div className="bg-white rounded-2xl p-6 shadow-soft border border-border mb-6">
-          <h3 className="title-semibold text-lg text-foreground mb-4">
-            Notificações
-          </h3>
-
+          <h3 className="title-semibold text-lg text-foreground mb-4">Notificações</h3>
+          
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <Smartphone className="w-5 h-5 text-muted-foreground" />
                 <div>
-                  <p className="subtitle text-sm text-foreground">
-                    Notificações Push
-                  </p>
-                  <p className="body-text text-xs text-muted-foreground">
-                    Receber no dispositivo
-                  </p>
+                  <p className="subtitle text-sm text-foreground">Notificações Push</p>
+                  <p className="body-text text-xs text-muted-foreground">Receber no dispositivo</p>
                 </div>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={notifications.push}
-                  onChange={(e) =>
-                    setNotifications({
-                      ...notifications,
-                      push: e.target.checked,
-                    })
-                  }
+                  onChange={(e) => setNotifications({ ...notifications, push: e.target.checked })}
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
@@ -219,21 +166,14 @@ export default function Settings() {
                 <Mail className="w-5 h-5 text-muted-foreground" />
                 <div>
                   <p className="subtitle text-sm text-foreground">E-mail</p>
-                  <p className="body-text text-xs text-muted-foreground">
-                    Receber por e-mail
-                  </p>
+                  <p className="body-text text-xs text-muted-foreground">Receber por e-mail</p>
                 </div>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={notifications.email}
-                  onChange={(e) =>
-                    setNotifications({
-                      ...notifications,
-                      email: e.target.checked,
-                    })
-                  }
+                  onChange={(e) => setNotifications({ ...notifications, email: e.target.checked })}
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
@@ -245,21 +185,14 @@ export default function Settings() {
                 <Smartphone className="w-5 h-5 text-muted-foreground" />
                 <div>
                   <p className="subtitle text-sm text-foreground">SMS</p>
-                  <p className="body-text text-xs text-muted-foreground">
-                    Mensagens de texto
-                  </p>
+                  <p className="body-text text-xs text-muted-foreground">Mensagens de texto</p>
                 </div>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={notifications.sms}
-                  onChange={(e) =>
-                    setNotifications({
-                      ...notifications,
-                      sms: e.target.checked,
-                    })
-                  }
+                  onChange={(e) => setNotifications({ ...notifications, sms: e.target.checked })}
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
@@ -271,21 +204,14 @@ export default function Settings() {
                 <Bell className="w-5 h-5 text-muted-foreground" />
                 <div>
                   <p className="subtitle text-sm text-foreground">Marketing</p>
-                  <p className="body-text text-xs text-muted-foreground">
-                    Promoções e novidades
-                  </p>
+                  <p className="body-text text-xs text-muted-foreground">Promoções e novidades</p>
                 </div>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={notifications.marketing}
-                  onChange={(e) =>
-                    setNotifications({
-                      ...notifications,
-                      marketing: e.target.checked,
-                    })
-                  }
+                  onChange={(e) => setNotifications({ ...notifications, marketing: e.target.checked })}
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
@@ -296,30 +222,22 @@ export default function Settings() {
 
         {/* Privacy */}
         <div className="bg-white rounded-2xl p-6 shadow-soft border border-border mb-6">
-          <h3 className="title-semibold text-lg text-foreground mb-4">
-            Privacidade
-          </h3>
-
+          <h3 className="title-semibold text-lg text-foreground mb-4">Privacidade</h3>
+          
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <Eye className="w-5 h-5 text-muted-foreground" />
                 <div>
-                  <p className="subtitle text-sm text-foreground">
-                    Perfil Público
-                  </p>
-                  <p className="body-text text-xs text-muted-foreground">
-                    Seu perfil aparece nas buscas
-                  </p>
+                  <p className="subtitle text-sm text-foreground">Perfil P��blico</p>
+                  <p className="body-text text-xs text-muted-foreground">Seu perfil aparece nas buscas</p>
                 </div>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={privacy.profileVisible}
-                  onChange={(e) =>
-                    setPrivacy({ ...privacy, profileVisible: e.target.checked })
-                  }
+                  onChange={(e) => setPrivacy({ ...privacy, profileVisible: e.target.checked })}
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
@@ -330,21 +248,15 @@ export default function Settings() {
               <div className="flex items-center space-x-3">
                 <Smartphone className="w-5 h-5 text-muted-foreground" />
                 <div>
-                  <p className="subtitle text-sm text-foreground">
-                    Mostrar Telefone
-                  </p>
-                  <p className="body-text text-xs text-muted-foreground">
-                    Exibir número no perfil
-                  </p>
+                  <p className="subtitle text-sm text-foreground">Mostrar Telefone</p>
+                  <p className="body-text text-xs text-muted-foreground">Exibir número no perfil</p>
                 </div>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={privacy.showPhone}
-                  onChange={(e) =>
-                    setPrivacy({ ...privacy, showPhone: e.target.checked })
-                  }
+                  onChange={(e) => setPrivacy({ ...privacy, showPhone: e.target.checked })}
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
@@ -355,21 +267,15 @@ export default function Settings() {
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-muted-foreground" />
                 <div>
-                  <p className="subtitle text-sm text-foreground">
-                    Mostrar E-mail
-                  </p>
-                  <p className="body-text text-xs text-muted-foreground">
-                    Exibir e-mail no perfil
-                  </p>
+                  <p className="subtitle text-sm text-foreground">Mostrar E-mail</p>
+                  <p className="body-text text-xs text-muted-foreground">Exibir e-mail no perfil</p>
                 </div>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={privacy.showEmail}
-                  onChange={(e) =>
-                    setPrivacy({ ...privacy, showEmail: e.target.checked })
-                  }
+                  onChange={(e) => setPrivacy({ ...privacy, showEmail: e.target.checked })}
                   className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
@@ -381,18 +287,14 @@ export default function Settings() {
         {/* Account Options */}
         <div className="bg-white rounded-2xl p-6 shadow-soft border border-border mb-6">
           <h3 className="title-semibold text-lg text-foreground mb-4">Conta</h3>
-
+          
           <div className="space-y-4">
             <button className="w-full flex items-center justify-between p-4 hover:bg-secondary rounded-xl transition-smooth">
               <div className="flex items-center space-x-3">
                 <CreditCard className="w-5 h-5 text-muted-foreground" />
                 <div className="text-left">
-                  <p className="subtitle text-sm text-foreground">
-                    Métodos de Pagamento
-                  </p>
-                  <p className="body-text text-xs text-muted-foreground">
-                    Gerenciar cartões e PIX
-                  </p>
+                  <p className="subtitle text-sm text-foreground">Métodos de Pagamento</p>
+                  <p className="body-text text-xs text-muted-foreground">Gerenciar cartões e PIX</p>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-muted-foreground" />
@@ -403,9 +305,7 @@ export default function Settings() {
                 <Shield className="w-5 h-5 text-muted-foreground" />
                 <div className="text-left">
                   <p className="subtitle text-sm text-foreground">Segurança</p>
-                  <p className="body-text text-xs text-muted-foreground">
-                    Alterar senha e 2FA
-                  </p>
+                  <p className="body-text text-xs text-muted-foreground">Alterar senha e 2FA</p>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-muted-foreground" />
@@ -415,12 +315,8 @@ export default function Settings() {
               <div className="flex items-center space-x-3">
                 <HelpCircle className="w-5 h-5 text-muted-foreground" />
                 <div className="text-left">
-                  <p className="subtitle text-sm text-foreground">
-                    Ajuda e Suporte
-                  </p>
-                  <p className="body-text text-xs text-muted-foreground">
-                    FAQ e contato
-                  </p>
+                  <p className="subtitle text-sm text-foreground">Ajuda e Suporte</p>
+                  <p className="body-text text-xs text-muted-foreground">FAQ e contato</p>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-muted-foreground" />
@@ -431,34 +327,20 @@ export default function Settings() {
         {/* Legal */}
         <div className="bg-white rounded-2xl p-6 shadow-soft border border-border mb-6">
           <h3 className="title-semibold text-lg text-foreground mb-4">Legal</h3>
-
+          
           <div className="space-y-4">
-            <Link
-              to="/terms"
-              className="w-full flex items-center justify-between p-4 hover:bg-secondary rounded-xl transition-smooth"
-            >
+            <Link to="/terms" className="w-full flex items-center justify-between p-4 hover:bg-secondary rounded-xl transition-smooth">
               <div className="text-left">
-                <p className="subtitle text-sm text-foreground">
-                  Termos de Serviço
-                </p>
-                <p className="body-text text-xs text-muted-foreground">
-                  Última atualização: Jan 2024
-                </p>
+                <p className="subtitle text-sm text-foreground">Termos de Serviço</p>
+                <p className="body-text text-xs text-muted-foreground">Última atualização: Jan 2024</p>
               </div>
               <ChevronRight className="w-5 h-5 text-muted-foreground" />
             </Link>
 
-            <Link
-              to="/privacy"
-              className="w-full flex items-center justify-between p-4 hover:bg-secondary rounded-xl transition-smooth"
-            >
+            <Link to="/privacy" className="w-full flex items-center justify-between p-4 hover:bg-secondary rounded-xl transition-smooth">
               <div className="text-left">
-                <p className="subtitle text-sm text-foreground">
-                  Política de Privacidade
-                </p>
-                <p className="body-text text-xs text-muted-foreground">
-                  Última atualização: Jan 2024
-                </p>
+                <p className="subtitle text-sm text-foreground">Política de Privacidade</p>
+                <p className="body-text text-xs text-muted-foreground">Última atualização: Jan 2024</p>
               </div>
               <ChevronRight className="w-5 h-5 text-muted-foreground" />
             </Link>
@@ -485,10 +367,10 @@ export default function Settings() {
         {/* App Info */}
         <div className="text-center mt-8 py-4">
           <p className="body-text text-xs text-muted-foreground">
-            ServiçosApp v1.0.0
+            PANASERVICE v1.0.0
           </p>
           <p className="body-text text-xs text-muted-foreground">
-            © 2024 ServiçosApp. Todos os direitos reservados.
+            © 2024 PANASERVICE. Todos os direitos reservados.
           </p>
         </div>
       </div>
