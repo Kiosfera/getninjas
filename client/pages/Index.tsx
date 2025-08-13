@@ -21,7 +21,9 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import NotificationToast from "@/components/NotificationToast";
+import AuthModal from "@/components/AuthModal";
 
 const serviceCategories = [
   {
@@ -135,6 +137,8 @@ const quickStats = [
 ];
 
 export default function Index() {
+  const { user } = useAuth();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const [notification, setNotification] = useState<{
     message: string;
     type: "success" | "error" | "info";
@@ -176,10 +180,34 @@ export default function Index() {
                 </div>
               </div>
             </div>
-            <button className="relative p-2.5 bg-secondary rounded-xl hover:bg-muted transition-smooth">
-              <Bell className="w-5 h-5 text-foreground" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></div>
-            </button>
+            <div className="flex items-center space-x-2">
+              {user ? (
+                <>
+                  <button className="relative p-2.5 bg-secondary rounded-xl hover:bg-muted transition-smooth">
+                    <Bell className="w-5 h-5 text-foreground" />
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></div>
+                  </button>
+                  <div className="flex items-center space-x-2">
+                    <img
+                      src={user.avatar || "/placeholder.svg"}
+                      alt={user.name}
+                      className="w-8 h-8 rounded-full bg-secondary"
+                    />
+                    <div className="hidden sm:block">
+                      <p className="subtitle text-sm text-foreground truncate max-w-20">{user.name}</p>
+                      <p className="body-text text-xs text-muted-foreground capitalize">{user.type}</p>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <button
+                  onClick={() => setAuthModalOpen(true)}
+                  className="gradient-primary text-white px-4 py-2 rounded-xl button-text text-sm hover:shadow-soft-hover transition-smooth"
+                >
+                  Entrar
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </header>
@@ -436,6 +464,10 @@ export default function Index() {
         type={notification.type}
         isVisible={notification.visible}
         onClose={() => setNotification({ ...notification, visible: false })}
+      />
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
       />
     </div>
   );
