@@ -21,13 +21,13 @@
     --popover-foreground: 240 10% 15%;
 
     /* Modern blue primary color for CTAs */
-    --primary: 230 85% 55%;
+    --primary: 235 85% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-50: 230 85% 95%;
-    --primary-100: 230 85% 85%;
-    --primary-500: 230 85% 55%;
-    --primary-600: 230 85% 45%;
-    --primary-700: 230 85% 35%;
+    --primary-50: 235 85% 97%;
+    --primary-100: 235 85% 90%;
+    --primary-500: 235 85% 55%;
+    --primary-600: 235 85% 48%;
+    --primary-700: 235 85% 40%;
 
     --secondary: 220 15% 95%;
     --secondary-foreground: 240 10% 25%;
@@ -51,7 +51,7 @@
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 230 85% 55%;
+    --ring: 235 85% 55%;
 
     --radius: 0.5rem;
 
@@ -82,13 +82,13 @@
     --popover: 240 10% 12%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 230 85% 60%;
+    --primary: 235 85% 60%;
     --primary-foreground: 240 10% 8%;
-    --primary-50: 230 85% 15%;
-    --primary-100: 230 85% 20%;
-    --primary-500: 230 85% 60%;
-    --primary-600: 230 85% 50%;
-    --primary-700: 230 85% 40%;
+    --primary-50: 235 85% 15%;
+    --primary-100: 235 85% 20%;
+    --primary-500: 235 85% 60%;
+    --primary-600: 235 85% 50%;
+    --primary-700: 235 85% 40%;
 
     --secondary: 240 10% 18%;
     --secondary-foreground: 0 0% 95%;
@@ -110,7 +110,7 @@
 
     --border: 240 10% 18%;
     --input: 240 10% 18%;
-    --ring: 230 85% 60%;
+    --ring: 235 85% 60%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
