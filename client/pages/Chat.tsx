@@ -89,7 +89,7 @@ export default function Chat() {
     try {
       const response = await fetch("/api/conversations", {
         headers: {
-          Authorization: `Bearer ${user?.id || "guest"}`,
+          Authorization: `Bearer ${user?.id || 'guest'}`,
         },
       });
 
@@ -131,7 +131,7 @@ export default function Chat() {
     try {
       const response = await fetch(`/api/conversations/${convId}/messages`, {
         headers: {
-          Authorization: `Bearer ${user?.id || "guest"}`,
+          Authorization: `Bearer ${user?.id || 'guest'}`,
         },
       });
 
@@ -215,7 +215,7 @@ export default function Chat() {
         await fetch(`/api/conversations/${convId}/read`, {
           method: "PUT",
           headers: {
-            Authorization: `Bearer ${user?.id || "guest"}`,
+            Authorization: `Bearer ${user?.id || 'guest'}`,
           },
         });
       }
@@ -266,7 +266,7 @@ export default function Chat() {
 
   const filteredConversations = conversations.filter((conv) => {
     const otherParticipant = conv.participants.find(
-      (p) => p.userId !== (user?.id || "guest"),
+      (p) => p.userId !== (user?.id || 'guest'),
     );
     return (
       otherParticipant?.userName
@@ -312,7 +312,7 @@ export default function Chat() {
         const newMsg: ChatMessage = {
           id: `temp_${Date.now()}`,
           conversationId: selectedConversation,
-          senderId: user.id,
+          senderId: user?.id || 'guest',
           content: tempMessage,
           type: "text",
           status: "sent",
