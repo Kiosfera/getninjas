@@ -67,7 +67,8 @@ export default function PlaceholderPage({
               Funcionalidade em construção
             </p>
             <p className="body-text text-xs text-muted-foreground">
-              PANASERVICE - Continue conversando para adicionar o conteúdo desta página!
+              PANASERVICE - Continue conversando para adicionar o conteúdo desta
+              página!
             </p>
           </div>
 
