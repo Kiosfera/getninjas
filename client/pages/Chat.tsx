@@ -89,7 +89,7 @@ export default function Chat() {
     try {
       const response = await fetch("/api/conversations", {
         headers: {
-          Authorization: `Bearer ${user?.id || "guest"}`,
+          Authorization: `Bearer ${user?.id || 'guest'}`,
         },
       });
 
@@ -131,7 +131,7 @@ export default function Chat() {
     try {
       const response = await fetch(`/api/conversations/${convId}/messages`, {
         headers: {
-          Authorization: `Bearer ${user?.id || "guest"}`,
+          Authorization: `Bearer ${user?.id || 'guest'}`,
         },
       });
 
@@ -215,7 +215,7 @@ export default function Chat() {
         await fetch(`/api/conversations/${convId}/read`, {
           method: "PUT",
           headers: {
-            Authorization: `Bearer ${user?.id || "guest"}`,
+            Authorization: `Bearer ${user?.id || 'guest'}`,
           },
         });
       }
@@ -266,7 +266,7 @@ export default function Chat() {
 
   const filteredConversations = conversations.filter((conv) => {
     const otherParticipant = conv.participants.find(
-      (p) => p.userId !== (user?.id || "guest"),
+      (p) => p.userId !== (user?.id || 'guest'),
     );
     return (
       otherParticipant?.userName
@@ -298,7 +298,7 @@ export default function Chat() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${user?.id || "guest"}`,
+            Authorization: `Bearer ${user?.id || 'guest'}`,
           },
           body: JSON.stringify({
             content: tempMessage,
@@ -312,7 +312,7 @@ export default function Chat() {
         const newMsg: ChatMessage = {
           id: `temp_${Date.now()}`,
           conversationId: selectedConversation,
-          senderId: user?.id || "guest",
+          senderId: user?.id || 'guest',
           content: tempMessage,
           type: "text",
           status: "sent",
@@ -433,10 +433,9 @@ export default function Chat() {
           ) : (
             filteredConversations.map((conversation) => {
               const otherParticipant = conversation.participants.find(
-                (p) => p.userId !== (user?.id || "guest"),
+                (p) => p.userId !== (user?.id || 'guest'),
               );
-              const unreadCount =
-                conversation.unreadCount[user?.id || "guest"] || 0;
+              const unreadCount = conversation.unreadCount[user?.id || 'guest'] || 0;
 
               return (
                 <button
@@ -521,12 +520,12 @@ export default function Chat() {
                     <img
                       src={
                         currentConversation?.participants.find(
-                          (p) => p.userId !== (user?.id || "guest"),
+                          (p) => p.userId !== (user?.id || 'guest'),
                         )?.userAvatar || "/placeholder.svg"
                       }
                       alt={
                         currentConversation?.participants.find(
-                          (p) => p.userId !== (user?.id || "guest"),
+                          (p) => p.userId !== (user?.id || 'guest'),
                         )?.userName || "Unknown"
                       }
                       className="w-10 h-10 rounded-xl object-cover bg-secondary"
@@ -537,7 +536,7 @@ export default function Chat() {
                   <div>
                     <h2 className="subtitle text-sm text-foreground">
                       {currentConversation?.participants.find(
-                        (p) => p.userId !== user?.id,
+                        (p) => p.userId !== (user?.id || 'guest'),
                       )?.userName || "Unknown"}
                     </h2>
                     <p className="body-text text-xs text-muted-foreground">
